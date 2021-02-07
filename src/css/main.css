@@ -1,0 +1,18 @@
+:root{
+    /* Colors */
+    --var-color-bg : #202020;
+    --var-color-fg : #ffffff;
+    --var-color-accent : rgb(24, 202, 113);
+    --var-color-bglighter : #272727;
+    --var-color-bgdarker : #191919;
+    --var-color-outline : #505050;
+
+    /* Misc properties */
+    --var-font-family : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--var-color-bg);
+    color: var(--var-color-fg);
+    font-family: var(--var-font-family);
+}

@@ -59,7 +59,7 @@ module.exports = {
                     var_iconColor: this.rgb(164, 164, 164),
                     var_iconColorActive: this.rgb(255, 255, 255)
                 },
-                lang: "en",
+                lang: "cn",
                 
                 searchEngine: "https://google.com/search?q=%s",
                 searchEngineName: "Google"
@@ -79,7 +79,7 @@ module.exports = {
              */
             this.GlobalSettings = Object.assign(defaultSettings,result);
             this.initGlobalTheme();
-            this.translations = require(`./content/texts/${this.lang}.json`)
+            this.translations = require(`../resources/lang/${this.lang}.json`)
             this.localizeInterface()
         }
         /**

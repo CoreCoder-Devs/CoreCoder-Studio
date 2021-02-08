@@ -1,6 +1,6 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
-
+const {settings} = require("./js/global_settings");
 
 function initTitleBar(){
     /// Initialize the titlebar's click function
@@ -42,4 +42,6 @@ function initTitleBar(){
 
 function init(){
     initTitleBar();
+    settings.GlobalSettings.lang = "cn";
+    settings.localizeInterface();
 }

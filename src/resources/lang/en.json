@@ -41,6 +41,8 @@
     "manager.deleteproj.delete": "Delete",
     "manager.import.title" : "Import Addon",
     "manager.import.subtitle": "Import existing .mcaddon file",
+    "manager.load.title" : "Load Addon",
+    "manager.load.subtitle" : "Load an existing project",
     "manager.settings.fullscreen": "Full Screen",
     "manager.settings.lang": "Display Language",
     "manager.startGame.title": "Launch Minecraft",

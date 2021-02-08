@@ -8,8 +8,11 @@ function init(){
 }
 
 function refreshProjects(){
+    /**
+     * Get the list of the projects in com.mojang
+     */
     let cont = document.getElementById("projectGrid");
-    
+
 }
 
 var app = new Vue({

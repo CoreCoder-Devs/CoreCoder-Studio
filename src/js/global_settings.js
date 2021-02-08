@@ -9,27 +9,35 @@ module.exports = {
             /**
              * The path of the app's folder for data storage
              */
+            //TODO::Implement getting the com.mojang folder for other OSes
             switch (os.platform()) {
                 case 'win32':
                     this.appFolder = path.join(
                         process.env['LOCALAPPDATA'],
                         'CoreCoder'
-                    )
+                    );
+                    this.comMojang = path.join(
+                        process.env['LOCALAPPDATA'],
+                        '\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang'
+                    );
                     break
                 case 'linux':
-                    this.appFolder = path.join(os.homedir(), '.local/share/CoreCoders')
+                    this.appFolder = path.join(os.homedir(), '.local/share/CoreCoders');
+                    this.comMojang = "";
                     break
                 case 'darwin':
                     this.appFolder = path.join(
                         os.homedir(),
                         'Library/Application Support/CoreCoder'
                     )
+                    this.comMojang = "";
                     break
                 case 'android':
                     this.appFolder = path.join(os.homedir(), 'storage/shared/CoreCoder')
                     break
                 default:
                     this.appFolder = '~/CoreCoder'
+                    this.comMojang = "";
             }
             /**
              * The path of settings.json
@@ -124,7 +132,7 @@ module.exports = {
             return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
         }
         /**
-         * I dont know
+         * Convert a hexadecimal string to an integer string
          * @param {*} c 
          */
         componentToHex(c) {

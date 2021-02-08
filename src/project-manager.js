@@ -7,6 +7,11 @@ function init(){
     settings.localizeInterface();
 }
 
+function refreshProjects(){
+    let cont = document.getElementById("projectGrid");
+    
+}
+
 var app = new Vue({
     el: '#app',
     data: {

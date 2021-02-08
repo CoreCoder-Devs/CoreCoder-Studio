@@ -8,6 +8,9 @@
     --var-color-bgdarker : #191919;
     --var-color-outline : #505050;
 
+    /* Extra colors */
+    --var-color-card-hover: #303030;
+
     /* Misc properties */
     --var-font-family : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -30,6 +33,7 @@ body {
 
 /* Title Bar */
 .titlebar{
+    background-color: var(--var-color-bglighter);
     -webkit-app-region: drag;
     position: absolute;
     top: 0;
@@ -37,6 +41,7 @@ body {
     font-size: 10pt;
     padding-left: 8px;
     height: 32px;
+    user-select: none;
 
     display: flex;
     flex-direction: row;
@@ -85,4 +90,40 @@ body {
 }
 .titlebar .minimizebtn::after{
     -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 4.399V5.5H0V4.399h11z' fill='%23000'/%3E%3C/svg%3E") no-repeat 50% 50%;
+}
+
+/* Content Div */
+.content-div{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: -webkit-fill-available;
+    margin-top: 32px;
+}
+
+/* Controls Divs */
+.card {
+    background-color: var(--var-color-bglighter);
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px #1919196e;
+    padding: 16px;
+    margin: 8px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.card:hover{
+    background-color: var(--var-color-card-hover);
+}
+.card a, .card p{
+    user-select: none;
+}
+.card .subtitle{
+    opacity: 80%;
+}
+
+/* Layouting */
+.flex-hor{
+    display: flex;
+    flex-direction: row;
 }

@@ -4,14 +4,21 @@
         <!-- Link the css styles -->
         <link rel="stylesheet" href="css/main.css">
     </head>
-    <body>
+    <body onload="init();">
         <!-- Load in the scripts -->
         <script src="project-manager.js"></script>
         <!-- <script type="module" src="../node_modules/vue/dist/vue.min.js"></script> -->
 
         <!-- Title Bar -->
         <div class="titlebar">
-            <p> CoreCoder:Studio - dev preview 1 </p>
+            <!-- Title and icon -->
+            <img style="width: 24px; height: 24px; margin: 3px;" src="resources/icon.png">
+            <p style="height: 24px; margin: 3px"> CoreCoder:Studio - dev preview 1 </p>
+            <div style="flex-grow: 1"></div>
+            <!-- Buttons -->
+            <div href="#" id="tbBtnMin" title="Minimize" class="titlebarbtn minimizebtn"></div>
+            <div href="#" id="tbBtnMax" title="Maximize/Restore" class="titlebarbtn maximizebtn"></div>
+            <div href="#" id="tbBtnCls" title="Close" class="titlebarbtn closebtn"></div>
         </div>
     </body>
 </html>

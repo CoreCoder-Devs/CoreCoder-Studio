@@ -4,48 +4,52 @@
         <!-- Link the css styles -->
         <link rel="stylesheet" href="css/main.css">
     </head>
-    <body onload="init();">
-        <!-- Load in the scripts -->
-        <script src="project-manager.js"></script>
-
-        <!-- Title Bar -->
-        <div class="titlebar">
-            <!-- Title and icon -->
-            <img style="width: 24px; height: 24px; margin: 3px;" src="resources/icon.png">
-            <p style="height: 24px; margin: 3px"> CoreCoder:Studio - dev preview 1 </p>
-            <div style="flex-grow: 1"></div>
-            <!-- Buttons -->
-            <div href="#" id="tbBtnMin" title="Minimize" class="titlebarbtn minimizebtn"></div>
-            <div href="#" id="tbBtnMax" title="Maximize/Restore" class="titlebarbtn maximizebtn"></div>
-            <div href="#" id="tbBtnCls" title="Close" class="titlebarbtn closebtn"></div>
-        </div>
-
-        <!-- Content Div -->
-        <div class="content-div">
-            <!-- Top buttons -->
-            <div class="flex-hor">
-                <!-- Create new project button -->
-                <div class="card">
-                    <a data-translation="manager.createnew.title">Create New Project</a>
-                    <br/>
-                    <a class="subtitle" data-translation="manager.createnew.subtitle">
-                        Create project from stratch
-                    </a>
-                </div>
-
-                <!-- Import project button -->
-                <div class="card">
+    <body>
+        <div id="app">
+            <!-- Title Bar -->
+            <div class="titlebar">
+                <!-- Title and icon -->
+                <img style="width: 24px; height: 24px; margin: 3px;" src="resources/icon.png">
+                <p style="height: 24px; margin: 3px"> CoreCoder:Studio - dev preview 1 </p>
+                <div style="flex-grow: 1"></div>
+                <!-- Buttons -->
+                <div href="#" @click="ipc.send('minimize');" title="Minimize" class="titlebarbtn minimizebtn"></div>
+                <!-- TODO: max/rest unresponsive -->
+                <div href="#" @click="ipc.send('Maximize');" v-if="maximised" title="Maximize" class="titlebarbtn maximizebtn"></div>
+                <div href="#" @click="ipc.send('restore');" v-else  title="Restore" class="titlebarbtn restorebtn"></div>
+                <div href="#" @click="ipc.send('close');" title="Close" class="titlebarbtn closebtn"></div>
+            </div>
+            
+            <!-- Content Div -->
+            <div class="content-div">
+                <!-- Top buttons -->
+                <div class="flex-hor">
+                    <!-- Create new project button -->
+                    <div class="card">
+                        <a data-translation="manager.createnew.title">Create New Project</a>
+                        <br/>
+                        <a class="subtitle" data-translation="manager.createnew.subtitle">
+                            Create project from stratch
+                        </a>
+                    </div>
+                    
+                    <!-- Import project button -->
+                    <div class="card">
                         <a data-translation="manager.import.title">Import Addon</a>
                         <br/>
                         <a class="subtitle" data-translation="manager.import.subtitle">
                             Import existing .mcaddon file
                         </a>
                     </div>
+                </div>
+                
+                <!-- Projects -->
+                <h4>Recent Projects</h4>
+                <div id="projectGrid"></div>
             </div>
-
-            <!-- Projects -->
-            <h4>Recent Projects</h4>
-            <div id="projectGrid"></div>
         </div>
+        <!-- Load in the scripts -->
+        <script src="lib/vue.js"></script>
+        <script src="project-manager.js"></script>
     </body>
-</html>
+    </html>

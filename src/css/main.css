@@ -18,6 +18,13 @@ html, body {
     margin: 0;
     height: -webkit-fill-available;
 }
+
+/* Disable selecting text */
+h1,h2,h3,h4{
+    user-select: none;
+}
+
+
 /* Body */
 body {
     background-color: var(--var-color-bg);
@@ -110,6 +117,8 @@ body {
     margin: 8px;
     user-select: none;
     cursor: pointer;
+
+    transition: background-color .2s;
 }
 
 .card:hover{

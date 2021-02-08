@@ -15,8 +15,8 @@
                 <!-- Buttons -->
                 <div href="#" @click="ipc.send('minimize');" title="Minimize" class="titlebarbtn minimizebtn"></div>
                 <!-- TODO: max/rest unresponsive -->
-                <div href="#" @click="ipc.send('Maximize');" v-if="maximised" title="Maximize" class="titlebarbtn maximizebtn"></div>
-                <div href="#" @click="ipc.send('restore');" v-else  title="Restore" class="titlebarbtn restorebtn"></div>
+                <div href="#" @click="ipc.send('restore');" v-if="maximised" title="Maximize" class="titlebarbtn maximizebtn"></div>
+                <div href="#" @click="ipc.send('maximize');" v-else  title="Restore" class="titlebarbtn restorebtn"></div>
                 <div href="#" @click="ipc.send('close');" title="Close" class="titlebarbtn closebtn"></div>
             </div>
             

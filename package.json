@@ -9,7 +9,7 @@
   "author": "Hanprogramer",
   "license": "ISC",
   "devDependencies": {
-    "electron": "11.2.3"
+    "electron": "^11.2.3"
   },
   "dependencies": {
     "vue": "^2.6.12"

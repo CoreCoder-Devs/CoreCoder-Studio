@@ -67,7 +67,7 @@ module.exports = {
                     var_iconColor: this.rgb(164, 164, 164),
                     var_iconColorActive: this.rgb(255, 255, 255)
                 },
-                lang: "cn",
+                lang: "en",
                 
                 searchEngine: "https://google.com/search?q=%s",
                 searchEngineName: "Google"

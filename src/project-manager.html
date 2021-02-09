@@ -3,6 +3,7 @@
     <head>
         <!-- Link the css styles -->
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/all.css">
     </head>
     <body>
         <div id="app">
@@ -22,7 +23,24 @@
             <!-- Content Div -->
             <div class="manager">
                 <div class="manager-left"></div>
-                <div class="manager-right"></div>
+                <div class="manager-right">
+                    <!-- Logo -->
+                    <p style="text-align: center">
+                        <img src="resources/icon.png" style="width: 128px; height: auto; -webkit-user-drag: none; margin: auto">
+                    </p>
+                    <h3 style="text-align: center; margin: 0;">Core Coder</h3>
+                    <a style="text-align: center; margin: 0; opacity: 75%">v0.0.1</a>
+                    <p style="text-align: center">
+                        <!-- The buttons -->
+                        <div style="display: flex; flex-direction: column;">
+                            <div class="manager-button"><i class="fas fa-file"></i> Create new project</div>
+                            <div class="manager-button"><i class="fas fa-folder"></i> Open existing project</div>
+                            <div class="manager-button"><i class="fas fa-archive"></i> Import .mcaddon</div>
+                            <div class="manager-button"><i class="fas fa-cog"></i> Settings</div>
+                            
+                        </div>
+                    </p>
+                </div>
             </div>
         </div>
         <!-- Load in the scripts -->

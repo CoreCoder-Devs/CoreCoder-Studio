@@ -1,7 +1,7 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
 const {settings} = require("./js/global_settings");
-const {dialog} = require("./js/dialog");
+const { dialog } = require('electron').remote
 function init(){
     settings.GlobalSettings.lang = "cn";
     settings.localizeInterface();
@@ -12,6 +12,17 @@ function refreshProjects(){
      * Get the list of the projects in com.mojang
      */
     let cont = document.getElementById("projectGrid");
+
+}
+
+function onOpenProjectPressed(){
+    /**
+     * Open a folder select dialog
+     */
+    var result = dialog.showOpenDialogSync({ properties: ['openDirectory','promptToCreate'], defaultPath: settings.comMojang });
+    if(result == undefined) return; // user pressed cancel
+
+    var path = result[0];
 
 }
 

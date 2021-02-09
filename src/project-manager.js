@@ -1,7 +1,7 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
 const {settings} = require("./js/global_settings");
-
+const {dialog} = require("./js/dialog");
 function init(){
     settings.GlobalSettings.lang = "cn";
     settings.localizeInterface();

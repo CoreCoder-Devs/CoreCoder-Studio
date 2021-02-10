@@ -1,0 +1,50 @@
+/*
+A project manager specific styling. Put styles exclusive for project-manager.html here
+*/
+/* Project Manager */
+.manager{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: -webkit-fill-available;
+    margin-top: 32px;
+    position: absolute;
+}
+.manager-left{
+    width: 400px; height: -webkit-fill-available;
+    background-color: var(--var-color-bgdarker);
+}
+.manager-right{
+    display: flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+}
+
+.manager-button{
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px;
+    /* text-align: center; */
+    width: 30%;
+    user-select: none;
+    margin: auto;
+    font-size: 10pt;
+    transition: background-color .2s;
+    cursor: pointer;
+    line-height: 12pt;
+}
+
+.manager-button:hover{
+    background-color: var(--var-color-bglighter);
+    transition: none;
+}
+.manager-button:active{
+    background-color: var(--var-color-bgdarker);
+}
+
+
+.manager-button .fas{
+    /* Override FontAwesome icon size */
+    font-size: 12pt;
+}

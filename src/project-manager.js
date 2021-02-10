@@ -23,14 +23,13 @@ function onOpenProjectPressed() {
     //TODO: this should've been a custom dialog instead, that'll show pack's details
     var result = dialog.showOpenDialogSync({ properties: ['openDirectory', 'promptToCreate'], defaultPath: settings.comMojang });
     if (result == undefined) return; // user pressed cancel
-
     var path = result[0];
 
-    if (path.contains("behavior_packs")) {
+    if (path.includes("behavior_packs")) {
         // Add to the localStorage
         // if it is a behavior_packs
         window.localStorage.setItem("bp_path", path);
-    } else if (path.contains("resource_packs")) {
+    } else if (path.includes("resource_packs")) {
         // Add to the localStorage
         // if it is a resource_packs
         window.localStorage.setItem("rp_path", path);

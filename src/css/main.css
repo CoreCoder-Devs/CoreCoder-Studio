@@ -184,3 +184,21 @@ body {
     /* Override FontAwesome icon size */
     font-size: 12pt;
 }
+
+.project {
+    padding: 10px;
+    padding-left: 30px;
+}
+
+.project:hover{
+    background-color: #464646;
+}
+
+.project h3 {
+    margin-block: 2px;
+}
+
+.project-path {
+    font-size: small;
+    color: #8f8f8f;
+}

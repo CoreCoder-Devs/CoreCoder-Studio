@@ -5,6 +5,7 @@
     <!-- Load in the CSS -->
     <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='css/editor.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/filebrowser.css'>
 
     <!-- Chrome tabs -->
     <link rel='stylesheet' type="text/css" href="lib/chrome-tabs-custom/css/chrome-tabs.css">
@@ -39,7 +40,18 @@
 
             <!-- The actual sidebar -->
             <div class="sidebar-panel" id="sidePanel" style="display:none">
-                <div id="fileBrowser"></div>
+                <div id="fileBrowser">
+                    <!-- The filebrowser -->
+                    <!-- ****Header -->
+                    <div class="filebrowserheader" id="filebrowserheader">
+                        <div id="fbHeaderBP" onclick="openFileBrowser(0);" class="filebrowserheader-item selected">BP</div>
+                        <div id="fbHeaderRP" onclick="openFileBrowser(1);" class="filebrowserheader-item">RP</div>
+                        <div id="fbHeaderDOC" onclick="openFileBrowser(2);" class="filebrowserheader-item">Docs</div>
+                    </div>
+                    <div id="filebrowsercontent">
+                        <!-- Generated -->
+                    </div>
+                </div>
                 <div id="github"></div>
                 <div id="todo"></div>
             </div>

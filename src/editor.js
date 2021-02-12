@@ -1,8 +1,19 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
 const { settings } = require("./js/global_settings");
+const fs = require("fs");
+const filebrowser = require("./js/filebrowser");
 
-var editorSize1Dragged = false;
+var openedFileBrowser = 0;
+var bp_path = window.localStorage.getItem("bp_path");
+var rp_path = window.localStorage.getItem("rp_path");
+
+/**
+ * Opened tabs
+ * key: filepath
+ * value: {title,icon,htmlElement}
+ */
+var openedTabs = {};
 
 const app = new Vue({
     el: '#app',
@@ -125,6 +136,10 @@ function openSidePanel(id, tabElem) {
         // Enable the resizer
         document.querySelector('.resizer-editor').style.display = "block";
     }
+
+    if(id == "fileBrowser"){
+        refreshFileBrowser();
+    }
 }
 initMonaco();
 
@@ -242,3 +257,41 @@ function initResizableSidePanel(){
         document.documentElement.style.setProperty("--var-side-width", pointer.pageX+"px");
     });
 } initResizableSidePanel();
+
+function openFileBrowser(id){
+    /**
+     * Open a specific file browser tab
+     */
+    var cont = document.getElementById("filebrowserheader");
+    for(var i = 0; i < cont.children.length; i++){
+        cont.children[i].classList.remove("selected");
+    }
+
+    var tabId = "";
+    if(id == 0) tabId = "fbHeaderBP";
+    if(id == 1) tabId = "fbHeaderRP";
+    if(id == 2) tabId = "fbHeaderDOC";
+
+    var tab = document.getElementById(tabId);
+    tab.classList.add("selected");
+
+    openedFileBrowser = id;
+    refreshFileBrowser();
+}
+
+function refreshFileBrowser(){
+    // Clear the filebrowser
+    var cont = document.getElementById("filebrowsercontent");
+    cont.innerHTML = "";
+    var result = "";
+    // BP or RP
+    if(openedFileBrowser == 0 || openedFileBrowser == 1){
+        var path = openedFileBrowser==0?bp_path:rp_path;
+        if(path == null) return; // TODO::makes warn user that either BP or RP is not found
+        var files = fs.readdirSync(path);
+        for(var i in files){
+            result+=filebrowser.generateFileBrowserItem(files[i], "","",function(){},"");
+        }
+        cont.innerHTML = result;
+    }
+}

@@ -1,0 +1,28 @@
+/* File Browser Header */
+.filebrowserheader{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+.filebrowserheader::-webkit-scrollbar{
+    width: 0; height: 0;
+}
+
+.filebrowserheader-item{
+    padding: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    user-select: none;
+}
+
+.filebrowserheader-item:hover{
+    background-color: var(--var-color-bglighter);
+}
+
+.filebrowserheader-item.selected{
+    background-color: var(--var-color-bglighter-alt);
+}
+
+/* File Browser Item */
+.filebrowseritem{}
+.filebrowseritem-icon{}

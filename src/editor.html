@@ -4,6 +4,11 @@
 <head>
     <!-- Load in the CSS -->
     <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/editor.css'>
+
+    <!-- Chrome tabs -->
+    <link rel='stylesheet' type="text/css" href="lib/chrome-tabs-custom/css/chrome-tabs.css">
+    <link rel='stylesheet' type="text/css" href="lib/chrome-tabs-custom/css/chrome-tabs-dark-theme.css">
 </head>
 
 <body>
@@ -21,9 +26,38 @@
             <div href="#" @click="ipc.send('maximize');" v-else title="Maximize" class="titlebarbtn restorebtn"></div>
             <div href="#" @click="ipc.send('close');" title="Close" class="titlebarbtn closebtn"></div>
         </div>
+
+
+        <!-- The page content -->
+        <div class="content-div">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebarbtn" onclick="openSidePanel('fileBrowser',this);">File Explorer</div>
+                <div class="sidebarbtn" onclick="openSidePanel('github',this);">Github</div>
+                <div class="sidebarbtn" onclick="openSidePanel('todo',this);">Todo</div>
+            </div>
+
+            <!-- The actual sidebar -->
+            <div class="sidebar-panel" id="sidePanel" style="display:none">
+                <div id="fileBrowser"></div>
+                <div id="github"></div>
+                <div id="todo"></div>
+            </div>
+            <!-- Editor content -->
+            <div class="editor-content">
+                <div class="resizer-editor" style="display:none"></div>
+                <div class="chrome-tabs">
+                    <div class="chrome-tabs-content"></div>
+                </div>
+                <div id="myeditor"></div>
+                <!-- Empty window -->
+                <!-- <div style="color: var(--var-color-outline); background-color: var(--var-color-bg); position: absolute; left: var(--var-sidebar-width); top: 0; bottom: 0; right: 0; text-align: center; align-items: center; display: flex;"><a style="margin: auto;">No files opened yet. Use the File Browser to open a file</a></div> -->
+            </div>
+        </div>
     </div>
     <!-- Load in the scripts -->
     <script src="lib/vue.js"></script>
+    <script src="lib/chrome-tabs-custom/node_modules/draggabilly/dist/draggabilly.pkgd.min.js"></script>
     <script src="editor.js"></script>
 </body>
 

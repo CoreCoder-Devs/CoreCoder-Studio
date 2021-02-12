@@ -1,0 +1,33 @@
+.chrome-tabs.chrome-tabs-dark-theme {
+  background: var(--var-color-bgdarker);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-dividers::before,
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-dividers::after {
+  background: var(--var-color-bg);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-background > svg .chrome-tab-geometry {
+  fill:  var(--var_backgroundColor);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] .chrome-tab-background > svg .chrome-tab-geometry {
+  fill:  var(--var_colorAccent);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-title {
+  color: var(--var_textColorDarker);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] .chrome-tab-title {
+  color: var(--var_textColor);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-close {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(154, 160, 166, .8)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-close:hover {
+  background-color: var(--var_backgroundColorDarker);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(255, 255, 255, .7)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-close:hover:active {
+  background-color: var(--var_backgroundColor);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(255, 255, 255, .9)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tabs-bottom-bar {
+  background: var(--var_backgroundColorDarker);
+}

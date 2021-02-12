@@ -2,14 +2,6 @@
 A project manager specific styling. Put styles exclusive for project-manager.html here
 */
 /* Project Manager */
-.manager{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: -webkit-fill-available;
-    margin-top: 32px;
-    position: absolute;
-}
 .manager-left{
     width: 400px; height: -webkit-fill-available;
     background-color: var(--var-color-bgdarker);

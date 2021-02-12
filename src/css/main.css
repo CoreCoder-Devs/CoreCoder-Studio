@@ -3,10 +3,14 @@
     /* Colors */
     --var-color-bg : #202020;
     --var-color-fg : #ffffff;
+    --var-color-subtitle: #a0a0a0;
     --var-color-accent : rgb(24, 202, 113);
-    --var-color-bglighter : #272727;
+    --var-color-bglighter : #262626;
     --var-color-bgdarker : #191919;
-    --var-color-outline : #505050;
+    --var-color-outline : #303030;
+    --var-color-bglighter-alt: #353535;
+
+    --var-color-titlebar : #292929;
 
     /* Extra colors */
     --var-color-card-hover: #303030;
@@ -16,7 +20,9 @@
 }
 html, body {
     margin: 0;
-    height: -webkit-fill-available;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
 }
 
 /* Disable selecting text */
@@ -40,7 +46,7 @@ body {
 
 /* Title Bar */
 .titlebar{
-    background-color: var(--var-color-bglighter);
+    background-color: var(--var-color-titlebar);
     -webkit-app-region: drag;
     position: absolute;
     top: 0;
@@ -62,7 +68,6 @@ body {
 .titlebarbtn {
     width: 48px;
     height: 32px;
-    /* background-color: rgb(27, 27, 27); */
     -webkit-app-region: no-drag;
 }
 
@@ -101,11 +106,12 @@ body {
 
 /* Content Div */
 .content-div{
-    padding: 16px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    width: 100%;
     height: -webkit-fill-available;
     margin-top: 32px;
+    position: absolute;
 }
 
 /* Controls Divs */

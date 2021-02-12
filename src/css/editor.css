@@ -1,0 +1,92 @@
+/*
+* editor.html css implementation
+*/
+:root{
+    /* Sidebar */
+    --var-sidebar-width: 32px;
+    /* Sidebar panel */
+    --var-sidepanel-width: 256px;
+    /* Total left side width */
+    --var-side-width: 32px;
+}
+.sidebar{
+    width: var(--var-sidebar-width);
+    background-color: var(--var-color-bglighter);
+    /* overflow: auto; */
+}
+.sidebar::-webkit-scrollbar {
+    width: 0;
+}
+
+.sidebarbtn{
+    writing-mode: tb-rl;
+    padding: 4px;
+    margin: 4px;
+    user-select: none;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-size: 11pt;
+    color: var(--var-color-subtitle);
+}
+
+.sidebarbtn:hover{
+    background-color: var(--var-color-bglighter-alt);
+}
+
+.sidebarbtn:active{
+    background-color: var(--var-color-outline);
+}
+.sidebarbtn.selected{
+    border-left: 4px solid var(--var-color-accent);
+    margin-left: 0;
+}
+
+/* Editor Content */
+.editor-content{
+    width:  -webkit-fill-available;
+    height: -webkit-fill-available;
+}
+
+#myeditor{
+    position: absolute;
+    top: 46px;
+    bottom: 0;
+    left: var(--var-side-width);
+    right: 0;
+}
+
+.sidebar-panel{
+    height: -webkit-fill-available;
+    background-color: var(--var-color-bgdarker);
+    width:     var(--var-sidepanel-width);
+    min-width: var(--var-sidepanel-width);
+    max-width: var(--var-sidepanel-width);
+}
+
+/* Chrome Tabs */
+.editor-tabs{
+    background-color: var(--var-color-bglighter);
+    transition:background-color .1s;
+}
+.chrome-tab:hover .editor-tabs{
+    background-color: var(--var-color-bglighter-alt);
+}
+
+.chrome-tab-close{
+    display: none;
+}
+
+.chrome-tab:hover .chrome-tab-close{
+    display: block;
+}
+
+/* Resizer */
+.resizer-editor{
+    height:100%;
+    width: 17px;
+    /* background-color: red; */
+    position: absolute;
+    left: calc(var(--var-side-width) - 2px);
+    cursor:ew-resize;
+    z-index: 99999;
+}

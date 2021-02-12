@@ -11,7 +11,8 @@ app.on("ready", ()=>{
         nodeIntegration: true,
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule:true
+            enableRemoteModule:true,
+            webSecurity: false
         }
     });
 

@@ -24,5 +24,22 @@
 }
 
 /* File Browser Item */
-.filebrowseritem{}
-.filebrowseritem-icon{}
+.filebrowseritem{
+    display: flex;
+    flex-direction: row;
+    height: 16px;
+    padding:8px;
+    user-select: none;
+    cursor: pointer;
+    line-height: 16px;
+}
+
+.filebrowseritem:hover{
+    background-color: var(--var-color-bglighter);
+}
+.filebrowseritem:active{
+    background-color: var(--var-color-bg);
+}
+.filebrowseritem-icon{
+    width: 16px; height: auto;
+}

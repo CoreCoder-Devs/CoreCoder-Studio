@@ -3,10 +3,13 @@ const ipc = electron.ipcRenderer;
 const { settings } = require("./js/global_settings");
 const fs = require("fs");
 const filebrowser = require("./js/filebrowser");
+const path = require("path");
 
 var openedFileBrowser = 0;
 var bp_path = window.localStorage.getItem("bp_path");
+var bp_relativepath = path.sep;
 var rp_path = window.localStorage.getItem("rp_path");
+var rp_relativepath = path.sep;
 
 /**
  * Opened tabs
@@ -22,7 +25,8 @@ const app = new Vue({
         maximised: false,
         ipc: ipc,
         settings: settings,
-        sidePanelOpen: false
+        sidePanelOpen: false,
+        noFileOpen: true
     },
 
     created() {
@@ -118,7 +122,6 @@ function openSidePanel(id, tabElem) {
         let v2 = parseInt(document.documentElement.style.getPropertyValue("--var-sidebar-width"),10);
         if(isNaN(v2)) v2 = 256;
         document.documentElement.style.setProperty("--var-side-width", (v1+32)+"px");
-        global.editor.layout();
         // Opens a side panel with specific id
         var cont = document.getElementById("sidePanel");
         if(cont != undefined){
@@ -279,6 +282,24 @@ function openFileBrowser(id){
     refreshFileBrowser();
 }
 
+function goInFolder(folderName){
+    if(openedFileBrowser == 0) bp_relativepath += folderName;
+    if(openedFileBrowser == 1) rp_relativepath += folderName;
+    refreshFileBrowser();
+}
+function goUpOneFolder(){
+    var value = (openedFileBrowser == 0? bp_relativepath : rp_relativepath);
+    var result = path.dirname(value);
+    if(!result.endsWith(path.sep)) result += path.sep;
+    if(openedFileBrowser == 0){
+        bp_relativepath = result;
+    }
+    if(openedFileBrowser == 1){
+        rp_relativepath = result;
+    }
+    refreshFileBrowser();
+}
+
 function refreshFileBrowser(){
     // Clear the filebrowser
     var cont = document.getElementById("filebrowsercontent");
@@ -286,11 +307,38 @@ function refreshFileBrowser(){
     var result = "";
     // BP or RP
     if(openedFileBrowser == 0 || openedFileBrowser == 1){
-        var path = openedFileBrowser==0?bp_path:rp_path;
-        if(path == null) return; // TODO::makes warn user that either BP or RP is not found
-        var files = fs.readdirSync(path);
+        var browsePath = openedFileBrowser==0?bp_path+bp_relativepath:rp_path+rp_relativepath;
+        if(browsePath == null) return; // TODO::makes warn user that either BP or RP is not found
+        var files = fs.readdirSync(browsePath);
+        files.sort(function(a, b) {
+            return fs.statSync(browsePath +path.sep+ b).isDirectory() -
+                   fs.statSync(browsePath +path.sep+ a).isDirectory();
+        });
+        if((openedFileBrowser == 0 && bp_relativepath !== path.sep && bp_relativepath !== "") || (openedFileBrowser == 1 && rp_relativepath !== path.sep && rp_relativepath !== "")){
+            // Go up one folder button
+            result+=filebrowser.generateFileBrowserItem(
+                "..",               // Title
+                "",  // Path
+                "",                   // Icon
+                `goUpOneFolder();`,           
+                "",                     // Type
+                true);    // isDirectory
+        }
+
         for(var i in files){
-            result+=filebrowser.generateFileBrowserItem(files[i], "","",function(){},"");
+            var stat = fs.statSync(browsePath + path.sep + files[i]);
+            var icon = "";
+
+            if(files[i].endsWith(".png")){
+                icon = browsePath + path.sep + files[i];
+            }
+            result+=filebrowser.generateFileBrowserItem(
+                files[i],               // Title
+                browsePath + path.sep + files[i],  // Path
+                icon,                   // Icon
+                stat.isDirectory()?`goInFolder('${files[i]+path.sep+path.sep}');`:``,           
+                "",                     // Type
+                stat.isDirectory());    // isDirectory
         }
         cont.innerHTML = result;
     }

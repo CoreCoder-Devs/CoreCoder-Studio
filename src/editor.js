@@ -95,14 +95,27 @@ function initMonaco() {
 }
 
 function openSidePanel(id, tabElem) {
-
-    if (tabElem.classList.contains("selected")) {
+    if (tabElem == null || tabElem.classList.contains("selected")) {
         // If the tab is active, deactivate all tabs
-        tabElem.classList.remove("selected");
+        var children = document.getElementById("sidebar").children;
+        for (var i = 0; i < children.length; i++) {
+            var dom = children[i];
+            dom.classList.remove("selected");
+        }
+
+        // Hide the panel
         document.getElementById("sidePanel").style.display = "none";
+
+        // Set the vue variable 
         app.$data.sidePanelOpen = false;
+
         let v1 = document.documentElement.style.getPropertyValue("--var-sidebar-width");
         document.documentElement.style.setProperty("--var-side-width", "32px");
+
+        if(tabElem == null){ // While dragging to the left of the sizer
+            document.documentElement.style.setProperty("--var-sidepanel-width", "256px");
+            // document.documentElement.style.setProperty("--var-side-width", "288px");
+        }
 
         // Disable the resizer
         document.querySelector('.resizer-editor').style.display = "none";
@@ -138,14 +151,13 @@ function openSidePanel(id, tabElem) {
         }
         // Enable the resizer
         document.querySelector('.resizer-editor').style.display = "block";
+        document.querySelector('.resizer-editor').style.left = v1 + 32 + "px";
     }
 
     if(id == "fileBrowser"){
         refreshFileBrowser();
     }
 }
-initMonaco();
-
 function initTabs(){
     const ChromeTabs = require("../src/lib/chrome-tabs-custom");
     var el = document.querySelector(".chrome-tabs");
@@ -242,7 +254,6 @@ function initTabs(){
         }
     });
 }
-initTabs();
 
 function initResizableSidePanel(){
     const Draggabilly = require("../src/lib/chrome-tabs-custom/node_modules/draggabilly");
@@ -254,12 +265,21 @@ function initResizableSidePanel(){
 
     draggie.on( 'dragMove', function( event, pointer, moveVector ) {
         // Move a different variable
-        // var val = parseInt(document.documentElement.style.getPropertyValue("--var-sidepanel-width"),10);
-        // var val2 = parseInt(document.documentElement.style.getPropertyValue("--var-sidebar-width"),10);
-        document.documentElement.style.setProperty("--var-sidepanel-width", (pointer.pageX-32)+"px");
-        document.documentElement.style.setProperty("--var-side-width", pointer.pageX+"px");
+        if(pointer.pageX > 64){
+            document.documentElement.style.setProperty("--var-sidepanel-width", (pointer.pageX-32)+"px");
+            document.documentElement.style.setProperty("--var-side-width", pointer.pageX+"px");
+        }else{
+            document.documentElement.style.setProperty("--var-sidepanel-width", "0px");
+            document.documentElement.style.setProperty("--var-side-width", "32px");
+        }
     });
-} initResizableSidePanel();
+    draggie.on( 'dragEnd', function( event, pointer, moveVector ) {
+        // Move a different variable
+        if(pointer.pageX <= 64){
+            openSidePanel(-1, null);
+        }
+    });
+} 
 
 function openFileBrowser(id){
     /**
@@ -342,4 +362,10 @@ function refreshFileBrowser(){
         }
         cont.innerHTML = result;
     }
+}
+
+function init(){
+    initMonaco();
+    initTabs();
+    initResizableSidePanel();
 }

@@ -1,7 +1,7 @@
 /*
 * editor.html css implementation
 */
-:root{
+:root {
     /* Sidebar */
     --var-sidebar-width: 32px;
     /* Sidebar panel */
@@ -9,16 +9,18 @@
     /* Total left side width */
     --var-side-width: 32px;
 }
-.sidebar{
+
+.sidebar {
     width: var(--var-sidebar-width);
     background-color: var(--var-color-bglighter);
     /* overflow: auto; */
 }
+
 .sidebar::-webkit-scrollbar {
     width: 0;
 }
 
-.sidebarbtn{
+.sidebarbtn {
     writing-mode: tb-rl;
     padding: 4px;
     margin: 4px;
@@ -29,25 +31,26 @@
     color: var(--var-color-subtitle);
 }
 
-.sidebarbtn:hover{
+.sidebarbtn:hover {
     background-color: var(--var-color-bglighter-alt);
 }
 
-.sidebarbtn:active{
+.sidebarbtn:active {
     background-color: var(--var-color-outline);
 }
-.sidebarbtn.selected{
+
+.sidebarbtn.selected {
     border-left: 4px solid var(--var-color-accent);
     margin-left: 0;
 }
 
 /* Editor Content */
-.editor-content{
-    width:  -webkit-fill-available;
+.editor-content {
+    width: -webkit-fill-available;
     height: -webkit-fill-available;
 }
 
-#myeditor{
+#myeditor {
     position: absolute;
     top: 46px;
     bottom: 0;
@@ -55,38 +58,40 @@
     right: 0;
 }
 
-.sidebar-panel{
+.sidebar-panel {
     height: -webkit-fill-available;
     background-color: var(--var-color-bgdarker);
-    width:     var(--var-sidepanel-width);
+    width: var(--var-sidepanel-width);
     min-width: var(--var-sidepanel-width);
     max-width: var(--var-sidepanel-width);
 }
 
+
 /* Chrome Tabs */
-.editor-tabs{
+.editor-tabs {
     background-color: var(--var-color-bglighter);
-    transition:background-color .1s;
+    transition: background-color .1s;
 }
-.chrome-tab:hover .editor-tabs{
+
+.chrome-tab:hover .editor-tabs {
     background-color: var(--var-color-bglighter-alt);
 }
 
-.chrome-tab-close{
+.chrome-tab-close {
     display: none;
 }
 
-.chrome-tab:hover .chrome-tab-close{
+.chrome-tab:hover .chrome-tab-close {
     display: block;
 }
 
 /* Resizer */
-.resizer-editor{
-    height:100%;
+.resizer-editor {
+    height: 100%;
     width: 17px;
     /* background-color: red; */
     position: absolute;
     left: calc(var(--var-side-width) - 2px);
-    cursor:ew-resize;
+    cursor: ew-resize;
     z-index: 99999;
 }

@@ -13,7 +13,7 @@
     <link rel='stylesheet' type="text/css" href="lib/chrome-tabs-custom/css/chrome-tabs-dark-theme.css">
 </head>
 
-<body>
+<body onload="init();">
     <div id="app">
         <!-- Title Bar -->
         <div class="titlebar">
@@ -41,7 +41,7 @@
 
             <!-- The actual sidebar -->
             <div class="sidebar-panel" id="sidePanel" style="display:none">
-                <div id="fileBrowser">
+                <div id="fileBrowser" style="max-height: 100%">
                     <!-- The filebrowser -->
                     <!-- ****Header -->
                     <div class="filebrowserheader" id="filebrowserheader">
@@ -49,7 +49,7 @@
                         <div id="fbHeaderRP" onclick="openFileBrowser(1);" class="filebrowserheader-item">RP</div>
                         <div id="fbHeaderDOC" onclick="openFileBrowser(2);" class="filebrowserheader-item">Docs</div>
                     </div>
-                    <div id="filebrowsercontent">
+                    <div id="filebrowsercontent" style="position:  absolute;overflow-y: auto;top: 37px;bottom: 0;width: calc(var(--var-side-width) - 32px);">
                         <!-- Generated -->
                     </div>
                 </div>

@@ -326,13 +326,13 @@ function goUpOneFolder(){
 }
 
 function openFile(p){
-    var filePath = (openedFileBrowser == 0? bp_path+bp_relativepath : bp_path+rp_relativefilepath) + p;
+    var filePath = (openedFileBrowser == 0? bp_path+bp_relativepath : rp_path+rp_relativepath) + p;
     
     if(filePath.endsWith(".png")){
         // Open the image editor
         let filename = path.parse(filePath).base;
         
-        var elem = htmlToElem(`<div style="height:100%"></div>`);
+        var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
         var img = document.createElement("img");
         img.src = filePath;
         elem.appendChild(img);

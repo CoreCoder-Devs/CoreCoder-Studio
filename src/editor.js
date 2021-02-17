@@ -14,9 +14,13 @@ var rp_relativepath = path.sep;
 /**
  * Opened tabs
  * key: filepath
- * value: {title,icon,htmlElement}
+ * value: {tabElem,htmlElement}
  */
 var openedTabs = {};
+/**
+ * key: tabElement
+ * value: MonacoModel */
+var models = new WeakMap();
 
 const app = new Vue({
     el: '#app',
@@ -43,6 +47,7 @@ const app = new Vue({
     }
 });
 
+var monacoEditor = null;
 
 function initMonaco() {
     const nodeRequire = global.require
@@ -86,7 +91,7 @@ function initMonaco() {
                 automaticLayout: true
             });
             editor.layout();
-            global.editor = editor;
+            monacoEditor = editor;
         })
     }
 
@@ -166,42 +171,42 @@ function initTabs(){
     el.classList.add("chrome-tabs-dark-theme");
 
     chromeTabs.init(el);
-
-    chromeTabs.addTab({
-		title: 'Untitled',
-		favicon: "images/025-files-and-folders.png"
-	});
-    chromeTabs.addTab({
-		title: 'Untitled',
-		favicon: "images/025-files-and-folders.png"
-	});
     el.addEventListener("activeTabChange", (elm) => {
         if (elm.detail.tabEl === undefined) return;
         var id = elm.detail.tabEl.id;
-        document.querySelectorAll("webview").forEach((elm) => {
-            elm.style.width = 0;
+        document.querySelectorAll(".editor-content-content").forEach((elmnt) => {
+            // elmnt.style.width = 0;
+            elmnt.style.display = "none";
         });
-        document.getElementById("editor").style.display = "none";
-        document.getElementById("navBar").style.visibility = "collapse";
-        if (id != "") {
-            if (items_source[id].type == "ace") {
-                setEditSession(id);
-                document.getElementById("editor").style.display = "block";
-            } else {
-                document.getElementById("navBarInput").value = items_source[id].data.webview.src;
-                document.getElementById("navBar").style.visibility = "visible";
-                //document.getElementById("editor").style.width = "100%";
-                items_source[id].data.webview.style.width = "100%";
+        var tabEl = elm.detail.tabEl;
+        var prop = JSON.parse(unescape(tabEl.getAttribute("data-properties-original")));
+        var path = escape(prop.path);
+        var data = openedTabs[prop.path];
+
+        if(data != undefined){
+            data.contentEl.style.display = "block";
+            if(data.isEditor != undefined){
+                // If it is an editor, set the editor model
+                monacoEditor.setModel(models.get(tabEl));
+                monacoEditor.layout();
             }
         }
-        let stateText
-        if(chromeTabs.activeTabEl.children[2].children[1].innerText == "Web Browser") {
-            stateText = ""
-        }
-        ipcRenderer.send('discord-activity-change', {
-            details: `${project_info.bp_name}`,
-            state: `${chromeTabs.activeTabEl.children[2].children[1].innerText}`,
-        })
+
+        // if (id != "") {
+        //     if (items_source[id].type == "ace") {
+        //         setEditSession(id);
+        //         document.getElementById("editor").style.display = "block";
+        //     } else {
+        //         document.getElementById("navBarInput").value = items_source[id].data.webview.src;
+        //         document.getElementById("navBar").style.visibility = "visible";
+        //         //document.getElementById("editor").style.width = "100%";
+        //         items_source[id].data.webview.style.width = "100%";
+        //     }
+        // }
+        // ipcRenderer.send('discord-activity-change', {
+        //     details: `${project_info.bp_name}`,
+        //     state: `${chromeTabs.activeTabEl.children[2].children[1].innerText}`,
+        // })
     });
     
     el.addEventListener("tabRemove", function (elm) {
@@ -320,6 +325,54 @@ function goUpOneFolder(){
     refreshFileBrowser();
 }
 
+function openFile(p){
+    var filePath = (openedFileBrowser == 0? bp_path+bp_relativepath : bp_path+rp_relativefilepath) + p;
+    
+    if(filePath.endsWith(".png")){
+        // Open the image editor
+        let filename = path.parse(filePath).base;
+        
+        var elem = htmlToElem(`<div style="height:100%"></div>`);
+        var img = document.createElement("img");
+        img.src = filePath;
+        elem.appendChild(img);
+        document.getElementById("editor-content").appendChild(elem);
+
+        // Add to the opened file tabs
+        openedTabs[escape(filePath)] = {contentEl:elem};
+
+        // Open a tab
+        let tab = chromeTabs.addTab({
+            title: filename,
+            favicon: filePath.replace(/\\/gi, "\\\\"),
+            path: escape(filePath)
+        });
+
+    }else{
+        // Open the text editor
+        let source = fs.readFileSync(filePath).toString();
+
+        let lang = "json";
+        if(filePath.endsWith(".js")) lang = "javascript";
+        if(filePath.endsWith(".html")) lang = "html";
+
+        let model = monaco.editor.createModel(source, lang);
+        monacoEditor.setModel(model);
+
+        var elem = document.getElementById("myeditor");
+        openedTabs[escape(filePath)] = {contentEl:elem,isEditor:true};
+
+        let filename = path.parse(filePath).base;
+        let tab = chromeTabs.createNewTabEl();
+        models.set(tab, model);
+        chromeTabs.addTabEl(tab,{
+            title: filename,
+            path: escape(filePath)
+        });
+    }
+    app.$data.noFileOpen = false;
+}
+
 function refreshFileBrowser(){
     // Clear the filebrowser
     var cont = document.getElementById("filebrowsercontent");
@@ -356,13 +409,21 @@ function refreshFileBrowser(){
                 files[i],               // Title
                 browsePath + path.sep + files[i],  // Path
                 icon,                   // Icon
-                stat.isDirectory()?`goInFolder('${files[i]+path.sep+path.sep}');`:``,           
+                stat.isDirectory()?`goInFolder('${files[i]+path.sep+path.sep}');`:`openFile('${files[i]}')`,           
                 "",                     // Type
                 stat.isDirectory());    // isDirectory
         }
         cont.innerHTML = result;
     }
 }
+
+function htmlToElem(html) {
+    // HTML string to js dom element
+    let temp = document.createElement('template');
+    html = html.trim(); // Never return a space text node as a result
+    temp.innerHTML = html;
+    return temp.content.firstChild;
+  }
 
 function init(){
     initMonaco();

@@ -203,10 +203,14 @@
       div.innerHTML = tabTemplate
       return div.firstElementChild
     }
-
+    addTabEl(tabEl, tabProperties, { animate = true, background = false } = {}){
+      return this._addTab(tabEl, tabProperties);
+    }
     addTab(tabProperties, { animate = true, background = false } = {}) {
-      const tabEl = this.createNewTabEl()
-
+      const tabEl = this.createNewTabEl();
+      return this._addTab(tabEl, tabProperties);
+    }
+    _addTab(tabEl, tabProperties, { animate = true, background = false } = {}) {
       if (animate) {
         tabEl.classList.add('chrome-tab-was-just-added')
         setTimeout(() => tabEl.classList.remove('chrome-tab-was-just-added'), 500)
@@ -223,6 +227,7 @@
       this.cleanUpPreviouslyDraggedTabs()
       this.layoutTabs()
       this.setupDraggabilly()
+      return tabEl;
     }
     setTitle(tabEl, title){
       tabEl.querySelector('.chrome-tab-title').textContent = title

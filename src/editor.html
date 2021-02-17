@@ -57,14 +57,14 @@
                 <div id="todo"></div>
             </div>
             <!-- Editor content -->
-            <div class="editor-content">
+            <div class="editor-content" id="editor-content">
                 <div class="resizer-editor" style="display:none"></div>
                 <div class="chrome-tabs">
                     <div class="chrome-tabs-content"></div>
                 </div>
-                <div id="myeditor"></div>
+                <div id="myeditor" class="editor-content-content"></div>
                 <!-- Empty window -->
-                <!-- <div style="color: var(--var-color-outline); background-color: var(--var-color-bg); position: absolute; left: var(--var-sidebar-width); top: 0; bottom: 0; right: 0; text-align: center; align-items: center; display: flex;"><a style="margin: auto;">No files opened yet. Use the File Browser to open a file</a></div> -->
+                <div v-if="noFileOpen" style="color: var(--var-color-outline); background-color: var(--var-color-bg); position: absolute; left: var(--var-side-width); top: 0; bottom: 0; right: 0; text-align: center; align-items: center; display: flex;"><a style="margin: auto;">No files opened yet. Use the File Browser to open a file</a></div>
             </div>
         </div>
     </div>

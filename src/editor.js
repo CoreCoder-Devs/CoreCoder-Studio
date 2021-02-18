@@ -14,7 +14,7 @@ var rp_relativepath = path.sep;
 /**
  * Opened tabs
  * key: filepath
- * value: {tabElem,htmlElement}
+ * value: {contentEl}
  */
 var openedTabs = {};
 /**
@@ -328,6 +328,11 @@ function goUpOneFolder(){
 function openFile(p){
     var filePath = (openedFileBrowser == 0? bp_path+bp_relativepath : rp_path+rp_relativepath) + p;
     
+    if(escape(filePath) in openedTabs){
+        // Change the active tab instead when the tab is already opened
+        // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
+        return;
+    }
     if(filePath.endsWith(".png")){
         // Open the image editor
         let filename = path.parse(filePath).base;
@@ -352,13 +357,14 @@ function openFile(p){
         // Open the text editor
         let source = fs.readFileSync(filePath).toString();
 
-        let lang = "json";
+        let lang = null;
+        if(filePath.endsWith(".json")) lang = "json";
         if(filePath.endsWith(".js")) lang = "javascript";
         if(filePath.endsWith(".html")) lang = "html";
-
-        let model = monaco.editor.createModel(source, lang);
+        
+        let model = monaco.editor.createModel(source,lang);
         monacoEditor.setModel(model);
-
+        
         var elem = document.getElementById("myeditor");
         openedTabs[escape(filePath)] = {contentEl:elem,isEditor:true};
 

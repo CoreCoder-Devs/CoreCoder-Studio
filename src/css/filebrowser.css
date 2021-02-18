@@ -1,3 +1,12 @@
+
+/* File Browser Icon coloring */
+.filebrowseritem .fa-folder::before{
+    color: rgb(255, 123, 0);
+}
+.filebrowseritem .fa-file-alt::before{
+    color: rgb(23, 214, 71);
+}
+
 /* File Browser Header */
 .filebrowserheader{
     display: flex;

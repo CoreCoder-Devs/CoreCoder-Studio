@@ -11,6 +11,7 @@ module.exports = {
              * The path of the app's folder for data storage
              */
             //TODO::Implement getting the com.mojang folder for other OSes
+            this.appFolder = '~/CoreCoder'
             switch (os.platform()) {
                 case 'win32':
                     this.appFolder = path.join(
@@ -37,7 +38,6 @@ module.exports = {
                     this.appFolder = path.join(os.homedir(), 'storage/shared/CoreCoder')
                     break
                 default:
-                    this.appFolder = '~/CoreCoder'
                     this.comMojang = "";
             }
             /**

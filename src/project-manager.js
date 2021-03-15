@@ -2,6 +2,21 @@ const electron = require("electron");
 const ipc = electron.ipcRenderer;
 const { settings } = require("./js/global_settings");
 const { dialog } = require('electron').remote
+const Projects = require('./js/projects')
+
+Vue.component('project', {
+    props: ['project'],
+    template: `
+      <div class="project">
+         <h3>{{ project.name }}</h3>
+         <label class="project-path">{{ project.path }}</label><br>
+      </div>
+    `,
+    created() {
+        console.log(this.project)
+    }
+})
+
 function init() {
     settings.GlobalSettings.lang = "cn";
     settings.localizeInterface();
@@ -21,9 +36,9 @@ function onOpenProjectPressed() {
      */
 
     //TODO: this should've been a custom dialog instead, that'll show pack's details
-    var result = dialog.showOpenDialogSync({ properties: ['openDirectory', 'promptToCreate'], defaultPath: settings.comMojang });
-    if (result == undefined) return; // user pressed cancel
-    var path = result[0];
+    const result = dialog.showOpenDialogSync({ properties: ['openDirectory', 'promptToCreate'], defaultPath: settings.comMojang });
+    if (result === undefined) return; // user pressed cancel
+    const path = result[0];
 
     if (path.includes("behavior_packs")) {
         // Add to the localStorage
@@ -41,13 +56,14 @@ function onOpenProjectPressed() {
     window.location = "./editor.html";
 }
 
-var app = new Vue({
+let app = new Vue({
     el: '#app',
     data: {
         //TITLE BAR
         maximised: false,
         ipc: ipc,
-        settings: settings
+        settings: settings,
+        projects: []
     },
 
     created() {
@@ -61,5 +77,8 @@ var app = new Vue({
         ipc.on("windowStateRestored", (event, args) => {
             vm.maximised = false
         });
+
+        this.projects.push(Projects.projects)
+
     }
 })

@@ -40,7 +40,10 @@
                         </div>
                     </p>
                 </div>
-                <div class="manager-left"></div>
+                <div class="manager-left">
+                    <project v-for="project in this.projects[0]" v-bind:project="project" v-bind:key="project.uuid"></project>
+                    <!-- I dont fucking know why it needs a [0]-->
+                </div>
             </div>
         </div>
         <!-- Load in the scripts -->

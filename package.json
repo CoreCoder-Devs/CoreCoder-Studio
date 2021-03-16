@@ -13,7 +13,9 @@
     "electron": "^11.2.3"
   },
   "dependencies": {
+    "electron-devtools-installer": "^3.1.1",
     "get-size": "^2.0.3",
+    "image-size": "^0.9.7",
     "jquery": "^3.5.1",
     "monaco-editor": "^0.22.3",
     "unidragger": "^2.3.1",

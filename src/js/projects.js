@@ -28,15 +28,41 @@ module.exports = new class Projects{
         try {
             const projects = require(this.projectFilePath);
             for(const project of projects) {
-                this.projects.push(
-                    new Project(project)
-                )
+                //validate data
+                console.log(project)
+                if(fs.readdirSync(project.path)) { //check if it is still a thing
+
+                    console.log(project.path + "/manifest.json")
+
+                    const manifest = require(project.path + "/manifest.json")
+
+                    if(manifest.header.uuid !== project.uuid) { //update uuid
+                        project.uuid = manifest.header.uuid
+                    }
+
+                    if(manifest.header.name !== project.name) { //update uuid
+                        project.name = manifest.header.name
+                    }
+
+                    if(manifest.header.version !== project.version) { //update version
+                        project.version = manifest.header.version
+                    }
+
+                    this.projects.push(
+                        new Project(project)
+                    )
+                }
+
             }
         } catch (e) {
             console.log(e)
-            fs.writeFileSync(this.projectFilePath, JSON.stringify([{}]))
+            if(e.message.startsWith('Error: Cannot find module')) {
+                fs.writeFileSync(this.projectFilePath, JSON.stringify([{}]))
+            }
         }
         this.save()
+    }
+
     save() {
         fs.writeFileSync(this.projectFilePath, JSON.stringify(this.projects.map(p => p.toJSON()), "  "))
     }
@@ -47,7 +73,6 @@ module.exports = new class Projects{
      */
     add(project) {
         this.projects.push(project)
-        fs.writeFileSync(this.projectFilePath, JSON.stringify(project.toJSON()))
         this.save()
     }
 
@@ -78,4 +103,6 @@ module.exports = new class Projects{
         if(condition === undefined) return this.projects
         return this.projects.find(condition)
     }
+
+
 }

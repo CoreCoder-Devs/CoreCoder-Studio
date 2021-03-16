@@ -3,7 +3,7 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 */
 /* Project Manager */
 .manager-left{
-    width: 400px; height: -webkit-fill-available;
+    width: 90%; height: -webkit-fill-available;
     background-color: var(--var-color-bgdarker);
 }
 .manager-right{
@@ -16,7 +16,6 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 .manager-button{
     border-radius: 8px;
     padding: 12px;
-    margin: 8px;
     /* text-align: center; */
     width: 30%;
     user-select: none;
@@ -55,6 +54,6 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 }
 
 .project-path {
-    font-size: small;
+    font-size: smaller;
     color: #8f8f8f;
 }

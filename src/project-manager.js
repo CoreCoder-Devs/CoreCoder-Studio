@@ -8,8 +8,9 @@ Vue.component('project', {
     props: ['project'],
     template: `
       <div class="project">
+         <img style="float:left;" v-bind:src="project.iconPath" width="50" v-bind:style="{'filter': 'image-rendering: pixelated;'}">
          <h3>{{ project.name }}</h3>
-         <label class="project-path">{{ project.path }}</label><br>
+         <label class="project-path">{{ project.uuid }}@{{ project.versionString }}</label><br>
       </div>
     `,
     created() {

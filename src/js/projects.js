@@ -36,6 +36,9 @@ module.exports = new class Projects{
             console.log(e)
             fs.writeFileSync(this.projectFilePath, JSON.stringify([{}]))
         }
+        this.save()
+    save() {
+        fs.writeFileSync(this.projectFilePath, JSON.stringify(this.projects.map(p => p.toJSON()), "  "))
     }
 
     /**
@@ -45,6 +48,7 @@ module.exports = new class Projects{
     add(project) {
         this.projects.push(project)
         fs.writeFileSync(this.projectFilePath, JSON.stringify(project.toJSON()))
+        this.save()
     }
 
     /**

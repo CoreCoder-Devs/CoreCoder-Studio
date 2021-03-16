@@ -39,15 +39,20 @@ class Pack {
      * @returns {string}
      */
     get versionString() {
-        return version.join('.')
+        return this.version.join('.')
     }
 
     get iconPath() {
         try {
             const icon = fs.readFileSync(path.join(this.path, "/pack_icon.png"))
+            return path.join(this.path, "/pack_icon.png")
         } catch(e) {
             return null
         }
+    }
+
+    get manifestPath() {
+        return path.join(this.path, "/manifest.json")
     }
 
     /**

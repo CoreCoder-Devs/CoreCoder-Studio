@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #202020;
+  background-color: var(--var-color-bg);
 }
 
 .sidenav {
@@ -10,7 +10,7 @@ body {
   z-index: 1;
   top: 36px;
   left: 0;
-  background-color: #191919;
+  background-color: var(--var-color-bgdarker);
   overflow-x: hidden;
   padding-top: 20px;
 }
@@ -20,7 +20,7 @@ body {
   text-decoration: none;
   font-size: 15px;
   display: block;
-  color: #fff;
+  color: var(--var-color-fg);
   border-radius: 8px;
   padding: 12px;
   margin: 8px;
@@ -38,7 +38,6 @@ body {
   text-decoration: none;
   font-size: 15px;
   display: block;
-  color: #fff;
   border-radius: 8px;
   padding: 12px;
   margin: 8px;
@@ -48,19 +47,19 @@ body {
   line-height: 12pt;
 }
 .sidenav a:hover {
-  color: #818181;
+  color: var(--var-color-accent);
   transition: none;
 
 }
 
 .sidenav a.active {
-  color: #fff;
+  color: var(--var-color-fg);
 }
 
 .tabcontent {
   display: none;
   padding-left: 300px;
-  color: white;
+  color: var(--var-color-fg);
 }
 
 .main {

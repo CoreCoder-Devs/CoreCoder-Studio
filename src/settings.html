@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="css/settings.css">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/project-manager.css">
+  <link rel="stylesheet" href="css/fa-all.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Title Bar -->
+    <div class="titlebar">
+      <!-- Title and icon -->
+      <img style="width: 24px; height: 24px; margin: 3px;" src="resources/icon.png">
+      <p style="height: 24px; margin: 3px"> CoreCoder:Studio - dev preview 1 </p>
+      <div style="flex-grow: 1"></div>
+      <!-- Buttons -->
+      <div href="#" @click="ipc.send('minimize');" title="Minimize" class="titlebarbtn minimizebtn"></div>
+      <div href="#" @click="ipc.send('restore');" v-if="maximised" title="Restore" class="titlebarbtn maximizebtn">
+      </div>
+      <div href="#" @click="ipc.send('maximize');" v-else title="Maximize" class="titlebarbtn restorebtn"></div>
+      <div href="#" @click="ipc.send('close');" title="Close" class="titlebarbtn closebtn"></div>
+    </div>
+
+    <!-- Content Div -->
+    <div class="content-div" style="flex-direction: column">
+      <section id="settings-nav" class="sidenav">
+        <a class="tablinks" href="#" onclick="openTab(event, 'main');">General</a>
+        <a class="tablinks" href="#" onclick="openTab(event, 'themes');">Themes</a>
+        <button class="main" style="position: fixed; bottom:4px" onclick="window.location='./project-manager.html'">Back</button>
+      </section>
+      <div class='tabcontent' id="main">
+        <h1>GENERAL</h1>
+        <p>Hello {{ name }} !!!</p>
+        <label>Fullscreen</label>
+        <input type="checkbox" v-on:change="toggleScreen()" id="fullscreen">
+      </div>
+      <div class='tabcontent' id="themes">
+        <h1>THEMES</h1>
+      </div>
+    </div>
+  </div>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script> -->
+  <!-- <script src="./renderer.js"></script> -->
+  <script>
+
+    function openTab(event, settings) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName('tabcontent');
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = 'none';
+      }
+      tablinks = document.getElementsByClassName('tablinks');
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(' active', '')
+      }
+      document.getElementById(settings).style.display = 'block';
+      event.currentTarget.className += " active"
+    }
+  </script>
+  <!-- Load in the scripts -->
+  <script src="lib/vue.js"></script>
+  <script src="project-manager.js"></script>
+</body>
+
+</html>

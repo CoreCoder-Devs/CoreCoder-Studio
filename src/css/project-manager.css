@@ -3,7 +3,7 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 */
 /* Project Manager */
 .manager-left{
-    width: 90%; height: -webkit-fill-available;
+    width: 75%; height: -webkit-fill-available;
     background-color: var(--var-color-bgdarker);
 }
 .manager-right{

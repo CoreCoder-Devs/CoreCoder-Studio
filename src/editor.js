@@ -11,6 +11,16 @@ var bp_relativepath = path.sep;
 var rp_path = window.localStorage.getItem("rp_path");
 var rp_relativepath = path.sep;
 
+if(bp_path == null && rp_path != null){
+    openedFileBrowser = 1;
+    openFileBrowser(1);
+}
+
+if(rp_path == null && bp_path != null){
+    openedFileBrowser = 0;
+    openFileBrowser(0);
+}
+
 /**
  * Opened tabs
  * key: filepath
@@ -386,8 +396,12 @@ function refreshFileBrowser(){
     var result = "";
     // BP or RP
     if(openedFileBrowser == 0 || openedFileBrowser == 1){
-        var browsePath = openedFileBrowser==0?bp_path+bp_relativepath:rp_path+rp_relativepath;
-        if(browsePath == null) return; // TODO::makes warn user that either BP or RP is not found
+        var browsePath = openedFileBrowser==0?bp_path:rp_path;
+        if(browsePath == null || browsePath == path.sep ) {
+            cont.innerHTML = "Cannot detect pack of this type"; return;
+        } // TODO::makes warn user that either BP or RP is not found
+        browsePath += openedFileBrowser==0?bp_relativepath:rp_relativepath;
+        
         var files = fs.readdirSync(browsePath);
         files.sort(function(a, b) {
             return fs.statSync(browsePath +path.sep+ b).isDirectory() -

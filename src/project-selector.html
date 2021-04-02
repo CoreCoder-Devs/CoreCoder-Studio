@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Link the css styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/project-selector.css">
+    <link rel="stylesheet" href="css/filebrowser.css">
+    <link rel="stylesheet" href="css/fa-all.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Title Bar -->
+        <div class="titlebar">
+            <!-- Title and icon -->
+            <img style="width: 24px; height: 24px; margin: 3px;" src="resources/icon.png">
+            <p style="height: 24px; margin: 3px"> CoreCoder:Studio - dev preview 1 </p>
+            <div style="flex-grow: 1"></div>
+            <!-- Buttons -->
+            <div href="#" @click="ipc.send('minimize');" title="Minimize" class="titlebarbtn minimizebtn"></div>
+            <div href="#" @click="ipc.send('restore');" v-if="maximised" title="Restore"
+                class="titlebarbtn maximizebtn"></div>
+            <div href="#" @click="ipc.send('maximize');" v-else title="Maximize" class="titlebarbtn restorebtn"></div>
+            <div href="#" @click="ipc.send('close');" title="Close" class="titlebarbtn closebtn"></div>
+        </div>
+
+        <!-- Content Div -->
+        <div style="display: flex; flex-direction: column;">
+            <div class="manager-top">
+                <!-- The path -->
+                <i class="fas fa-home manager-top-button" title="Go to com.mojang" onclick="onHomeClicked();"></i>
+                <input type="text" id="text-path" class="invisible">
+                <div class="filebrowserpath" id="filebrowserpath" onclick="onPathClicked();"></div>
+                <i class="fas fa-undo-alt manager-top-button" title="Refresh" onclick="refreshFileBrowser()"></i>
+                <!-- TODO: implement create new folder from file browser -->
+                <!-- <i class="fas fa-folder-plus manager-top-button" title="Create new folder"></i> -->
+                <i class="fas fa-times manager-top-button" title="Cancel" onclick="window.location = './project-manager.html'"></i>
+            </div>
+            <div class="content-div" style="flex-grow: 1">
+                <div class="manager-right">
+
+                </div>
+                <div class="manager-left" id="filebrowsercontent">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Load in the scripts -->
+    <script src="lib/vue.js"></script>
+    <script src="project-selector.js"></script>
+</body>
+
+</html>

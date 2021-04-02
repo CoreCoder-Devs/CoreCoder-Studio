@@ -45,10 +45,14 @@ function onOpenProjectPressed() {
         // Add to the localStorage
         // if it is a behavior_packs
         window.localStorage.setItem("bp_path", path);
+        // TODO:Auto detect pack dependencies
+        window.localStorage.removeItem("rp_path");
     } else if (path.includes("resource_packs")) {
         // Add to the localStorage
         // if it is a resource_packs
         window.localStorage.setItem("rp_path", path);
+        // TODO:Auto detect pack dependencies
+        window.localStorage.removeItem("bp_path");
     } else {
         // TODO:: detect the pack by looking at it's JSON files manifest.json
     }

@@ -18,7 +18,11 @@ module.exports = {
         var title = "";
         if(isDirectory){
             // Add the folder icon
-            title += `<i class="fas fa-folder"></i>&nbsp;`
+            if(icon == ""){
+                title += `<i class="fas fa-folder"></i>&nbsp;`
+            }else{
+                title += `<i class="fas fa-folder fb-small-badge"></i>&nbsp;`
+            }
         }
         else if(icon == ""){
             // Add the file icon

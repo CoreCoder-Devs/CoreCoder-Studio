@@ -40,6 +40,8 @@ module.exports = {
                 default:
                     this.comMojang = "";
             }
+
+            window.localStorage.setItem("com_mojang", this.comMojang);
             /**
              * The path of settings.json
              */

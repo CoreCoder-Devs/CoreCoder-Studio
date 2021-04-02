@@ -1,0 +1,116 @@
+/*
+A project manager specific styling. Put styles exclusive for project-manager.html here
+*/
+/* Project Manager */
+.manager-left{
+    width: -webkit-fill-available; 
+    height: -webkit-fill-available;
+    overflow-y: scroll;
+    background-color: var(--var-color-bgdarker);
+}
+.manager-right{
+    display: flex;
+    flex-direction: column;
+    width: 0;
+    height: -webkit-fill-available;
+}
+
+.manager-button{
+    border-radius: 8px;
+    padding: 12px;
+    /* text-align: center; */
+    width: 30%;
+    user-select: none;
+    margin: auto;
+    font-size: 10pt;
+    transition: background-color .2s;
+    cursor: pointer;
+    line-height: 12pt;
+}
+
+.manager-button:hover{
+    background-color: var(--var-color-bglighter);
+    transition: none;
+}
+.manager-button:active{
+    background-color: var(--var-color-bgdarker);
+}
+
+
+.manager-button .fas{
+    /* Override FontAwesome icon size */
+    font-size: 10pt;
+}
+
+.manager-top{
+    height: 38px;
+    margin-top:32px;
+    display: flex; flex-direction: row;
+    background-color: var(--var-color-bglighter);
+}
+
+.manager-top-button{
+    width: 16px;
+    height: 16px;
+    padding: 7px;
+    margin: 4px;
+}
+.manager-top-button:hover{
+    background-color: var(--var-color-bg);
+}
+.manager-top-button:active{
+    background-color: var(--var-color-bgdarker);
+}
+.manager-top-button::before{
+    color: var(--var-color-subtitle);
+}
+.manager-top-button:hover::before{
+    color: var(--var-color-fg);
+}
+
+.project {
+    padding: 10px;
+    padding-left: 30px;
+}
+
+.project:hover{
+    background-color: #464646;
+}
+
+.project h3 {
+    margin-block: 2px;
+}
+
+.project-path {
+    font-size: smaller;
+    color: #8f8f8f;
+}
+
+
+.content-div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: -webkit-fill-available;
+    margin-top: 70px;
+    position: absolute;
+}
+
+
+/* Inputs */
+
+input[type="text"] {
+    outline: none;
+    border: 1px solid var(--var-color-outline);
+    background-color: var(--var-color-bgdarker);
+    color: var(--var-color-fg);
+    padding: 7px;
+    margin: 4px;
+    /* border-radius: 4px; */
+    transition: none;
+    width: -webkit-fill-available;
+}
+
+input[type="text"]:focus {
+    border: 1px solid var(--var-color-accentdarker);
+}

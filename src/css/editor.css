@@ -14,6 +14,8 @@
     width: var(--var-sidebar-width);
     background-color: var(--var-color-bglighter);
     /* overflow: auto; */
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar::-webkit-scrollbar {

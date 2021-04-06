@@ -6,6 +6,7 @@ const Projects = require('./js/projects')
 const path = require("path");
 const filebrowser = require("./js/filebrowser");
 const fs = require("fs");
+const { appFolder } = require('./js/global_settings').settings
 var browsePath = "/";
 var comMojang = "";
 var selected = undefined;
@@ -272,6 +273,21 @@ function onOpenProject() {
 
     //TODO: this should've been a custom dialog instead, that'll show pack's details
     // TODO: auto detect pack dependencies
+
+    
+    this.projectFilePath = path.join(appFolder, '/projects.json');
+
+    var folderName = path.dirname(selected);
+    var projects = require(this.projectFilePath);
+    projects.push({
+        "name" : folderName,
+        "path" : selected,
+        "uuid" : "",
+        "version" : ""
+    });
+
+    fs.writeFileSync(this.projectFilePath, JSON.stringify(projects));
+
     if (selected === undefined) return; // user pressed cancel
 
     if (selected.includes("behavior_packs")) {
@@ -280,6 +296,7 @@ function onOpenProject() {
         window.localStorage.setItem("bp_path", selected);
         // TODO:Auto detect pack dependencies
         window.localStorage.removeItem("rp_path");
+
     } else if (selected.includes("resource_packs")) {
         // Add to the localStorage
         // if it is a resource_packs

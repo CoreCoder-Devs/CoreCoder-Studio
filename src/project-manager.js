@@ -70,6 +70,18 @@ let app = new Vue({
         settings: settings,
         projects: []
     },
+    methods: {
+        openRecentProject(event) {
+            if (event.which === 3) {
+                console.log("Right mouse down");
+            }
+        },
+        removeRecentProject(event) {
+            if (event.which === 3) {
+                console.log("Right mouse up");
+            }
+        }
+    },
 
     created() {
         settings.GlobalSettings.lang = "cn";

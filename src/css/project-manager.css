@@ -5,6 +5,7 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 .manager-left{
     width: 75%; height: -webkit-fill-available;
     background-color: var(--var-color-bgdarker);
+    overflow-y: scroll;
 }
 .manager-right{
     display: flex;

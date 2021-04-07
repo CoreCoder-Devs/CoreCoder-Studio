@@ -3,6 +3,7 @@ const ipc = electron.ipcRenderer;
 const { settings } = require("./js/global_settings");
 const { dialog } = require('electron').remote
 const Projects = require('./js/projects')
+const imagesize = require('image-size')
 
 Vue.component('project', {
     props: ['project'],
@@ -13,8 +14,25 @@ Vue.component('project', {
          <label class="project-path">{{ project.uuid }}@{{ project.versionString }}</label><br>
       </div>
     `,
+
+    data: function () {
+        return {
+            filter: true
+        }
+    },
+
     created() {
-        console.log(this.project)
+        if(this.project.iconPath) {
+            try {
+                const size = imagesize(this.project.iconPath)
+                if(size.width > 128 || size.height > 128) {
+                    this.filter = false
+                    //TODO doesnt correctly add filters
+                }
+            } catch(e) {
+                console.log(e)
+            }
+        }
     }
 })
 

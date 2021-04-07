@@ -1,4 +1,5 @@
 {
+    "ignorePatterns": ["**/lib/*.js"],
     "env": {
         "browser": true,
         "node": true,
@@ -19,6 +20,8 @@
         "no-undef": "warn",
         "no-unused-vars": "warn",
         "no-case-declarations": "warn",
-        "no-empty": "warn"
+        "no-empty": "warn",
+        "no-redeclare": "warn",
+        "no-unreachable": "warn"
     }
 }

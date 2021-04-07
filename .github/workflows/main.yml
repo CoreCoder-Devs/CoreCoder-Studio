@@ -4,11 +4,11 @@ name: CI
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
       - name: On Fail
         if: ${{ failure() }}
-        run: 'curl -X POST https://discord.com/api/webhooks/829192633649594408/zPum--UFktCMsUK5dh4pzMu7KjmEEJApU86d2icZTpMPUSSBN7iJCx5SAVZvOhY01cWg -H "Content-Type: application/json" --data "{\"content\": \"<@416147488643481610>\", \"embeds\": [{\"title\": \"nice fucking code bro\", \"color\":16716544,\"description\":\"<:no:756112149302083635> CoreCoder-Devs/CoreCoder-Studio: CI Failing\"}]}"'
+        run: 'curl -X POST https://discord.com/api/webhooks/829192633649594408/zPum--UFktCMsUK5dh4pzMu7KjmEEJApU86d2icZTpMPUSSBN7iJCx5SAVZvOhY01cWg -H "Content-Type: application/json" --data "{\"embeds\": [{\"title\": \"nice fucking code bro\", \"color\":16716544,\"description\":\"<:no:756112149302083635> CoreCoder-Devs/CoreCoder-Studio: CI Failing\"}]}"'
       - name: On success
         if: ${{ success() }}
         run: 'curl -X POST https://discord.com/api/webhooks/829192633649594408/zPum--UFktCMsUK5dh4pzMu7KjmEEJApU86d2icZTpMPUSSBN7iJCx5SAVZvOhY01cWg -H "Content-Type: application/json" --data "{\"embeds\": [{\"title\": \"nice fucking code bro\", \"color\":2162432,\"description\":\"<:happy:701724430061273138> CoreCoder-Devs/CoreCoder-Studio: CI Passing\"}]}"'

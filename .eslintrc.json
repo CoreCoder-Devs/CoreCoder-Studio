@@ -16,20 +16,9 @@
         "vue"
     ],
     "rules": {
-        "indent": [
-            "warn",
-            4
-        ],
-        "quotes": [
-            "warn",
-            "double"
-        ],
-        "semi": [
-            "warn",
-            "always"
-        ],
         "no-undef": "warn",
         "no-unused-vars": "warn",
-        "no-case-declarations": "warn"
+        "no-case-declarations": "warn",
+        "no-empty": "warn"
     }
 }

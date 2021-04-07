@@ -52,3 +52,89 @@
 .filebrowseritem-icon{
     width: 16px; height: auto;
 }
+.fb-small-badge{
+    position: relative;
+    left: -4px;
+    bottom: -4px;
+    scale: 0.1;
+}
+
+
+/* The path visualizer */
+.filebrowserpath {
+    outline: none;
+    border: 1px solid var(--var-color-outline);
+    background-color: var(--var-color-bgdarker);
+    color: var(--var-color-fg);
+    /* padding: 7px; */
+    margin: 4px;
+    /* border-radius: 4px; */
+    transition: none;
+    width: -webkit-fill-available;
+
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    
+}
+
+.filebrowserpath:focus {
+    border: 1px solid var(--var-color-accentdarker);
+}
+
+.filebrowserpathitem{
+    color: var(--var-color-fg);
+    user-select: none;
+    font-size: smaller;
+    padding: 2px;
+    margin: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.filebrowserpathitemsep{
+    user-select: none;
+    font-size: smaller;
+    padding: 2px;
+    margin: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.filebrowserpathitem:hover{
+    background-color: var(--var-color-bg);
+}
+
+
+.invisible{
+    display: none;
+}
+
+
+/* width */
+
+.filebrowserpath::-webkit-scrollbar {
+    height: 4px;
+}
+
+
+/* Track */
+
+.filebrowserpath::-webkit-scrollbar-track {
+    background: var(--var-color-bg);
+}
+
+
+/* Handle */
+
+.filebrowserpath::-webkit-scrollbar-thumb {
+    background: var(--var-color-bglighter);
+}
+
+
+/* Handle on hover */
+
+.filebrowserpath::-webkit-scrollbar-thumb:hover {
+    background: var(--var-color-bglighter-alt);
+}

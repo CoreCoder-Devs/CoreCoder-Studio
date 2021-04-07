@@ -1,0 +1,67 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--var-color-bg);
+}
+
+.sidenav {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 36px;
+  left: 0;
+  background-color: var(--var-color-bgdarker);
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  /* padding: 6px 6px 6px 32px; */
+  text-decoration: none;
+  font-size: 15px;
+  display: block;
+  color: var(--var-color-fg);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px;
+  /* text-align: center; */
+  /* width: 30%; */
+  user-select: none;
+  margin: auto;
+  /* font-size: 10pt; */
+  transition: background-color .2s;
+  cursor: pointer;
+  line-height: 12pt;
+}
+.sidenav button {
+  /* padding: 6px 6px 6px 32px; */
+  text-decoration: none;
+  font-size: 15px;
+  display: block;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px;
+  /* text-align: center; */
+  width: 234px;
+  user-select: none;
+  line-height: 12pt;
+}
+.sidenav a:hover {
+  color: var(--var-color-accent);
+  transition: none;
+
+}
+
+.sidenav a.active {
+  color: var(--var-color-fg);
+}
+
+.tabcontent {
+  display: none;
+  padding-left: 300px;
+  color: var(--var-color-fg);
+}
+
+.main {
+  margin-left: 200px; /* Same as the width of the sidenav */
+}

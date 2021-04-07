@@ -11,6 +11,16 @@ var bp_relativepath = path.sep;
 var rp_path = window.localStorage.getItem("rp_path");
 var rp_relativepath = path.sep;
 
+if (bp_path == null && rp_path != null) {
+    openedFileBrowser = 1;
+    openFileBrowser(1);
+}
+
+if (rp_path == null && bp_path != null) {
+    openedFileBrowser = 0;
+    openFileBrowser(0);
+}
+
 /**
  * Opened tabs
  * key: filepath
@@ -117,14 +127,14 @@ function openSidePanel(id, tabElem) {
         let v1 = document.documentElement.style.getPropertyValue("--var-sidebar-width");
         document.documentElement.style.setProperty("--var-side-width", "32px");
 
-        if(tabElem == null){ // While dragging to the left of the sizer
+        if (tabElem == null) { // While dragging to the left of the sizer
             document.documentElement.style.setProperty("--var-sidepanel-width", "256px");
             // document.documentElement.style.setProperty("--var-side-width", "288px");
         }
 
         // Disable the resizer
         document.querySelector('.resizer-editor').style.display = "none";
-    }else{
+    } else {
         // Make the tab active
         var sidebar = document.getElementById("sidebar");
         var children = sidebar.children;
@@ -134,15 +144,15 @@ function openSidePanel(id, tabElem) {
         }
         tabElem.classList.add("selected");
         app.$data.sidePanelOpen = true;
-        let v1 = parseInt(document.documentElement.style.getPropertyValue("--var-sidepanel-width"),10);
-        if(isNaN(v1)) v1 = 256;
-        document.documentElement.style.setProperty("--var-sidepanel-width", v1+"px");
-        let v2 = parseInt(document.documentElement.style.getPropertyValue("--var-sidebar-width"),10);
-        if(isNaN(v2)) v2 = 256;
-        document.documentElement.style.setProperty("--var-side-width", (v1+32)+"px");
+        let v1 = parseInt(document.documentElement.style.getPropertyValue("--var-sidepanel-width"), 10);
+        if (isNaN(v1)) v1 = 256;
+        document.documentElement.style.setProperty("--var-sidepanel-width", v1 + "px");
+        let v2 = parseInt(document.documentElement.style.getPropertyValue("--var-sidebar-width"), 10);
+        if (isNaN(v2)) v2 = 256;
+        document.documentElement.style.setProperty("--var-side-width", (v1 + 32) + "px");
         // Opens a side panel with specific id
         var cont = document.getElementById("sidePanel");
-        if(cont != undefined){
+        if (cont != undefined) {
             cont.style.display = "block";
             var elem = document.getElementById(id);
 
@@ -159,11 +169,11 @@ function openSidePanel(id, tabElem) {
         document.querySelector('.resizer-editor').style.left = v1 + 32 + "px";
     }
 
-    if(id == "fileBrowser"){
+    if (id == "fileBrowser") {
         refreshFileBrowser();
     }
 }
-function initTabs(){
+function initTabs() {
     const ChromeTabs = require("../src/lib/chrome-tabs-custom");
     var el = document.querySelector(".chrome-tabs");
     chromeTabs = new ChromeTabs();
@@ -183,9 +193,9 @@ function initTabs(){
         var path = escape(prop.path);
         var data = openedTabs[prop.path];
 
-        if(data != undefined){
+        if (data != undefined) {
             data.contentEl.style.display = "block";
-            if(data.isEditor != undefined){
+            if (data.isEditor != undefined) {
                 // If it is an editor, set the editor model
                 monacoEditor.setModel(models.get(tabEl));
                 monacoEditor.layout();
@@ -208,7 +218,7 @@ function initTabs(){
         //     state: `${chromeTabs.activeTabEl.children[2].children[1].innerText}`,
         // })
     });
-    
+
     el.addEventListener("tabRemove", function (elm) {
         var id = elm.detail.tabEl.id;
         if (id != "") {
@@ -228,10 +238,10 @@ function initTabs(){
             }
             chromeTabs.removeTab(elm.detail.tabEl);
         }
-        if(!chromeTabs.activeTabEl) {
+        if (!chromeTabs.activeTabEl) {
             ipcRenderer.send('discord-activity-change', {
-            details: `${project_info.bp_name}`
-        })
+                details: `${project_info.bp_name}`
+            })
         }
     });
     var ctrlPressed = false;
@@ -260,45 +270,50 @@ function initTabs(){
     });
 }
 
-function initResizableSidePanel(){
+function initResizableSidePanel() {
     const Draggabilly = require("../src/lib/chrome-tabs-custom/node_modules/draggabilly");
     var elem = document.querySelector('.resizer-editor');
-    var draggie = new Draggabilly( elem, {
-    // options...
+    var draggie = new Draggabilly(elem, {
+        // options...
         axis: 'x'
     });
 
-    draggie.on( 'dragMove', function( event, pointer, moveVector ) {
+    draggie.on('dragMove', function (event, pointer, moveVector) {
         // Move a different variable
-        if(pointer.pageX > 64){
-            document.documentElement.style.setProperty("--var-sidepanel-width", (pointer.pageX-32)+"px");
-            document.documentElement.style.setProperty("--var-side-width", pointer.pageX+"px");
-        }else{
+        if (pointer.pageX > 64) {
+            if (pointer.pageX <= window.innerWidth - 64) {
+                document.documentElement.style.setProperty("--var-sidepanel-width", (pointer.pageX - 32) + "px");
+                document.documentElement.style.setProperty("--var-side-width", pointer.pageX + "px");
+            }
+        } else if (pointer.pageX < 64) {
             document.documentElement.style.setProperty("--var-sidepanel-width", "0px");
             document.documentElement.style.setProperty("--var-side-width", "32px");
         }
     });
-    draggie.on( 'dragEnd', function( event, pointer, moveVector ) {
+    draggie.on('dragEnd', function (event, pointer, moveVector) {
         // Move a different variable
-        if(pointer.pageX <= 64){
+        if (pointer.pageX <= 64) {
             openSidePanel(-1, null);
         }
+        if(pointer.pageX > window.innerWidth - 64){
+            document.querySelector('.resizer-editor').style.left = window.innerWidth - 64 + "px";
+        }
     });
-} 
+}
 
-function openFileBrowser(id){
+function openFileBrowser(id) {
     /**
      * Open a specific file browser tab
      */
     var cont = document.getElementById("filebrowserheader");
-    for(var i = 0; i < cont.children.length; i++){
+    for (var i = 0; i < cont.children.length; i++) {
         cont.children[i].classList.remove("selected");
     }
 
     var tabId = "";
-    if(id == 0) tabId = "fbHeaderBP";
-    if(id == 1) tabId = "fbHeaderRP";
-    if(id == 2) tabId = "fbHeaderDOC";
+    if (id == 0) tabId = "fbHeaderBP";
+    if (id == 1) tabId = "fbHeaderRP";
+    if (id == 2) tabId = "fbHeaderDOC";
 
     var tab = document.getElementById(tabId);
     tab.classList.add("selected");
@@ -307,36 +322,36 @@ function openFileBrowser(id){
     refreshFileBrowser();
 }
 
-function goInFolder(folderName){
-    if(openedFileBrowser == 0) bp_relativepath += folderName;
-    if(openedFileBrowser == 1) rp_relativepath += folderName;
+function goInFolder(folderName) {
+    if (openedFileBrowser == 0) bp_relativepath += folderName;
+    if (openedFileBrowser == 1) rp_relativepath += folderName;
     refreshFileBrowser();
 }
-function goUpOneFolder(){
-    var value = (openedFileBrowser == 0? bp_relativepath : rp_relativepath);
+function goUpOneFolder() {
+    var value = (openedFileBrowser == 0 ? bp_relativepath : rp_relativepath);
     var result = path.dirname(value);
-    if(!result.endsWith(path.sep)) result += path.sep;
-    if(openedFileBrowser == 0){
+    if (!result.endsWith(path.sep)) result += path.sep;
+    if (openedFileBrowser == 0) {
         bp_relativepath = result;
     }
-    if(openedFileBrowser == 1){
+    if (openedFileBrowser == 1) {
         rp_relativepath = result;
     }
     refreshFileBrowser();
 }
 
-function openFile(p){
-    var filePath = (openedFileBrowser == 0? bp_path+bp_relativepath : rp_path+rp_relativepath) + p;
-    
-    if(escape(filePath) in openedTabs){
+function openFile(p) {
+    var filePath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
+
+    if (escape(filePath) in openedTabs) {
         // Change the active tab instead when the tab is already opened
         // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
         return;
     }
-    if(filePath.endsWith(".png")){
+    if (filePath.endsWith(".png")) {
         // Open the image editor
         let filename = path.parse(filePath).base;
-        
+
         var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
         var img = document.createElement("img");
         img.src = filePath;
@@ -344,7 +359,7 @@ function openFile(p){
         document.getElementById("editor-content").appendChild(elem);
 
         // Add to the opened file tabs
-        openedTabs[escape(filePath)] = {contentEl:elem};
+        openedTabs[escape(filePath)] = { contentEl: elem };
 
         // Open a tab
         let tab = chromeTabs.addTab({
@@ -353,25 +368,25 @@ function openFile(p){
             path: escape(filePath)
         });
 
-    }else{
+    } else {
         // Open the text editor
         let source = fs.readFileSync(filePath).toString();
 
         let lang = null;
-        if(filePath.endsWith(".json")) lang = "json";
-        if(filePath.endsWith(".js")) lang = "javascript";
-        if(filePath.endsWith(".html")) lang = "html";
-        
-        let model = monaco.editor.createModel(source,lang);
+        if (filePath.endsWith(".json")) lang = "json";
+        if (filePath.endsWith(".js")) lang = "javascript";
+        if (filePath.endsWith(".html")) lang = "html";
+
+        let model = monaco.editor.createModel(source, lang);
         monacoEditor.setModel(model);
-        
+
         var elem = document.getElementById("myeditor");
-        openedTabs[escape(filePath)] = {contentEl:elem,isEditor:true};
+        openedTabs[escape(filePath)] = { contentEl: elem, isEditor: true };
 
         let filename = path.parse(filePath).base;
         let tab = chromeTabs.createNewTabEl();
         models.set(tab, model);
-        chromeTabs.addTabEl(tab,{
+        chromeTabs.addTabEl(tab, {
             title: filename,
             path: escape(filePath)
         });
@@ -379,43 +394,47 @@ function openFile(p){
     app.$data.noFileOpen = false;
 }
 
-function refreshFileBrowser(){
+function refreshFileBrowser() {
     // Clear the filebrowser
     var cont = document.getElementById("filebrowsercontent");
     cont.innerHTML = "";
     var result = "";
     // BP or RP
-    if(openedFileBrowser == 0 || openedFileBrowser == 1){
-        var browsePath = openedFileBrowser==0?bp_path+bp_relativepath:rp_path+rp_relativepath;
-        if(browsePath == null) return; // TODO::makes warn user that either BP or RP is not found
+    if (openedFileBrowser == 0 || openedFileBrowser == 1) {
+        var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
+        if (browsePath == null || browsePath == path.sep) {
+            cont.innerHTML = "Cannot detect pack of this type"; return;
+        } // TODO::makes warn user that either BP or RP is not found
+        browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
+
         var files = fs.readdirSync(browsePath);
-        files.sort(function(a, b) {
-            return fs.statSync(browsePath +path.sep+ b).isDirectory() -
-                   fs.statSync(browsePath +path.sep+ a).isDirectory();
+        files.sort(function (a, b) {
+            return fs.statSync(browsePath + path.sep + b).isDirectory() -
+                fs.statSync(browsePath + path.sep + a).isDirectory();
         });
-        if((openedFileBrowser == 0 && bp_relativepath !== path.sep && bp_relativepath !== "") || (openedFileBrowser == 1 && rp_relativepath !== path.sep && rp_relativepath !== "")){
+        if ((openedFileBrowser == 0 && bp_relativepath !== path.sep && bp_relativepath !== "") || (openedFileBrowser == 1 && rp_relativepath !== path.sep && rp_relativepath !== "")) {
             // Go up one folder button
-            result+=filebrowser.generateFileBrowserItem(
+            result += filebrowser.generateFileBrowserItem(
                 "..",               // Title
                 "",  // Path
                 "",                   // Icon
-                `goUpOneFolder();`,           
+                `goUpOneFolder();`,
                 "",                     // Type
                 true);    // isDirectory
         }
 
-        for(var i in files){
+        for (var i in files) {
             var stat = fs.statSync(browsePath + path.sep + files[i]);
             var icon = "";
 
-            if(files[i].endsWith(".png")){
+            if (files[i].endsWith(".png")) {
                 icon = browsePath + path.sep + files[i];
             }
-            result+=filebrowser.generateFileBrowserItem(
+            result += filebrowser.generateFileBrowserItem(
                 files[i],               // Title
                 browsePath + path.sep + files[i],  // Path
                 icon,                   // Icon
-                stat.isDirectory()?`goInFolder('${files[i]+path.sep+path.sep}');`:`openFile('${files[i]}')`,           
+                stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
                 "",                     // Type
                 stat.isDirectory());    // isDirectory
         }
@@ -429,9 +448,9 @@ function htmlToElem(html) {
     html = html.trim(); // Never return a space text node as a result
     temp.innerHTML = html;
     return temp.content.firstChild;
-  }
+}
 
-function init(){
+function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();

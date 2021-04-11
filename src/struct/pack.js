@@ -8,30 +8,47 @@ class Pack {
 
 
     /**
-     * @param {String} data.name Pack Name
+     * @param {String} [data.name] Pack Name
      * @param {Object} data Pack Data
      * @param {String} data.path Pack Path
-     * @param {String} data.uuid Pack UUID
-     * @param {Number[]} data.version Pack Version
+     * @param {String} [data.uuid] Pack UUID
+     * @param {Number[]} [data.version] Pack Version
      */
     constructor(data) {
-
-        this.name = data.name
-
+        
         this.path = data.path
 
+        if(!data.name || !data.uuid || !data.version) {
 
-        if(data.uuid.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i)) {
+            try {
+                const manifest = require(this.path)
 
-            this.uuid = data.uuid
+                this.name = manifest.header.name
+
+                this.uuid = manifest.header.uuid
+
+                this.version = manifest.header.version
+
+            } catch (e) {
+                if(e.message.toLowerCase().includes('module not found')) throw new Error('Specified path not found')
+                console.log(e)
+            }
 
         } else {
-
-            throw SyntaxError('Invalid UUID ' + data.uuid)
+            this.name = data.name
+    
+            if(data.uuid.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i)) {
+    
+                this.uuid = data.uuid
+    
+            } else {
+    
+                throw SyntaxError('Invalid UUID ' + data.uuid)
+            }
+    
+            this.version = data.version
+            
         }
-
-        this.version = data.version
-
     }
 
     /**

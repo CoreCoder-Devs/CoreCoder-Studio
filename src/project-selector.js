@@ -126,59 +126,56 @@ function refreshFileBrowser() {
     var cont = document.getElementById("filebrowsercontent");
     cont.innerHTML = "";
     var result = "";
-    // BP or RP
-    if (true) {
-        // console.log(browsePath);
-        if (browsePath == null) return; // TODO::makes warn user that either BP or RP is not found
-        var files = fs.readdirSync(browsePath);
-        files.sort(function (a, b) {
-            var value = 0;
-            try {
-                value = fs.statSync(browsePath + path.sep + b).isDirectory() -
-                    fs.statSync(browsePath + path.sep + a).isDirectory();
-            } catch (e) {
-                console.log(e);
-            }
-            return value;
-        });
-        if (path != "C://") {
-            // Go up one folder button
-            result += filebrowser.generateFileBrowserItem(
-                "..",               // Title
-                "",  // Path
-                "",                   // Icon
-                `goUpOneFolder();`,
-                "",                     // Type
-                true);    // isDirectory
+    // console.log(browsePath);
+    if (browsePath == null) return; // TODO::makes warn user that either BP or RP is not found
+    var files = fs.readdirSync(browsePath);
+    files.sort(function (a, b) {
+        var value = 0;
+        try {
+            value = fs.statSync(browsePath + path.sep + b).isDirectory() -
+                fs.statSync(browsePath + path.sep + a).isDirectory();
+        } catch (e) {
+            console.log(e);
         }
-
-        for (var i in files) {
-            var stat;
-            try {
-                stat = fs.statSync(browsePath + path.sep + files[i]);
-            } catch (e) {
-                console.log(e);
-                continue;
-            }
-            var icon = "";
-            if (stat.isDirectory()) {
-                if (fs.existsSync(browsePath + path.sep + files[i] + "/pack_icon.png")) {
-                    icon = browsePath + path.sep + files[i] + "/pack_icon.png";
-                }
-            }
-            if (files[i].endsWith(".png")) {
-                icon = browsePath + path.sep + files[i];
-            }
-            result += filebrowser.generateFileBrowserItem(
-                files[i],               // Title
-                browsePath + path.sep + files[i],  // Path
-                icon,                   // Icon
-                stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
-                "",                     // Type
-                stat.isDirectory());    // isDirectory
-        }
-        cont.innerHTML = result;
+        return value;
+    });
+    if (path != "C://") {
+        // Go up one folder button
+        result += filebrowser.generateFileBrowserItem(
+            "..",               // Title
+            "",  // Path
+            "",                   // Icon
+            `goUpOneFolder();`,
+            "",                     // Type
+            true);    // isDirectory
     }
+    
+    for (var i in files) {
+        var stat;
+        try {
+            stat = fs.statSync(browsePath + path.sep + files[i]);
+        } catch (e) {
+            console.log(e);
+            continue;
+        }
+        var icon = "";
+        if (stat.isDirectory()) {
+            if (fs.existsSync(browsePath + path.sep + files[i] + "/pack_icon.png")) {
+                icon = browsePath + path.sep + files[i] + "/pack_icon.png";
+            }
+        }
+        if (files[i].endsWith(".png")) {
+            icon = browsePath + path.sep + files[i];
+        }
+        result += filebrowser.generateFileBrowserItem(
+            files[i],               // Title
+            browsePath + path.sep + files[i],  // Path
+            icon,                   // Icon
+            stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
+            "",                     // Type
+            stat.isDirectory());    // isDirectory
+    }
+    cont.innerHTML = result;
     browsePath = browsePath.replace(/\\\\/gi, "\\").replace(/\\/gi, "/").replace(/\/\//gi, "/");
     // Update the path input text
     document.getElementById("text-path").value = browsePath;

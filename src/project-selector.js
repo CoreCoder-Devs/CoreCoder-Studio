@@ -274,13 +274,8 @@ function onOpenProject() {
     
     this.projectFilePath = path.join(appFolder, '/projects.json');
 
-    var folderName = path.dirname(selected);
-    var projects = require(this.projectFilePath);
-    projects.push({
-        "name" : folderName,
-        "path" : selected,
-        "uuid" : "",
-        "version" : ""
+    Projects.add({
+        "path" : selected
     });
 
     fs.writeFileSync(this.projectFilePath, JSON.stringify(projects));

@@ -69,10 +69,17 @@ module.exports = new class Projects{
 
     /**
      *
-     * @param {Project} project
+     * @param {Project | Object} project
      */
     add(project) {
-        this.projects.push(project)
+        if(project instanceof Pack || project instanceof Project) {
+            this.projects.push(project)
+        }
+        else if(project instanceof Object) {
+            this.projects.push(new Pack({
+                path: project.path
+            }))
+        }
         this.save()
     }
 

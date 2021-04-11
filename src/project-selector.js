@@ -278,8 +278,6 @@ function onOpenProject() {
         "path" : selected
     });
 
-    fs.writeFileSync(this.projectFilePath, JSON.stringify(projects));
-
     if (selected === undefined) return; // user pressed cancel
 
     if (selected.includes("behavior_packs")) {

@@ -29,7 +29,6 @@ module.exports = new class Projects{
             const projects = require(this.projectFilePath);
             for(const project of projects) {
                 //validate data
-                console.log(project)
                 if(fs.readdirSync(project.path)) { //check if it is still a thing
 
                     console.log(project.path + "/manifest.json")

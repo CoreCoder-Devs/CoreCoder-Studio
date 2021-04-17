@@ -71,6 +71,7 @@ module.exports = new class Projects{
      * @param {Project | Object} project
      */
     add(project) {
+        if(this.projects.find(p => p.path === project.path)) return
         if(project instanceof Pack || project instanceof Project) {
             this.projects.push(project)
         }

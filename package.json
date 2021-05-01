@@ -4,7 +4,7 @@
   "description": "A successor of CoreCoder",
   "main": "launch.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron launch.js",
     "editor": "electron launch2.js"
   },
   "author": "Hanprogramer",

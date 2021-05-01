@@ -74,22 +74,22 @@ function createProject() {
     localStorage.removeItem("rp_path");
     var recentProjectPath = "";
 
-    if (type == "addons" || type == "resources") {
-        let pack_path = path + "/development_resource_packs/" + name;
-        if (createPack(pack_path, desc, name, rpUUID, "resources", null)) {
+    if (type == "addons" || type == "data") {
+        let pack_path = path + "/development_behavior_packs/" + name;
+        if (createPack(pack_path, desc, name, uuid.v4(), "data", rpUUID)) {
             // Succesfully created the BP
             localStorage.setItem("bp_path", pack_path);
             recentProjectPath = pack_path;
         }
     }
-    if (type == "addons" || type == "data") {
-        let pack_path = path + "/development_behavior_packs/" + name;
-        if (createPack(pack_path, desc, name, uuid.v4(), "data", rpUUID)) {
+    if (type == "addons" || type == "resources") {
+        let pack_path = path + "/development_resource_packs/" + name;
+        if (createPack(pack_path, desc, name, rpUUID, "resources", null)) {
             // Succesfully created the RP
             localStorage.setItem("rp_path", pack_path);
 
             // If we're just creating resource, put this resource in recent list
-            if (recentProjectPath == "")
+            if (recentProjectPath === "")
                 recentProjectPath = pack_path;
         }
     }
@@ -115,7 +115,7 @@ function createPack(path, desc, name, pack_uuid, type, dependency_uuid) {
     if (fs.existsSync(path)) return false;
 
     // Create the folder
-    fs.mkdirSync(path);
+    fs.mkdirSync(path, { recursive: true });
 
     // Create manifest
     let manifest = {

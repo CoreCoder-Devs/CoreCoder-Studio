@@ -387,7 +387,7 @@ function openFile(p) {
         let tab = chromeTabs.createNewTabEl();
         models.set(tab, model);
         chromeTabs.addTabEl(tab, {
-            title: filename,
+            title: '<i class="fas fa-file-alt"></i>&nbsp;' + filename,
             path: escape(filePath)
         });
     }

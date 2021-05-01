@@ -116,6 +116,60 @@ function createPack(path, desc, name, pack_uuid, type, dependency_uuid) {
 
     // Create the folder
     fs.mkdirSync(path, { recursive: true });
+    var default_folders = []
+    if(type=="data"){
+        // Create default folders
+        default_folders = [
+            "entities",
+            "items",
+            "loot_tables",
+            "loot_tables/chests",
+            "loot_tables/entities",
+            "loot_tables/equipment",
+            "loot_tables/gameplay",
+            "recipes",
+            "scripts",
+            "scripts/client",
+            "scripts/server",
+            "spawn_rules",
+            "trading",
+            "trading/economy_trades"
+        ]
+    }else if(type=="resources"){
+        // Create default folders
+        default_folders = [
+            "animation_controllers",
+            "animations",
+            "attachables",
+            "entity",
+            "fogs",
+            "models",
+            "particles",
+            "render_controllers",
+            "sounds",
+            "texts",
+            "texture_sets",
+            "textures/blocks",
+            "textures/colormap",
+            "textures/entity",
+            "textures/environment",
+            "textures/gui",
+            "textures/items",
+            "textures/map",
+            "textures/misc",
+            "textures/models",
+            "textures/painting",
+            "textures/particle",
+            "textures/persona_thumbnaills",
+            "textures/ui",
+            "ui"
+        ]
+    }
+
+    // Create all default folders
+    for(dir of default_folders){
+        fs.mkdirSync(path + "/" + dir, {recursive: true});
+    }
 
     // Create manifest
     let manifest = {

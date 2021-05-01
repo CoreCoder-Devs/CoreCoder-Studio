@@ -18,7 +18,7 @@ Vue.component('project', {
       <div class="project" 
         :data-project="JSON.stringify(project)" 
         :onclick="'openRecentProject( JSON.parse( this.getAttribute(\\\'data-project\\\')) )'" 
-        :oncontextmenu="'removeRecentProject( JSON.parse( this.getAttribute(\\\'data-project\\\')) )'"
+        :oncontextmenu="'removeRecentProject( JSON.parse( this.getAttribute(\\\'data-project\\\')), this )'"
       >
          <img style="float:left;" v-bind:src="project.iconPath" width="50" v-bind:style="{'filter': 'image-rendering: pixelated;'}">
          <h3>{{ project.name }}</h3>
@@ -160,14 +160,10 @@ function openRecentProject(project) {
     window.location = "./editor.html";
 }
 
-function removeRecentProject(project) {
+function removeRecentProject(project,elm) {
     /**
      * Remove recently opened project from the list
      */
-    let array = this.projects;
-    let index = array.indexOf(project);
-    if (index > -1) {
-        array.splice(index, 1);
-    }
-    this.projects = array;
+    Projects.remove(project);
+    elm.outerHTML = "";
 }

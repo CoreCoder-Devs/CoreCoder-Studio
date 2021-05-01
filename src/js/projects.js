@@ -15,7 +15,7 @@ const Pack = require('../struct/pack')
  */
 
 
-module.exports = new class Projects{
+module.exports = new class Projects {
     constructor() {
         //init projects file
         this.projectFilePath = path.join(appFolder, '/projects.json')
@@ -27,23 +27,23 @@ module.exports = new class Projects{
 
         try {
             const projects = require(this.projectFilePath);
-            for(const project of projects) {
+            for (const project of projects) {
                 //validate data
-                if(fs.readdirSync(project.path)) { //check if it is still a thing
+                if (fs.readdirSync(project.path)) { //check if it is still a thing
 
                     console.log(project.path + "/manifest.json")
 
                     const manifest = require(project.path + "/manifest.json")
 
-                    if(manifest.header.uuid !== project.uuid) { //update uuid
+                    if (manifest.header.uuid !== project.uuid) { //update uuid
                         project.uuid = manifest.header.uuid
                     }
 
-                    if(manifest.header.name !== project.name) { //update uuid
+                    if (manifest.header.name !== project.name) { //update uuid
                         project.name = manifest.header.name
                     }
 
-                    if(manifest.header.version !== project.version) { //update version
+                    if (manifest.header.version !== project.version) { //update version
                         project.version = manifest.header.version
                     }
 
@@ -55,7 +55,7 @@ module.exports = new class Projects{
             }
         } catch (e) {
             console.log(e)
-            if(e.message.startsWith('Error: Cannot find module')) {
+            if (e.message.startsWith('Error: Cannot find module')) {
                 fs.writeFileSync(this.projectFilePath, JSON.stringify([{}]))
             }
         }
@@ -71,11 +71,11 @@ module.exports = new class Projects{
      * @param {Project | Object} project
      */
     add(project) {
-        if(this.projects.find(p => p.path === project.path)) return
-        if(project instanceof Pack || project instanceof Project) {
+        if (this.projects.find(p => p.path === project.path)) return
+        if (project instanceof Pack || project instanceof Project) {
             this.projects.push(project)
         }
-        else if(project instanceof Object) {
+        else if (project instanceof Object) {
             this.projects.push(new Pack({
                 path: project.path
             }))
@@ -107,9 +107,22 @@ module.exports = new class Projects{
      * @param condition
      */
     find(condition) {
-        if(condition === undefined) return this.projects
+        if (condition === undefined) return this.projects
         return this.projects.find(condition)
     }
 
+    /**
+     *
+     * @param {Project | Object} project
+     */
+    remove(project) {
+        for(var i = 0; i < this.projects.length; i++){
+            if(this.projects[i].path == project.path && this.projects[i].uuid == project.uuid){
+                this.projects.splice(i,1);
+                break;
+            }
+        }
+        this.save()
+    }
 
 }

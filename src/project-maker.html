@@ -37,17 +37,17 @@
                         <!-- Pack desc -->
                         <div style="display: flex; flex-direction: row; ">
                             <p class="input-label">Pack Description</p>
-                            <input style="width: 75%;" type="text" id="packname">
+                            <input style="width: 75%;" type="text" id="packdesc">
                         </div>
                         <!-- Pack author -->
                         <div style="display: flex; flex-direction: row; ">
                             <p class="input-label">Pack Author</p>
-                            <input style="width: 75%;" type="text" id="packname">
+                            <input style="width: 75%;" type="text" id="packauth">
                         </div>
                         <!-- Pack type -->
                         <div style="display: flex; flex-direction: row; ">
                             <p class="input-label">Pack Type</p>
-                            <select style="width: 75%" name="" optionlist="" onChange="combo(this, 'demo')">
+                            <select style="width: 75%" name="" optionlist="" onChange="onPackTypeChange(this, this.value)">
                                 <option>Addons (Behavior and Resource)</option>
                                 <option>Behavior Pack</option>
                                 <option>Resource Pack</option>
@@ -61,7 +61,7 @@
                         </div> -->
                         <div style="display: flex; justify-content: flex-end; width: 100%">
                             <button onclick="window.location='./project-manager.html'">Cancel</button>
-                            <button class="main">Create</button>
+                            <button class="main" onclick="createProject()">Create</button>
                         </div>
                     </div>
                 </div>
@@ -69,6 +69,6 @@
         </div>
         <!-- Load in the scripts -->
         <script src="lib/vue.js"></script>
-        <script src="project-manager.js"></script>
+        <script src="project-maker.js"></script>
     </body>
     </html>

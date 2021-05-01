@@ -41,8 +41,8 @@
                     </p>
                 </div>
                 <div class="manager-left">
-                    <a style="font-size: smaller; opacity: 70%;">Double click to remove</a>
-                    <project v-for="project in this.projects[0]" v-bind:project="project" v-bind:key="project.uuid+'@'+project.versionString" onclick="openRecentProject(this)"></project>
+                    <a style="font-size: smaller; opacity: 70%;">Right click to remove</a>
+                    <project v-for="project in this.projects[0]" v-bind:project="project" v-bind:key="project.uuid+'@'+project.versionString"></project>
                     <!-- I dont fucking know why it needs a [0]-->
                 </div>
             </div>

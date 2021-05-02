@@ -4,7 +4,7 @@ const { settings } = require("./js/global_settings");
 const fs = require("fs");
 const filebrowser = require("./js/filebrowser");
 const path = require("path");
-const util = require("util")
+const packutil = require("./js/packutil");
 
 var openedFileBrowser = 0;
 var bp_path = window.localStorage.getItem("bp_path");
@@ -202,18 +202,6 @@ function initTabs() {
                 monacoEditor.layout();
             }
         }
-
-        // if (id != "") {
-        //     if (items_source[id].type == "ace") {
-        //         setEditSession(id);
-        //         document.getElementById("editor").style.display = "block";
-        //     } else {
-        //         document.getElementById("navBarInput").value = items_source[id].data.webview.src;
-        //         document.getElementById("navBar").style.visibility = "visible";
-        //         //document.getElementById("editor").style.width = "100%";
-        //         items_source[id].data.webview.style.width = "100%";
-        //     }
-        // }
         // ipcRenderer.send('discord-activity-change', {
         //     details: `${project_info.bp_name}`,
         //     state: `${chromeTabs.activeTabEl.children[2].children[1].innerText}`,
@@ -458,103 +446,9 @@ function htmlToElem(html) {
     return temp.content.firstChild;
 }
 
-function init() {
+async function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();
-
-}
-
-
-
-/**
- * Look for Resource pack needed for this datapacks in the com.mojang folder
- * asynchronously
- */
-function lookForDependencies() {
-    var searchDir = localStorage.getItem("com_mojang");
-    var currentDir = bp_path;
-
-    if (bp_path == "" || bp_path == undefined || bp_path == null) {
-        return;
-    }
-
-    // Read the manifest of the current pack
-    fs.readdir(currentDir, callback = (err, files) => {
-        // Look if it is a manifest
-        for (file of files) {
-            if (file == "manifest.json") {
-                var content = "";
-                fs.readFile(currentDir + "/" + file, callback = (err, data) => {
-                    var json = JSON.parse(data.toString());
-                    var uuid = json["header"]["uuid"];
-                    var dependencyUUID = json["dependencies"][0]["uuid"];
-                    lookForPackWithUUID(dependencyUUID, "resources").then((value) => {
-                        // console.log(value)
-                        if (value != null) {
-                            localStorage.setItem("rp_path", value);
-                            rp_path = value;
-                        }
-                    });
-                });
-            }
-        }
-    });
-}
-
-async function lookForPackWithUUID(uuid, type) {
-    var com_mojang = localStorage.getItem("com_mojang");
-    var _readdir = util.promisify(fs.readdir);
-    var _exists = util.promisify(fs.exists);
-    var _read = util.promisify(fs.readFile);
-
-    var foldersToLook = [
-        "resource_packs", "behavior_packs",
-        "development_resource_packs", "development_behavior_packs"
-    ];
-
-    /**
-     * Look for a pack in packs folder
-     * @param {String} path Path of the "resource_packs" folder for example
-     * @param {String} uuid Pack uuid to search for
-     * @param {String} type data|resources
-     * @returns {String} a path to the found pack, empty string otherwise
-     */
-    var lookForInFolder = async (folder_path, uuid, type) => {
-        var result = "";
-        var folders = await _readdir(folder_path);
-        for (var f of folders) {
-            if (fs.statSync(folder_path + path.sep + f).isDirectory()) {
-                var manifest_path = folder_path + path.sep + f + path.sep + "manifest.json";
-                if (await _exists(manifest_path)) {
-                    // Has manifest.json, proceed reading it
-                    try {
-                        var content = (await _read(manifest_path)).toString();
-                        var json = JSON.parse(content);
-                        var uuid = json["header"]["uuid"];
-                        result = folder_path + path.sep + f;
-                        break;
-                    } catch (err) {
-                        //TODO: make a better error message window / alerting
-                        console.log(err);
-                        continue;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    for (var folder of foldersToLook) {
-        if (await _exists(com_mojang + path.sep + folder)) {
-            var found = (await lookForInFolder(com_mojang + path.sep + folder, uuid, type));
-            if (found != "") {
-                // Found the pack
-                console.log("Found a dependency at");
-                console.log(found);
-                return found;
-            }
-        }
-    }
-    return null;
+    rp_path = await packutil.lookForDependencies(bp_path);
 }

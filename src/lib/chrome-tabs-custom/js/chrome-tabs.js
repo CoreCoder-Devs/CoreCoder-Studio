@@ -232,6 +232,14 @@
     setTitle(tabEl, title){
       tabEl.querySelector('.chrome-tab-title').innerHTML = title
     }
+    setUnsaved(tabEl){
+      var props = JSON.parse(unescape(tabEl.getAttribute("data-properties-original")));
+      tabEl.querySelector('.chrome-tab-title').innerHTML = props.title + "*"
+    }
+    setSaved(tabEl){
+      var props = JSON.parse(unescape(tabEl.getAttribute("data-properties-original")));
+      tabEl.querySelector('.chrome-tab-title').innerHTML = props.title
+    }
     setFavicon(tabEl, src){
       let faviconEl = tabEl.querySelector('.chrome-tab-favicon')
       faviconEl.style.backgroundImage = `url('${ src }')`
@@ -301,6 +309,7 @@
     cleanUpPreviouslyDraggedTabs() {
       this.tabEls.forEach((tabEl) => tabEl.classList.remove('chrome-tab-was-just-dragged'))
     }
+
 
     setupDraggabilly() {
       const tabEls = this.tabEls
@@ -391,6 +400,10 @@
       }
       this.emit('tabReorder', { tabEl, originIndex, destinationIndex })
       this.layoutTabs()
+    }
+
+    getTabProperties(tabEl){
+      return JSON.parse(unescape(tabEl.getAttribute("data-properties-original")));
     }
   }
 

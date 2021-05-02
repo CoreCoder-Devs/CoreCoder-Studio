@@ -1,10 +1,18 @@
-const electron = require("electron");
-const ipc = electron.ipcRenderer;
+const electron = require("electron").remote;
+const { dialog } = require('electron').remote;
+const ipc = require("electron").ipcRenderer;
 const { settings } = require("./js/global_settings");
 const fs = require("fs");
 const filebrowser = require("./js/filebrowser");
 const path = require("path");
 const packutil = require("./js/packutil");
+const ChromeTabs = require("../src/lib/chrome-tabs-custom");
+const chromeTabs = new ChromeTabs();
+const util = require("util");
+
+var _fswrite = util.promisify(fs.writeFile);
+// const chromeTabs = require("../src/lib/chrome-tabs-custom");
+// const chromeTabs = require("../src/lib/chrome-tabs-custom");
 
 var openedFileBrowser = 0;
 var bp_path = window.localStorage.getItem("bp_path");
@@ -55,12 +63,14 @@ const app = new Vue({
         ipc.on("windowStateRestored", (event, args) => {
             vm.maximised = false
         });
+        // init();
     }
 });
 
 var monacoEditor = null;
 
 function initMonaco() {
+    // ----- Initializing Monaco ------ //
     const nodeRequire = global.require
     const loaderScript = document.createElement('script')
 
@@ -103,11 +113,45 @@ function initMonaco() {
             });
             editor.layout();
             monacoEditor = editor;
+
+
+            editor.addAction({
+                // An unique identifier of the contributed action.
+                id: 'save',
+
+                // A label of the action that will be presented to the user.
+                label: 'Save Current File',
+
+                // An optional array of keybindings for the action.
+                keybindings: [
+                    monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
+                    // chord
+                    monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S)
+                ],
+
+                // A precondition for this action.
+                precondition: null,
+
+                // A rule to evaluate on top of the precondition in order to dispatch the keybindings.
+                keybindingContext: null,
+
+                contextMenuGroupId: 'navigation',
+
+                contextMenuOrder: 1.5,
+
+                // Method that will be executed when the action is triggered.
+                // @param editor The editor instance is passed in as a convinience
+                run: function (ed) {
+                    onMonacoSave();
+                    return null;
+                }
+            });
         })
     }
 
     loaderScript.setAttribute('src', '../node_modules/monaco-editor/min/vs/loader.js')
-    document.body.appendChild(loaderScript)
+    document.body.appendChild(loaderScript);
+
 }
 
 function openSidePanel(id, tabElem) {
@@ -174,10 +218,8 @@ function openSidePanel(id, tabElem) {
         refreshFileBrowser();
     }
 }
-function initTabs() {
-    const ChromeTabs = require("../src/lib/chrome-tabs-custom");
+async function initTabs() {
     var el = document.querySelector(".chrome-tabs");
-    chromeTabs = new ChromeTabs();
     document.documentElement.classList.add("dark-theme");
     el.classList.add("chrome-tabs-dark-theme");
 
@@ -208,54 +250,42 @@ function initTabs() {
         // })
     });
 
-    el.addEventListener("tabRemove", function (elm) {
-        var id = elm.detail.tabEl.id;
-        if (id != "") {
-            if (items_source[id].type === "web") {
-                items_source[id].data.webview.remove();
-            } else if (items_source[id].type === "ace") {
-                delete open_tabs[items_source[id].data["path"]];
-            }
-            delete items_source[id];
+    el.addEventListener("tabRemove", async function(evt) {
+        var elm = evt.detail.tabEl;
+        var props = chromeTabs.getTabProperties(elm);
+        var path = props.path;
 
-            if (Object.keys(items_source).length === 0 && items_source.constructor === Object) {
-                // If it is empty
-                if (editor) {
-                    document.getElementById("editor").style.display = "none";
-                    document.getElementById("navBar").style.visibility = "collapse";
-                }
+        if(!props.isSaved){
+            var result = dialog.showMessageBoxSync(electron.getCurrentWindow(),{
+                message:"File is not saved, would you like to save first?",
+                buttons:["Yes","No","Cancel"],
+                type:"warning"
+            });
+            if(result == 0){
+                // YES
+                await onMonacoSave();
+                delete openedTabs[path];
+                models.delete(elm);
+                chromeTabs.removeTab(elm);
+            }else if(result == 1){
+                // NO
+                delete openedTabs[path];
+                models.delete(elm);
+                chromeTabs.removeTab(elm);
+            }else if(result == 2){
+                // Cancel
             }
-            chromeTabs.removeTab(elm.detail.tabEl);
+
+        }else{
+            delete openedTabs[path];
+            models.delete(elm);
+            chromeTabs.removeTab(elm);
         }
-        if (!chromeTabs.activeTabEl) {
-            ipcRenderer.send('discord-activity-change', {
-                details: `${project_info.bp_name}`
-            })
-        }
-    });
-    var ctrlPressed = false;
-    window.addEventListener("keydown", (event) => {
-        if (event.ctrlKey && event.key === "n") {
-            createNewFile();
-        } else if (event.ctrlKey && event.key === "s") {
-            saveCurrentFile();
-        }
-        if (event.ctrlKey) {
-            ctrlPressed = true;
-        }
-    });
-    window.addEventListener("keyup", (event) => {
-        if (event.ctrlKey) {
-            ctrlPressed = false;
-        }
-    });
-    window.addEventListener("wheel", (event) => {
-        if (ctrlPressed) {
-            // if(event.deltaY > 0)
-            // currentWebBrowserZoomIn();
-            // if(event.deltaY < 0)
-            // currentWebBrowserZoomOut();
-        }
+        // if (!chromeTabs.activeTabEl) {
+        //     ipcRenderer.send('discord-activity-change', {
+        //         details: `${project_info.bp_name}`
+        //     })
+        // }
     });
 }
 
@@ -303,11 +333,11 @@ function openFileBrowser(id) {
     if (id == 0) tabId = "fbHeaderBP";
     if (id == 1) tabId = "fbHeaderRP";
 
-    if (id == 0 || id == 1) {
-        // Detect for missing dependencies
-        if (rp_path == "" || rp_path == null)
-            lookForDependencies();
-    }
+    // if (id == 0 || id == 1) {
+    //     // Detect for missing dependencies
+    //     if (rp_path == "" || rp_path == null)
+    //         rp_path = await packutil.lookForDependencies();
+    // }
 
     if (id == 2) tabId = "fbHeaderDOC";
 
@@ -337,57 +367,96 @@ function goUpOneFolder() {
 }
 
 function openFile(p) {
-    var filePath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
+    var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
 
-    if (escape(filePath) in openedTabs) {
+    if (escape(filepath) in openedTabs) {
         // Change the active tab instead when the tab is already opened
         // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
         return;
     }
-    if (filePath.endsWith(".png")) {
+    if (filepath.endsWith(".png")) {
         // Open the image editor
-        let filename = path.parse(filePath).base;
+        let filename = path.parse(filepath).base;
 
         var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
         var img = document.createElement("img");
-        img.src = filePath;
+        img.src = filepath;
         elem.appendChild(img);
         document.getElementById("editor-content").appendChild(elem);
 
         // Add to the opened file tabs
-        openedTabs[escape(filePath)] = { contentEl: elem };
+        openedTabs[escape(filepath)] = { contentEl: elem };
 
         // Open a tab
         let tab = chromeTabs.addTab({
             title: filename,
-            favicon: filePath.replace(/\\/gi, "\\\\"),
-            path: escape(filePath)
+            favicon: filepath.replace(/\\/gi, "\\\\"),
+            path: escape(filepath)
         });
 
     } else {
         // Open the text editor
-        let source = fs.readFileSync(filePath).toString();
+        let source = fs.readFileSync(filepath).toString();
 
         let lang = null;
-        if (filePath.endsWith(".json")) lang = "json";
-        if (filePath.endsWith(".js")) lang = "javascript";
-        if (filePath.endsWith(".html")) lang = "html";
+        if (filepath.endsWith(".json")) lang = "json";
+        if (filepath.endsWith(".js")) lang = "javascript";
+        if (filepath.endsWith(".html")) lang = "html";
 
         let model = monaco.editor.createModel(source, lang);
+
+
         monacoEditor.setModel(model);
 
         var elem = document.getElementById("myeditor");
-        openedTabs[escape(filePath)] = { contentEl: elem, isEditor: true };
+        openedTabs[escape(filepath)] = { 
+            contentEl: elem, 
+            isEditor: true, 
+            isSaved: false 
+        };
 
-        let filename = path.parse(filePath).base;
+        let filename = path.parse(filepath).base;
         let tab = chromeTabs.createNewTabEl();
         models.set(tab, model);
         chromeTabs.addTabEl(tab, {
             title: '<i class="fas fa-file-alt"></i>&nbsp;' + filename,
-            path: escape(filePath)
+            path: escape(filepath)
         });
+
+
+        // ----- Enabling Monaco Integrations with CoreCoder ------ //
+        initMonacoModel(model, tab, filepath);
     }
     app.$data.noFileOpen = false;
+}
+
+/**
+ * Init the monaco model with connections to CoreCoder events
+ * @param {ITextModel} model The model to initialize
+ * @param {Element} tabEl ChromeTabs element for this model
+ */
+function initMonacoModel(model, tabEl, filepath) {
+    model.onDidChangeContent((e) => {
+        chromeTabs.setUnsaved(tabEl);
+        openedTabs[escape(filepath)].isSaved = false;
+    });
+}
+
+/**
+ * Event trigerred when user clicked save, use Ctrl+s or use Monaco's Command Pallete
+ */
+async function onMonacoSave(){
+    var tab = chromeTabs.activeTabEl;
+    var props = chromeTabs.getTabProperties(tab);
+    var filepath = unescape(props.path);
+    var model = models.get(tab);
+    var content = model.getValue();
+    try{
+        await _fswrite(filepath, content);
+        chromeTabs.setSaved(tab);
+    }catch(err){
+        alert(err);
+    }
 }
 
 function refreshFileBrowser() {
@@ -451,4 +520,5 @@ async function init() {
     initTabs();
     initResizableSidePanel();
     rp_path = await packutil.lookForDependencies(bp_path);
+    refreshFileBrowser();
 }

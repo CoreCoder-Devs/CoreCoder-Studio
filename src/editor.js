@@ -454,4 +454,6 @@ function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();
+
+    openSidePanel('fileBrowser', document.getElementById('sidebar-filebrowser'))
 }

@@ -54,7 +54,7 @@
 
 #myeditor {
     position: absolute;
-    top: 46px;
+    top: 76px;
     bottom: 0;
     left: var(--var-side-width);
     right: 0;
@@ -96,4 +96,36 @@
     left: calc(var(--var-side-width) - 2px);
     cursor: ew-resize;
     z-index: 99999;
+}
+
+/* Toolbar */
+.toolbar{
+    height: 30px;
+    background-color: var(--var-color-bglighter);
+}
+
+.toolbtn{
+    width: 28px;
+    height: 28px;
+    padding: 1px;
+    margin: 1px;
+
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.toolbtn:hover{
+    background-color: var(--var-color-bglighter-alt);
+}
+
+.toolbtn:active{
+    background-color: var(--var-color-bgdarker-alt);
+}
+
+.toolbar-group{
+    margin-left: 16px;
+    display: flex;
+    flex-direction: row;
 }

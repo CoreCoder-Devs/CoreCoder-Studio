@@ -65,6 +65,14 @@
                 <div class="chrome-tabs">
                     <div class="chrome-tabs-content"></div>
                 </div>
+                <div id="toolbar" class="toolbar">
+                    <div id="toolbar-editor" class="toolbar-group">
+                        <!-- toolbar for code editor -->
+                        <div class="toolbtn">
+                            <i class="fas fa-save"></i>
+                        </div>
+                    </div>
+                </div>
                 <div id="myeditor" class="editor-content-content"></div>
                 <!-- Empty window -->
                 <div v-if="noFileOpen" style="color: var(--var-color-outline); background-color: var(--var-color-bg); position: absolute; left: var(--var-side-width); top: 0; bottom: 0; right: 0; text-align: center; align-items: center; display: flex;"><a style="margin: auto;">No files opened yet. Use the File Browser to open a file</a></div>

@@ -25,7 +25,7 @@ async function lookForDependencies(currentDir) {
     // Read the manifest of the current pack
     var files = await _readdir(currentDir)
     // Look if it is a manifest
-    for (file of files) {
+    for (const file of files) {
         if (file == "manifest.json") {
             var content = "";
             var data = await _read(currentDir + "/" + file);

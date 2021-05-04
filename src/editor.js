@@ -77,7 +77,6 @@ const app = new Vue({
         ipc.on("windowStateRestored", (event, args) => {
             vm.maximised = false
         });
-        // init();
     }
 });
 
@@ -485,6 +484,9 @@ async function onMonacoSave(){
 }
 
 function refreshFileBrowser() {
+    if (typeof app === 'undefined') {
+        return;
+    }
     // BP or RP
     if (openedFileBrowser == 0 || openedFileBrowser == 1) {
         var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
@@ -540,8 +542,5 @@ async function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();
-
-    openSidePanel('fileBrowser', document.getElementById('sidebar-filebrowser'))
     rp_path = await packutil.lookForDependencies(bp_path);
-    refreshFileBrowser();
 }

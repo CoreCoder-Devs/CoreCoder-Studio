@@ -11,6 +11,7 @@ const chromeTabs = new ChromeTabs();
 const util = require("util");
 
 var _fswrite = util.promisify(fs.writeFile);
+var $ = (id)=>{return document.getElementById(id)};
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 
@@ -218,6 +219,9 @@ function openSidePanel(id, tabElem) {
         refreshFileBrowser();
     }
 }
+
+
+
 async function initTabs() {
     var el = document.querySelector(".chrome-tabs");
     document.documentElement.classList.add("dark-theme");
@@ -236,12 +240,20 @@ async function initTabs() {
         var path = escape(prop.path);
         var data = openedTabs[prop.path];
 
+        //  Disable all active toolbars
+        for(var elm of document.querySelectorAll(".toolbar-group")){
+            elm.style.display = "none";
+        }
+
+        // Activate the correct editor if data exists
         if (data != undefined) {
             data.contentEl.style.display = "block";
             if (data.isEditor != undefined) {
                 // If it is an editor, set the editor model
                 monacoEditor.setModel(models.get(tabEl));
                 monacoEditor.layout();
+                // Enable the editor toolbar
+                $("toolbar-editor").style.display = "block";
             }
         }
         // ipcRenderer.send('discord-activity-change', {

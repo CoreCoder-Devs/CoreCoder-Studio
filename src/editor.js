@@ -44,13 +44,26 @@ var models = new WeakMap();
 
 const app = new Vue({
     el: '#app',
+
+    components: {
+        'file-browser-item': filebrowser.itemComponent
+    },
+
     data: {
         //TITLE BAR
         maximised: false,
         ipc: ipc,
         settings: settings,
         sidePanelOpen: false,
-        noFileOpen: true
+        noFileOpen: true,
+        paths: [
+        //  {
+        //      path: '/',  
+        //      icon: '/',  OPTIONAL
+        //      onclick() {},  
+        //      isfolder: false  OPTIONAL, recommended for performance
+        //  }
+        ]
     },
 
     created() {
@@ -472,10 +485,6 @@ async function onMonacoSave(){
 }
 
 function refreshFileBrowser() {
-    // Clear the filebrowser
-    var cont = document.getElementById("filebrowsercontent");
-    cont.innerHTML = "";
-    var result = "";
     // BP or RP
     if (openedFileBrowser == 0 || openedFileBrowser == 1) {
         var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
@@ -491,13 +500,10 @@ function refreshFileBrowser() {
         });
         if ((openedFileBrowser == 0 && bp_relativepath !== path.sep && bp_relativepath !== "") || (openedFileBrowser == 1 && rp_relativepath !== path.sep && rp_relativepath !== "")) {
             // Go up one folder button
-            result += filebrowser.generateFileBrowserItem(
-                "..",               // Title
-                "",  // Path
-                "",                   // Icon
-                `goUpOneFolder();`,
-                "",                     // Type
-                true);    // isDirectory
+            app.$data.paths.push({
+                name: '..',
+                onclick() {goUpOneFolder()}
+            })
         }
 
         for (var i in files) {
@@ -507,15 +513,18 @@ function refreshFileBrowser() {
             if (files[i].endsWith(".png")) {
                 icon = browsePath + path.sep + files[i];
             }
-            result += filebrowser.generateFileBrowserItem(
-                files[i],               // Title
-                browsePath + path.sep + files[i],  // Path
-                icon,                   // Icon
-                stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
-                "",                     // Type
-                stat.isDirectory());    // isDirectory
+            app.$data.paths.push({
+                path: browsePath + path.sep + files[i],
+                isfolder: stat.isDirectory(),
+                onclick() {
+                    if(this.isfolder) {
+                        goInFolder(this.name + path.sep + path.sep)
+                    } else {
+                        openFile(this.name)
+                    }
+                }
+            })
         }
-        cont.innerHTML = result;
     }
 }
 

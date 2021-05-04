@@ -4,7 +4,65 @@
  * written by: Hanprogramer
  */
 const fs = require("fs");
+const node_path = require('path')
 module.exports = {
+
+    itemComponent: {
+        /**
+         * dir.path - path for the directory
+         * dir.icon OPTIONAL - path for the folder icon
+         * dir.onclick - executed on clicking the function
+         * dir.isfolder OPTIONAL - whether dir is a folder or not
+         * dir.name OPTIONAL - display name
+         */
+        props: [ 'dir' ],
+        template: `
+            <div :data-path="dir.path" v-on:click="onclick()" class="filebrowseritem">
+                <i class="fas" :class="icon"></i>
+                <img v-if="dir.icon" class="filebrowseritem-icon" :src="dir.icon">
+                &nbsp; {{ name }}
+            </div>
+            `,
+        data: {
+            name: '',
+            type: '',
+            icon: 'fa-file'
+        },
+        
+        mounted() {
+            if(this.dir.path) {
+                this.name = node_path.basename(this.dir.path)
+    
+                if(!this.dir.isfolder) this.dir.isfolder = fs.lstatSync(dir.path).isDirectory()
+    
+                if(!this.isDirectory) {
+                    this.type = this.name.split('.')[this.name.split('.').length-1]
+                } else this.type = 'folder'
+    
+                switch(this.type) {
+                    case 'json':
+                        this.icon = 'fa-file-alt'
+                        break;
+                        case 'mcfunction':
+                            this.icon = 'fa-scroll'
+                            break;
+                        default:
+                            this.icon = 'fa-folder'
+                }
+            }
+            else {
+                this.name = this.dir.name
+                this.icon = 'fa-folder'
+            }
+        },
+
+        methods: {
+            onclick() {
+                this.dir.onclick()
+            }
+        }
+    },
+    
     generateFileBrowserItem: function (name, path, icon, onclick, type, isDirectory) {
         /** generateFileBrowserItem
          * Generates HTML string for the item

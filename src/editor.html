@@ -53,7 +53,7 @@
                         <div id="fbHeaderDOC" onclick="openFileBrowser(2);" class="filebrowserheader-item">Docs</div>
                     </div>
                     <div id="filebrowsercontent" style="position:  absolute;overflow-y: auto;top: 37px;bottom: 0;width: calc(var(--var-side-width) - 32px);">
-                        <!-- Generated -->
+                        <file-browser-item v-for="dir in paths" :dir="dir"></file-browser-item>
                     </div>
                 </div>
                 <div id="github"></div>

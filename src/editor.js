@@ -426,6 +426,7 @@ function openFile(p) {
         if (filepath.endsWith(".json")) lang = "json";
         if (filepath.endsWith(".js")) lang = "javascript";
         if (filepath.endsWith(".html")) lang = "html";
+        if (filepath.endsWith(".py")) lang = "python";
 
         let model = monaco.editor.createModel(source, lang);
 

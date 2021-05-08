@@ -11,7 +11,7 @@ const chromeTabs = new ChromeTabs();
 const util = require("util");
 
 var _fswrite = util.promisify(fs.writeFile);
-var $ = (id)=>{return document.getElementById(id)};
+var $ = (id) => { return document.getElementById(id) };
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 
@@ -57,12 +57,12 @@ const app = new Vue({
         sidePanelOpen: false,
         noFileOpen: true,
         paths: [
-        //  {
-        //      path: '/',  
-        //      icon: '/',  OPTIONAL
-        //      onclick() {},  
-        //      isfolder: false  OPTIONAL, recommended for performance
-        //  }
+            //  {
+            //      path: '/',  
+            //      icon: '/',  OPTIONAL
+            //      onclick() {},  
+            //      isfolder: false  OPTIONAL, recommended for performance
+            //  }
         ]
     },
 
@@ -253,7 +253,7 @@ async function initTabs() {
         var data = openedTabs[prop.path];
 
         //  Disable all active toolbars
-        for(var elm of document.querySelectorAll(".toolbar-group")){
+        for (var elm of document.querySelectorAll(".toolbar-group")) {
             elm.style.display = "none";
         }
 
@@ -274,33 +274,33 @@ async function initTabs() {
         // })
     });
 
-    el.addEventListener("tabRemove", async function(evt) {
+    el.addEventListener("tabRemove", async function (evt) {
         var elm = evt.detail.tabEl;
         var props = chromeTabs.getTabProperties(elm);
         var path = props.path;
 
-        if(!props.isSaved){
-            var result = dialog.showMessageBoxSync(electron.getCurrentWindow(),{
-                message:"File is not saved, would you like to save first?",
-                buttons:["Yes","No","Cancel"],
-                type:"warning"
+        if (!props.isSaved) {
+            var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
+                message: "File is not saved, would you like to save first?",
+                buttons: ["Yes", "No", "Cancel"],
+                type: "warning"
             });
-            if(result == 0){
+            if (result == 0) {
                 // YES
                 await onMonacoSave();
                 delete openedTabs[path];
                 models.delete(elm);
                 chromeTabs.removeTab(elm);
-            }else if(result == 1){
+            } else if (result == 1) {
                 // NO
                 delete openedTabs[path];
                 models.delete(elm);
                 chromeTabs.removeTab(elm);
-            }else if(result == 2){
+            } else if (result == 2) {
                 // Cancel
             }
 
-        }else{
+        } else {
             delete openedTabs[path];
             models.delete(elm);
             chromeTabs.removeTab(elm);
@@ -434,10 +434,10 @@ function openFile(p) {
         monacoEditor.setModel(model);
 
         var elem = document.getElementById("myeditor");
-        openedTabs[escape(filepath)] = { 
-            contentEl: elem, 
-            isEditor: true, 
-            isSaved: false 
+        openedTabs[escape(filepath)] = {
+            contentEl: elem,
+            isEditor: true,
+            isSaved: false
         };
 
         let filename = path.parse(filepath).base;
@@ -470,22 +470,27 @@ function initMonacoModel(model, tabEl, filepath) {
 /**
  * Event trigerred when user clicked save, use Ctrl+s or use Monaco's Command Pallete
  */
-async function onMonacoSave(){
+async function onMonacoSave() {
     var tab = chromeTabs.activeTabEl;
     var props = chromeTabs.getTabProperties(tab);
     var filepath = unescape(props.path);
     var model = models.get(tab);
     var content = model.getValue();
-    try{
+    try {
         await _fswrite(filepath, content);
         chromeTabs.setSaved(tab);
-    }catch(err){
+    } catch (err) {
         alert(err);
     }
 }
 
 function refreshFileBrowser() {
-    if (typeof app === 'undefined') {
+    try {
+        if (typeof app === 'undefined') {
+            return;
+        }
+    }catch(ReferenceError){
+        console.log(ReferenceError.message);
         return;
     }
     // BP or RP
@@ -505,7 +510,7 @@ function refreshFileBrowser() {
             // Go up one folder button
             app.$data.paths.push({
                 name: '..',
-                onclick() {goUpOneFolder()}
+                onclick() { goUpOneFolder() }
             })
         }
 
@@ -520,7 +525,7 @@ function refreshFileBrowser() {
                 path: browsePath + path.sep + files[i],
                 isfolder: stat.isDirectory(),
                 onclick() {
-                    if(this.isfolder) {
+                    if (this.isfolder) {
                         goInFolder(this.name + path.sep + path.sep)
                     } else {
                         openFile(this.name)

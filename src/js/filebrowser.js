@@ -16,6 +16,13 @@ module.exports = {
          * @param {bool} isDirectory - is directory?
          */
         var title = "";
+        var style = "";
+
+        // If filename starts with dot, make it transparent
+        if(name.startsWith(".")){
+            style = `style="opacity:50%;"`
+        }
+
         if(isDirectory){
             // Add the folder icon
             if(icon == ""){
@@ -34,7 +41,7 @@ module.exports = {
             title += "&nbsp;";
         }
         title += name;
-        return `<div data-path="${path}" onclick="${onclick}" class="filebrowseritem">
+        return `<div data-path="${path}" onclick="${onclick}" class="filebrowseritem" ${style}>
                     `+((icon !== "")?`<img class="filebrowseritem-icon" src="${icon}">`:``)+`${title}
                 </div>`;
     }

@@ -20,7 +20,7 @@ Vue.component('project', {
         :onclick="'openRecentProject( JSON.parse( this.getAttribute(\\\'data-project\\\')) )'" 
         :oncontextmenu="'removeRecentProject( JSON.parse( this.getAttribute(\\\'data-project\\\')), this )'"
       >
-         <img style="float:left;" v-bind:src="project.iconPath" width="50" v-bind:style="{'filter': 'image-rendering: pixelated;'}">
+         <img style="float:left;image-rendering: pixelated; margin-right:16px;" v-bind:src="project.iconPath" width="50" v-bind:style="{'filter': 'image-rendering: pixelated;'}">
          <h3>{{ project.name }}</h3>
          <label class="project-path">{{ project.uuid }}@{{ project.versionString }}</label><br>
       </div>

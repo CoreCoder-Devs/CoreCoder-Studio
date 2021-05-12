@@ -139,6 +139,7 @@ function openRecentProject(project) {
      * Project : {name,uuid,path}
      */
     let path = project.path;
+    let ver = project.version;
 
     if (path.includes("behavior_packs")) {
         // Add to the localStorage
@@ -156,6 +157,10 @@ function openRecentProject(project) {
         // TODO:: detect the pack by looking at it's JSON files manifest.json
     }
 
+    // Move the project to the very top
+    Projects.remove(project);
+    Projects.add(project);
+    Projects.save();
 
     window.location = "./editor.html";
 }

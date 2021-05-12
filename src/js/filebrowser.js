@@ -26,7 +26,7 @@ module.exports = {
         }
         else if(icon == ""){
             // Add the file icon
-            if(name.endsWith(".json")) title += `<i class="fas fa-file-alt"></i>&nbsp;`
+            if(name.endsWith(".json") || name.endsWith(".js")) title += `<i class="fas fa-file-alt"></i>&nbsp;`
             else if(name.endsWith(".png")) title += `<i class="fas fa-image"></i>&nbsp;`
             else title += `<i class="fas fa-file"></i>&nbsp;`
         }else{

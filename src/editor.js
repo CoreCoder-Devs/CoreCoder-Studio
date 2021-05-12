@@ -450,7 +450,7 @@ function openFile(p) {
         let tab = chromeTabs.createNewTabEl();
         models.set(tab, model);
         chromeTabs.addTabEl(tab, {
-            title: '<i class="fas fa-file-alt"></i>&nbsp;' + filename,
+            title: '<i class="fas fa-file-alt" style="font-size: 16px"></i>&nbsp;' + filename,
             path: escape(filepath)
         });
 
@@ -559,5 +559,8 @@ async function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();
-    rp_path = await packutil.lookForDependencies(bp_path);
+    if(rp_path == null)
+        rp_path = await packutil.lookForDependencies(bp_path, "resources");
+    if(bp_path == null)
+        bp_path = await packutil.lookForDependencies(rp_path, "data");
 }

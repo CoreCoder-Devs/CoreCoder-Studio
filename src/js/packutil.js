@@ -17,7 +17,7 @@ var _read = util.promisify(fs.readFile);
  * Look for Resource pack needed for this datapacks in the com.mojang folder
  * asynchronously
  */
-async function lookForDependencies(currentDir) {
+async function lookForDependencies(currentDir, packtype) {
     if (currentDir == null) {
         return;
     }
@@ -32,10 +32,10 @@ async function lookForDependencies(currentDir) {
             var json = JSON.parse(data.toString());
             var uuid = json["header"]["uuid"];
             var dependencyUUID = json["dependencies"][0]["uuid"];
-            var result = await lookForPackWithUUID(dependencyUUID, "resources");
+            var result = await lookForPackWithUUID(dependencyUUID, packtype);
 
             if (result != null) {
-                localStorage.setItem("rp_path", result);
+                // localStorage.setItem("rp_path", result);
                 return result;
             }
         }

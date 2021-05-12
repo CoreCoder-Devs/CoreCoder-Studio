@@ -171,7 +171,7 @@ function refreshFileBrowser() {
             files[i],               // Title
             browsePath + path.sep + files[i],  // Path
             icon,                   // Icon
-            stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
+            stat.isDirectory() ? `goInFolder('${(files[i] + path.sep + path.sep).replace(/\'/gi, '\\\'')}');` : `openFile('${files[i]}')`,
             "",                     // Type
             stat.isDirectory());    // isDirectory
     }

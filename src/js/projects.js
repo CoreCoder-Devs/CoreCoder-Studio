@@ -73,10 +73,10 @@ module.exports = new class Projects {
     add(project) {
         if (this.projects.find(p => p.path === project.path)) return
         if (project instanceof Pack || project instanceof Project) {
-            this.projects.push(project)
+            this.projects.unshift(project)
         }
         else if (project instanceof Object) {
-            this.projects.push(new Pack({
+            this.projects.unshift(new Pack({
                 path: project.path
             }))
         }

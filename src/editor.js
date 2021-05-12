@@ -34,7 +34,7 @@ if (rp_path == null && bp_path != null) {
 /**
  * Opened tabs
  * key: filepath
- * value: {contentEl}
+ * value: {contentEl [,isEditor] [,isSaved]}
  */
 var openedTabs = {};
 /**
@@ -271,10 +271,9 @@ async function initTabs() {
     el.addEventListener("tabRemove", async function (evt) {
         var elm = evt.detail.tabEl;
         var props = chromeTabs.getTabProperties(elm);
-        var path = props.path;
-
-        if ("isSaved" in props && props.isSaved == false) {
-            console.log(props);
+        var path = props.path; // Path is still on escaped format
+        var tab = openedTabs[path];
+        if ("isSaved" in tab && tab.isSaved == false) {
             var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
                 message: "File is not saved, would you like to save first?",
                 buttons: ["Yes", "No", "Cancel"],
@@ -432,6 +431,7 @@ function openFile(p) {
         if (filepath.endsWith(".js")) lang = "javascript";
         if (filepath.endsWith(".html")) lang = "html";
         if (filepath.endsWith(".py")) lang = "python";
+        if (filepath.endsWith(".css")) lang = "css";
 
         let model = monaco.editor.createModel(source, lang);
 

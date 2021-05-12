@@ -44,6 +44,7 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 .project {
     padding: 10px;
     padding-left: 30px;
+    cursor: pointer;
 }
 
 .project:hover{
@@ -57,4 +58,10 @@ A project manager specific styling. Put styles exclusive for project-manager.htm
 .project-path {
     font-size: smaller;
     color: #8f8f8f;
+    cursor: pointer;
+}
+
+.project img{
+    
+    cursor: pointer;
 }

@@ -273,6 +273,7 @@ async function initTabs() {
         var props = chromeTabs.getTabProperties(elm);
         var path = props.path; // Path is still on escaped format
         var tab = openedTabs[path];
+        
         if ("isSaved" in tab && tab.isSaved == false) {
             var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
                 message: "File is not saved, would you like to save first?",
@@ -442,7 +443,7 @@ function openFile(p) {
         openedTabs[escape(filepath)] = {
             contentEl: elem,
             isEditor: true,
-            isSaved: false
+            isSaved: true
         };
 
         let filename = path.parse(filepath).base;

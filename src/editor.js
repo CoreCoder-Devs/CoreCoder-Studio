@@ -239,7 +239,6 @@ async function initTabs() {
         if (elm.detail.tabEl === undefined) return;
         var id = elm.detail.tabEl.id;
         document.querySelectorAll(".editor-content-content").forEach((elmnt) => {
-            // elmnt.style.width = 0;
             elmnt.style.display = "none";
         });
         var tabEl = elm.detail.tabEl;
@@ -274,7 +273,8 @@ async function initTabs() {
         var props = chromeTabs.getTabProperties(elm);
         var path = props.path;
 
-        if (!props.isSaved) {
+        if ("isSaved" in props && props.isSaved == false) {
+            console.log(props);
             var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
                 message: "File is not saved, would you like to save first?",
                 buttons: ["Yes", "No", "Cancel"],
@@ -300,11 +300,21 @@ async function initTabs() {
             models.delete(elm);
             chromeTabs.removeTab(elm);
         }
-        // if (!chromeTabs.activeTabEl) {
-        //     ipcRenderer.send('discord-activity-change', {
-        //         details: `${project_info.bp_name}`
-        //     })
-        // }
+        if (!chromeTabs.activeTabEl) {
+            // Close all tabs
+            document.querySelectorAll(".editor-content-content").forEach((elmnt) => {
+                elmnt.style.display = "none";
+            });
+
+            //  Disable all active toolbars
+            for (var elm of document.querySelectorAll(".toolbar-group")) {
+                elm.style.display = "none";
+            }
+            
+            //     ipcRenderer.send('discord-activity-change', {
+            //         details: `${project_info.bp_name}`
+            //     })
+        }
     });
 }
 
@@ -484,7 +494,7 @@ function refreshFileBrowser() {
         if (typeof app === 'undefined') {
             return;
         }
-    }catch(ReferenceError){
+    } catch (ReferenceError) {
         console.log(ReferenceError.message);
         return;
     }

@@ -33,7 +33,7 @@ async function lookForDependencies(currentDir) {
             var uuid = json["header"]["uuid"];
             var dependencyUUID = json["dependencies"][0]["uuid"];
             var result = await lookForPackWithUUID(dependencyUUID, "resources");
-            
+
             if (result != null) {
                 localStorage.setItem("rp_path", result);
                 return result;
@@ -67,9 +67,12 @@ async function lookForPackWithUUID(uuid, type) {
                     try {
                         var content = (await _read(manifest_path)).toString();
                         var json = JSON.parse(content);
-                        var uuid = json["header"]["uuid"];
-                        result = folder_path + path.sep + f;
-                        break;
+                        var found_uuid = json["header"]["uuid"];
+                        if (uuid == found_uuid) {
+                            console.log(json);
+                            result = folder_path + path.sep + f;
+                            break;
+                        }
                     } catch (err) {
                         //TODO: make a better error message window / alerting
                         console.log(err);

@@ -129,3 +129,39 @@
     display: flex;
     flex-direction: row;
 }
+
+.contextmenu{
+    background-color: var(--var-color-bglighter);
+    border: 1px solid var(--var-color-bglighter-alt);
+    width: auto;
+    height: auto;
+    position: absolute;
+    z-index: 99999999999;
+    left: 16px;
+    top: 16px;
+}
+
+.contextitem{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    user-select: none;
+    cursor: pointer;
+    padding: 4px;
+    padding-left: 32px;
+    padding-right: 16px;
+}
+
+.contextitem:hover{
+    background-color: var(--var-color-accent);
+}
+.contextitem.active{
+    background-color: var(--var-color-accent);
+}
+
+.contextgroup::after{
+    content: ">";
+    position: absolute;
+    right: 8px;
+    opacity: 75%;
+}

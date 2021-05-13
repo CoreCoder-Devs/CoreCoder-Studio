@@ -11,7 +11,20 @@ const chromeTabs = new ChromeTabs();
 const util = require("util");
 
 var _fswrite = util.promisify(fs.writeFile);
+
+/**
+ * Look for Element with specific id
+ * @param {String} id Element id to look for
+ * @returns Node
+ */
 var $ = (id) => { return document.getElementById(id) };
+
+/**
+ * document.querySelectorAll(query);
+ * @param {String} query Query the element to look for
+ * @returns {Node} Node
+ */
+var $q = (query) => { return document.querySelectorAll(query); };
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 // const chromeTabs = require("../src/lib/chrome-tabs-custom");
 
@@ -273,7 +286,7 @@ async function initTabs() {
         var props = chromeTabs.getTabProperties(elm);
         var path = props.path; // Path is still on escaped format
         var tab = openedTabs[path];
-        
+
         if ("isSaved" in tab && tab.isSaved == false) {
             var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
                 message: "File is not saved, would you like to save first?",
@@ -310,7 +323,7 @@ async function initTabs() {
             for (var elm of document.querySelectorAll(".toolbar-group")) {
                 elm.style.display = "none";
             }
-            
+
             //     ipcRenderer.send('discord-activity-change', {
             //         details: `${project_info.bp_name}`
             //     })
@@ -533,6 +546,7 @@ function refreshFileBrowser() {
                 "",                     // Type
                 true);    // isDirectory
             cont.appendChild(el);
+            initFileBrowserItem(el);
         }
 
         for (var i in files) {
@@ -550,6 +564,7 @@ function refreshFileBrowser() {
                 "",                     // Type
                 stat.isDirectory());    // isDirectory
             cont.appendChild(el);
+            initFileBrowserItem(el);
         }
     }
 }
@@ -566,8 +581,92 @@ async function init() {
     initMonaco();
     initTabs();
     initResizableSidePanel();
-    if(rp_path == null)
+    if (rp_path == null)
         rp_path = await packutil.lookForDependencies(bp_path, "resources");
-    if(bp_path == null)
+    if (bp_path == null)
         bp_path = await packutil.lookForDependencies(rp_path, "data");
+
+
+    initFileBrowserContextMenu();
+}
+
+/**
+ * Initialize a filebrowser item with context menu functionalities
+ * @param {Node} el The element
+ */
+function initFileBrowserItem(el) {
+    el.addEventListener("auxclick", e => {
+        if (e.which == 3) {
+            // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
+            /**
+             * The context menu code is supposed to be dynamic. As we are going to implement many types
+             * of context menu for different types of editor.
+             */
+            // Right clicked
+
+            // Remove all opened contextmenu
+            for (var elm of $q(".contextmenu")) elm.remove();
+
+            var contentElm = document.createElement("div");
+
+            // -------------Create-------------
+            // Create sub menus
+            var createSubMenuEl = document.createElement("div");
+            createSubMenuEl.appendChild(filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>'));
+            createSubMenuEl.appendChild(filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>'));
+
+            // Create sub menu unhover
+            var createSubMenuUnhover = function () {
+                if (createSubMenuContext)
+                    createSubMenuContext.remove();
+                createSubMenuContext = null;
+            }
+            var createSubMenuContext = null;
+
+
+            var createMenu = filebrowser.generateContextMenuElm("Create", "", null, function (x, y) {
+                // On Show children
+                if (createSubMenuContext == null)
+                    createSubMenuContext = createContextMenu(x, y, createSubMenuEl);
+            }, true);
+            contentElm.appendChild(createMenu);
+            // -------------Create End-------------
+
+            // Rename
+            contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", null, (x, y) => createSubMenuUnhover()));
+
+            // Delete
+            contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", null, (x, y) => createSubMenuUnhover()));
+
+            // Show the context menu
+            createContextMenu(e.clientX, e.clientY, contentElm);
+        }
+    });
+}
+
+/**
+ * Initialize the file browser context menu system
+ */
+function initFileBrowserContextMenu() {
+    document.addEventListener("click", (ev) => {
+        // Remove all opened contextmenu
+        for (var elm of $q(".contextmenu")) elm.remove();
+    });
+
+}
+
+function createContextMenu(x, y, contentElm) {
+    var div = document.createElement('div')
+    div.innerHTML = `<div class="contextmenu"></div>`;
+    var elm = div.firstElementChild;
+
+    elm.style.left = x + "px";
+    elm.style.top = y + "px";
+    try {
+        var child = contentElm;
+        elm.appendChild(child);
+        document.body.appendChild(elm);
+    } catch (e) { }
+
+    return elm;
 }

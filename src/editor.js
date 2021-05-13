@@ -398,6 +398,12 @@ function goUpOneFolder() {
 function openFile(p) {
     var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
 
+    // Convert the \ to / for OS compatibility
+    filepath = filepath.replace(/\\/gi, "/");
+
+    // Clean up multiple slashes
+    filepath = filepath.replace(/\/+/gi, "/");
+
     if (escape(filepath) in openedTabs) {
         // Change the active tab instead when the tab is already opened
         // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
@@ -417,9 +423,10 @@ function openFile(p) {
         openedTabs[escape(filepath)] = { contentEl: elem };
 
         // Open a tab
+        // Favicon path needs to remove quotation marks in order to work properly on some folder
         let tab = chromeTabs.addTab({
             title: filename,
-            favicon: filepath.replace(/\\/gi, "\\\\"),
+            favicon: filepath.replace(/[\"\']/gi, "\\\'"),
             path: escape(filepath)
         });
 

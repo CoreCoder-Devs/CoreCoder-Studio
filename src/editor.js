@@ -509,7 +509,6 @@ function refreshFileBrowser() {
     // Clear the filebrowser
     var cont = document.getElementById("filebrowsercontent");
     cont.innerHTML = "";
-    var result = "";
     // BP or RP
     if (openedFileBrowser == 0 || openedFileBrowser == 1) {
         var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
@@ -526,13 +525,14 @@ function refreshFileBrowser() {
         if ((openedFileBrowser == 0 && bp_relativepath !== path.sep && bp_relativepath !== "") || (openedFileBrowser == 1 && rp_relativepath !== path.sep && rp_relativepath !== "")) {
             // Go up one folder button
 
-            result += filebrowser.generateFileBrowserItem(
+            var el = filebrowser.generateFileBrowserItemElm(
                 "..",               // Title
                 "",  // Path
                 "",                   // Icon
                 `goUpOneFolder();`,
                 "",                     // Type
                 true);    // isDirectory
+            cont.appendChild(el);
         }
 
         for (var i in files) {
@@ -542,15 +542,15 @@ function refreshFileBrowser() {
             if (files[i].endsWith(".png")) {
                 icon = browsePath + path.sep + files[i];
             }
-            result += filebrowser.generateFileBrowserItem(
+            var el = filebrowser.generateFileBrowserItemElm(
                 files[i],               // Title
                 browsePath + path.sep + files[i],  // Path
                 icon,                   // Icon
                 stat.isDirectory() ? `goInFolder('${files[i] + path.sep + path.sep}');` : `openFile('${files[i]}')`,
                 "",                     // Type
                 stat.isDirectory());    // isDirectory
+            cont.appendChild(el);
         }
-        cont.innerHTML = result;
     }
 }
 

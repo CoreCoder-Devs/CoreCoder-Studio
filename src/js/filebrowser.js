@@ -7,6 +7,8 @@ const fs = require("fs");
 module.exports = {
     generateFileBrowserItem: function (name, path, icon, onclick, type, isDirectory) {
         /** generateFileBrowserItem
+         * Do not use directly, use the generate element instead
+         * it adds click functionalities too
          * Generates HTML string for the item
          * @param {string} name - the name that will be shown
          * @param {string} path - absolute path to the file
@@ -44,5 +46,11 @@ module.exports = {
         return `<div data-path="${path}" onclick="${onclick}" class="filebrowseritem" ${style}>
                     `+((icon !== "")?`<img class="filebrowseritem-icon" src="${icon}">`:``)+`${title}
                 </div>`;
+    },
+
+    generateFileBrowserItemElm : function(name, path, icon, onclick, type, isDirectory){
+      const div = document.createElement('div')
+      div.innerHTML = this.generateFileBrowserItem(name, path, icon, onclick, type, isDirectory);
+      return div.firstElementChild;
     }
 };

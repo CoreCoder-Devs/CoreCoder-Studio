@@ -9,6 +9,7 @@ const packutil = require("./js/packutil");
 const ChromeTabs = require("../src/lib/chrome-tabs-custom");
 const chromeTabs = new ChromeTabs();
 const util = require("util");
+const Pixy = require("../src/lib/pixydust/pixydust");
 
 var _fswrite = util.promisify(fs.writeFile);
 
@@ -427,9 +428,12 @@ function openFile(p) {
         let filename = path.parse(filepath).base;
 
         var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
-        var img = document.createElement("img");
-        img.src = filepath;
-        elem.appendChild(img);
+
+        var pixy = Pixy.createEditor(elem, filepath);
+
+        // console.log(img.zoom);
+
+        elem.appendChild(pixy.elm);
         document.getElementById("editor-content").appendChild(elem);
 
         // Add to the opened file tabs

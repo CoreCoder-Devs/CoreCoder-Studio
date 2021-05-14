@@ -210,6 +210,37 @@
    limitations under the License.
  */
 
+/**
+ * Icons for toolbar
+ */
+const icons = {
+    'fit' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAi0lEQVRYw+2WoRWAIBgGGcEBCIzgpg7gEA7gEASD0REIRsNZUfA9RQLhu3z8x4MAxgghIrCMLES8XhnjGehykiNwoygAsGUSTIlWHoAhlULVgH+Uft/k0xwFPs/hI8U7UUABBRRQoKmAnswGAnvVj9eaSnPVwJhKPUe1QMDmtJ75elBFgcCEM0KIiBNb3aiF/RQfegAAAABJRU5ErkJggg==',
+    'pan' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAABOUlEQVRYw+3Xv0oDQRDH8V9jBLWz8B3sLAVBEISgYCEKghaChVhYB58gqQKx9zkUCyHvoK1dzjrxD/5J/Fop8U5yN7c7jdx0e7vsh90ZbljJGNRokpDQpCaPoMV3tHyA3g/QczkRY+FyogyQOpFCk5oBUuPgpMYH0kmNDuRsmBlbq8oMWKvKDFirygxYc1IBFVAB/w2wRgVYAersM+8EMMMlAH3OmI4OMEd37Ps9O7GBq8xcl6WYwDKDzOyICxbi5WCFxz9W9GlEqyJWeSJypAtyjWdXQGKdF1dAos6rKyCxyZsrILHFuysgsc2HKyCxG4OY/JveYxi4/yCvExwEErf5zeaQUQDQLtLPjkoTQxaLtcxjPksBneLPwJMSubhmyvLS3ODBdDnnpu0liVlOuSHJK0zuaP+++y/VHzsCGG8vLwAAAABJRU5ErkJggg==',
+    'zoom' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAABSElEQVRYw+2Wu27CMBSGPTCCFOZ2jRg6snXgZeAZCOL6Au2Ul4m4iccAVIl3IOrAUL4OtU2SBiEHTsSQf4l8+z/7HMe2UpUqiQqfgIg9MTF7IgL8x5m3WZGnFe37zWuEnLmmMyG1e+ybrLmlNc3is0/aL+jiU6eOT5dFClFsFYTWYkfnX2uHnW0Pi6XWxH6Dl9vDY2Nz4Z5ulnb23tU+nl3F0tW+ZZefCg5AJlBGLTdAXw+bZ+ozAKWY6559N4DZJb2bgJ7ZZW6Abf7CcwAmmFs3wFEPa1yMs9ItDV08SgNi6RB9PVmS3bdpIP2jvckeFZHsYffDu+xx/SF74Zx4lbwyT/o7k7n0P3mxpemjny3RX2oTNUURqYfXNwciBpd9zyyBmMi8+6blIsYyiEm5iJEMYlwuYiiDGAkDLELKXimlGIraV6okp19bWkMpXxNyrQAAAABJRU5ErkJggg==',
+    'zoomOut' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAABQ0lEQVRYw+2WO27CQBCGt6AEydRJa1GkpEvhy8AZcMTzAknly1i8xDEARcodsFJQhC9F1hOjmDhrGCuF/8Za7/j/dnbWu2tMrVqqwickZk9Cwp6YEP925l1W5GlF93rzBhEnLulEROMa+zZrirSmXX70WfsFPXyaNPHpsThDlMuCSCx2BD96A3bSH5UrbTr3G7zcCI+N1MK93Cxl9N7FGE+yWLradyT94Ne4QOI6boCB/WxeGDm3kQM3QLpK+oWR/XSVuQG2f01cJnPrBjjYz1q2nSPb07LNgzYg0Z6i139WZPdlGmr/aA+6W0Wsu9l98Ki7XT/rHjhH7jWPzKN9znQO/RfupDW99bUl/ipt5k1ZxNnF6503Yp6+1z2zDGKic++bVosY6yAm1SJGOohxtYihDmKkDBCElr0xxjBUta9VS0+fx5ojSaWTvukAAAAASUVORK5CYII=',
+    'brush' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAA60lEQVRYw+2WMQrCQBAAT4SUVmJjYXq/YOUP/IJ9fEV6FfIAG58hESy0M4WC2KSxFxJLcSxEUXOpsguCNw+YuVtu4YxxOH4EOiy5MKWuo/dJeTBXSLzpNRJfeoCJrh4yXT2sdPUpHV297/RO7/R/qTeGWFVvvYGk3pKQ1n8lquvxGLEmJ2fNCO8jIaBvk3zMO6H9SsQSp08KLyZ53kIAAmwEcoGNNbCRC2TWgNRXhAboBgYlgZ2MvsmxJDCuLm8x5FSiv9KtHggpJ5IZUMjNql+IrRk9DoXhRIJbbAw1+szYciZnz1hg9g5HZe5QxxB0PNrWeQAAAABJRU5ErkJggg==',
+    'bucket' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAABJUlEQVRYw+2WIQ7CMBhGJxAIJAKBQCAQCCSCGyAQCA6A5AAcYgKBRCCQCAQSyREQSCQSMTnxEBDSjg3a9W8CST+5Le9l/b92i6IPYUwc+QtjUmDhCz8i5RE/CjpcISh+QtF9DduHggpb1Cz84mUVGv4sPosMviE87ixeuFF5eEFFEV5I8QkvoPiGd1SY4J0UzEzwb4qhueBkhs8o9uYLdKFMjuZvMC8lmJgLahyt8VsqNmO2VSh4poykFSq+T0pCV1Kh4uvPTp2oSim0tWfzuh7LzELHD5Q7KW13RaY5rLW7S9dGvRVTOTYAzm6lzek9SUlBjiJ3W3HQnlnZHeGqomDX0lN+zm40bT9CNeZcSIiLDwV6HEi4saMVhYT4CsIJgiD4I8Ed8YJbb6TxsxwAAAAASUVORK5CYII=',
+    'magicwand' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAABaklEQVRYhe3XvU7CUBiA4S9lcHAvgzEQVrgDR6MxXoZXUFZY3YxGxxoXB29BN2PCZWjSeAEuldRur4OHpkXq+W1cOFs5J+9D6NcAItulFlPGjesx07DAhJKUWESEmJSSSVBAhBTImTMnB9LAeRH65KxWTn/TkQNPYlYBs03bCXDeGUCitpwJzUfEVbXpSGhvsh9hNKY+hOGDZkowYsGSSyLbN2JEMOJdnbnvgFD5L546Iar8CRF3wQmVLzgWEQlOsEsGFBxVr6yIC2ughTjjk8PGqYhH4MMBaCHitTOnlMCzE2AwUT/5N/YdAc1E+edFRLhtmahA+SEZ/CbYowifX5+o1/D5JrHTRb51osLlQxCavC9hkPchNPms7bkIlR96fXeb5EWcCdO8I2GTdyAY2OWtCRa2eUui9sPVOG9FcO2StyDo8eCS9yOM8u6EcX6N+OuPWI2wyteIRHesxw1LXhjY5RWhy2/XP6xvv3hQ17jKqCMAAAAASUVORK5CYII=',
+    'eyedropper' : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAA60lEQVRYw+3VUQqCQBRG4QuzkNxUQYU7CHxrHbUIBXcRbcQ9RG9Kp4fE1JrK8V7oYf4FfAdmZBSJi/uDseDElSPOhk+oeCw3SPR4jQSOgpWXn5vAUQI1ay8/L0HREg1bLw9wCA0sqbvE3svDJfyQnolPO8+55uwrX7HQ+ijf80nkISfjZsk7EXajhC4v8pLIlPmXT7Zmqc078sEhhSQm8CGJH/mKrHtACgs+6d6ocsJDPYVvn8HCkLe52sgb8CLGvIgx3wukJnwv0LAx4HuBNqHMDwLQkCrzo4DWD/GHgBbvCejxbwOafFxc4O4G5wVIQ7zMcgAAAABJRU5ErkJggg=='
+}
+
+const Tools = {
+    Brush     : 0 , 
+    Bucket    : 1 , 
+    Eyedropper: 2 , 
+    MagicWand : 3 ,
+    Zoom      : 4 , 
+    Zoomout   : 5 , 
+    Pan       : 6 , 
+    Fit       : 7
+}
+
+const pixyTemplate = `<div class="pixy">
+    <div class="pixytoolbar">
+        <!-- The generated toolbar here -->
+    </div>
+    <canvas class="pixyeditor">
+</div>`;
 
 /**
  * The pixy class
@@ -240,7 +271,10 @@ class Pixy {
         this.pixelImageData = null;
         this.pixelData = null;
 
+        this.selectedTool = Tools.Brush;
+
         this.elm = createEditorElm(this, elm, imgPath);
+        this.toolbarElm = this.elm.firstElementChild;
     }
 
     /**
@@ -296,6 +330,51 @@ class Pixy {
         // Draw the image
         ctx.drawImage(instance.imageCanvas, 0, 0);
     }
+
+    /**
+     * Select a tool
+     * @param {Number} toolId The tool id to select
+     */
+    selectTool(toolId){
+        var elms = this.toolbarElm.children;
+        if(!elms) return;
+        for(var elm of elms){
+            elm.classList.remove("selected");
+        }
+
+        var button = this.toolbarElm.querySelector(`.pixytoolbtn[data-toolid='${toolId}']`);
+        button.classList.add("selected");
+
+        this.selectedTool = toolId;
+    }
+}
+/**
+ * Create the toolbar
+ * @param {Pixy} instance
+ * @param {Node} elm The Pixy HTML element
+ * @param {Node} toolbar The container HTML element
+ */
+function _generateToolbar(instance, elm, toolbar){
+    // Brush
+    var toolBrush = document.createElement("img");
+    toolBrush.src = icons.brush;
+    toolBrush.classList.add("pixytoolbtn");
+    toolBrush.classList.add("selected");
+    toolBrush.title = "Brush";
+    toolBrush.setAttribute("data-toolid", Tools.Brush);
+    toolBrush.onclick = function(ev){instance.selectTool(Tools.Brush)};
+
+    // Bucket
+    var toolBucket = document.createElement("img");
+    toolBucket.src = icons.bucket;
+    toolBucket.classList.add("pixytoolbtn");
+    toolBucket.title = "Bucket";
+    toolBucket.setAttribute("data-toolid", Tools.Bucket);
+    toolBucket.onclick = function(ev){instance.selectTool(Tools.Bucket)};
+    
+
+    toolbar.appendChild(toolBrush);
+    toolbar.appendChild(toolBucket);
 }
 
 /**
@@ -303,15 +382,10 @@ class Pixy {
  * @returns A DOM element of Pixy Editor
  */
 function _generateElm() {
-    var template = `<div class="pixy">
-        <div class="pixytoolbar">
-            <!-- The toolbar here -->
-        </div>
-        <canvas class="pixyeditor">
-    </div>`;
     var div = document.createElement("div");
-    div.innerHTML = template;
-    return div.firstChild;
+    div.innerHTML = pixyTemplate;
+    var elm = div.firstChild;
+    return elm;
 }
 
 
@@ -332,6 +406,8 @@ function createEditorElm(instance, elm, imgPath = "") {
     instance.backgroundColor = '#393939';
 
     // Get Drawing context
+    var toolbar = pixyElm.firstElementChild;
+    _generateToolbar(instance,pixyElm,toolbar);
     var ctx = pixyElm.lastChild.getContext("2d");
 
     // turn off image aliasing
@@ -364,7 +440,9 @@ function createEditorElm(instance, elm, imgPath = "") {
     function ondraw(ev) {
         var x = ev.layerX / instance.zoom;
         var y = ev.layerY / instance.zoom;
-        instance.setPixel(x, y, 255, 0, 0, 255);
+        if(instance.selectedTool == Tools.Brush){
+            instance.setPixel(x, y, 255, 0, 0, 255);
+        }
     }
 
     rendererCanvas.addEventListener("mousewheel", function (ev) {
@@ -376,12 +454,12 @@ function createEditorElm(instance, elm, imgPath = "") {
         // Zooming on outside the canvas
         onmousescroll(ev);
     });
-    pixyElm.addEventListener("mousedown", function (ev) {
+    rendererCanvas.addEventListener("mousedown", function (ev) {
         // Mouse Down
         ondraw(ev);
     });
 
-    pixyElm.addEventListener("mousemove", function (ev) {
+    rendererCanvas.addEventListener("mousemove", function (ev) {
         // Check if mouse dragged
         if (ev.buttons > 0) {
             ondraw(ev);

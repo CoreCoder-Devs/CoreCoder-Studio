@@ -9,7 +9,9 @@ const packutil = require("./js/packutil");
 const ChromeTabs = require("../src/lib/chrome-tabs-custom");
 const chromeTabs = new ChromeTabs();
 const util = require("util");
+
 const Pixy = require("../src/lib/pixydust/pixydust");
+const Dialog = require("../src/js/dialog");
 
 var _fswrite = util.promisify(fs.writeFile);
 
@@ -616,8 +618,26 @@ function initFileBrowserItem(el) {
             // -------------Create-------------
             // Create sub menus
             var createSubMenuEl = document.createElement("div");
-            createSubMenuEl.appendChild(filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>'));
-            createSubMenuEl.appendChild(filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>'));
+            var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>',
+            function(e){
+                // Create a new file
+                var dlgContent = document.createElement("div");
+                var label = document.createElement("a");
+                label.innerText = "File name";
+                var input = document.createElement("input");
+                input.type = "text";
+
+                dlgContent.appendChild(label);
+                dlgContent.appendChild(input);
+
+                Dialog.createDialog("Create a new file", dlgContent, ["Create", "Cancel"], function(dialogelm,id){
+                    // When clicked a button
+                    console.log(`Dialog clicked [${id}]`);
+                });
+            });
+            var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>');
+            createSubMenuEl.appendChild(menuFile);
+            createSubMenuEl.appendChild(menuFolder);
 
             // Create sub menu unhover
             var createSubMenuUnhover = function () {

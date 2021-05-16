@@ -252,27 +252,39 @@ class Pixy {
      * @param {String} imgPath path to the image
      */
     constructor(elm, imgPath) {
+        // Used for drawing
+        this.primaryColor = '#000000';
+        this.secondaryColor = '#ffffff';
+
+        // Appearance
         this.backgroundColor = "#292929";
+
+        // Path to the actual image
         this.imgPath = imgPath;
 
+        // Internal usage
         this.image = null;
         this.imageData = null;
         this.imageWidth = 0;
         this.imageHeight = 0;
 
+        // For panning around (not implemented)
         this.offsetX = 0;
         this.offsetY = 0;
         this.zoom = 2;
 
+        // For drawing
         this.canvas = null;
         this.rendererCanvas = null;
 
-        // For drawing
+        // For drawing (data for a single pixel)
         this.pixelImageData = null;
         this.pixelData = null;
 
+        // Tool selected
         this.selectedTool = Tools.Brush;
 
+        // HTML elements
         this.elm = createEditorElm(this, elm, imgPath);
         this.toolbarElm = this.elm.firstElementChild;
     }

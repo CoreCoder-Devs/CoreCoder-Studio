@@ -8,12 +8,11 @@
 .pixyeditor {
     background-image : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAARUlEQVRYhe3VwQ0AIAgEQTD2gq1JxVINFnEmfvb+m0z44DuzTdiKUHIbUv1gAAAAAAAAAICp/vNTJfXfLwAAAAAAAAAAuAEpBfTu5QxbAAAAAElFTkSuQmCC');
     background-repeat: repeat;
-    /* width: 128px;
-    height: 128px; */
     image-rendering: pixelated;
     width: 100%;
     height: 100%;
     -webkit-user-drag: none;
+    cursor: crosshair;
 }
 
 .pixytoolbar {

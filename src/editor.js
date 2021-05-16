@@ -603,69 +603,78 @@ async function init() {
 function initFileBrowserItem(el) {
     el.addEventListener("auxclick", e => {
         if (e.which == 3) {
-            // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
-            /**
-             * The context menu code is supposed to be dynamic. As we are going to implement many types
-             * of context menu for different types of editor.
-             */
-            // Right clicked
+            showFileBrowserContextMenu(e);
+        }
+    });
+}
 
-            // Remove all opened contextmenu
-            for (var elm of $q(".contextmenu")) elm.remove();
+function showFileBrowserContextMenu(e) {
 
-            var contentElm = document.createElement("div");
+    // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
+    /**
+     * The context menu code is supposed to be dynamic. As we are going to implement many types
+     * of context menu for different types of editor.
+     */
+    // Right clicked
 
-            // -------------Create-------------
-            // Create sub menus
-            var createSubMenuEl = document.createElement("div");
-            var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>',
-            function(e){
-                // Create a new file
-                var dlgContent = document.createElement("div");
-                var label = document.createElement("a");
-                label.innerText = "File name";
-                var input = document.createElement("input");
-                input.type = "text";
+    // Remove all opened contextmenu
+    for (var elm of $q(".contextmenu")) elm.remove();
 
-                dlgContent.appendChild(label);
-                dlgContent.appendChild(input);
+    var contentElm = document.createElement("div");
 
-                Dialog.createDialog("Create a new file", dlgContent, ["Create", "Cancel"], function(dialogelm,id){
+    // -------------Create-------------
+    // Create sub menus
+    var createSubMenuEl = document.createElement("div");
+    var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>',
+        function (e) {
+            // Create a new file
+            var dlgContent = document.createElement("div");
+            var label = document.createElement("a");
+            label.innerText = "File name";
+            var input = document.createElement("input");
+            input.type = "text";
+
+            dlgContent.appendChild(label);
+            dlgContent.appendChild(input);
+
+            Dialog.createDialog(
+                "Create a new file",   // Dialog title
+                dlgContent,            // Content element
+                ["Create", "Cancel"],  // Dialog buttons
+                function (dialogelm, id) { // Onclick handler
                     // When clicked a button
                     console.log(`Dialog clicked [${id}]`);
                 });
-            });
-            var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>');
-            createSubMenuEl.appendChild(menuFile);
-            createSubMenuEl.appendChild(menuFolder);
+        });
+    var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>');
+    createSubMenuEl.appendChild(menuFile);
+    createSubMenuEl.appendChild(menuFolder);
 
-            // Create sub menu unhover
-            var createSubMenuUnhover = function () {
-                if (createSubMenuContext)
-                    createSubMenuContext.remove();
-                createSubMenuContext = null;
-            }
-            var createSubMenuContext = null;
+    // Create sub menu unhover
+    var createSubMenuUnhover = function () {
+        if (createSubMenuContext)
+            createSubMenuContext.remove();
+        createSubMenuContext = null;
+    }
+    var createSubMenuContext = null;
 
 
-            var createMenu = filebrowser.generateContextMenuElm("Create", "", null, function (x, y) {
-                // On Show children
-                if (createSubMenuContext == null)
-                    createSubMenuContext = createContextMenu(x, y, createSubMenuEl);
-            }, true);
-            contentElm.appendChild(createMenu);
-            // -------------Create End-------------
+    var createMenu = filebrowser.generateContextMenuElm("Create", "", null, function (x, y) {
+        // On Show children
+        if (createSubMenuContext == null)
+            createSubMenuContext = createContextMenu(x, y, createSubMenuEl);
+    }, true);
+    contentElm.appendChild(createMenu);
+    // -------------Create End-------------
 
-            // Rename
-            contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", null, (x, y) => createSubMenuUnhover()));
+    // Rename
+    contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", null, (x, y) => createSubMenuUnhover()));
 
-            // Delete
-            contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", null, (x, y) => createSubMenuUnhover()));
+    // Delete
+    contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", null, (x, y) => createSubMenuUnhover()));
 
-            // Show the context menu
-            createContextMenu(e.clientX, e.clientY, contentElm);
-        }
-    });
+    // Show the context menu
+    createContextMenu(e.clientX, e.clientY, contentElm);
 }
 
 /**
@@ -675,6 +684,12 @@ function initFileBrowserContextMenu() {
     document.addEventListener("click", (ev) => {
         // Remove all opened contextmenu
         for (var elm of $q(".contextmenu")) elm.remove();
+    });
+
+    $("filebrowsercontent").addEventListener("auxclick", ev => {
+        if (ev.which == 3) {
+            showFileBrowserContextMenu(ev);
+        }
     });
 
 }

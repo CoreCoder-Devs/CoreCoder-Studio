@@ -25,6 +25,8 @@
     display: flex;
     width: fit-content;
     flex-direction: column;
+    box-shadow: 2px 2px 8px black;
+    border: 1px solid rgb(19, 255, 117);
 }
 .ccdlgcaption {
     background-color: var(--var-color-bglighter);

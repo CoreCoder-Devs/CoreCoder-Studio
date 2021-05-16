@@ -147,9 +147,22 @@
     flex-wrap: nowrap;
     user-select: none;
     cursor: pointer;
+}
+
+.contextitem a{
+    
     padding: 4px;
     padding-left: 32px;
     padding-right: 16px;
+}
+
+
+.contextitem::before{
+    width: 30px;
+    height: 29px;
+    background-color: rgba(12, 12, 12, 0.582);
+    content: " ";
+    position:absolute;
 }
 
 .contextitem:hover{

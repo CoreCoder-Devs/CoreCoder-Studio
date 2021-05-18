@@ -514,6 +514,9 @@ async function onMonacoSave() {
     try {
         await _fswrite(filepath, content);
         chromeTabs.setSaved(tab);
+        
+        // Set the saved state in editor
+        openedTabs[escape(filepath)]["isSaved"] = true;
     } catch (err) {
         alert(err);
     }

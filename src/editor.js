@@ -12,6 +12,7 @@ const util = require("util");
 
 const Pixy = require("../src/lib/pixydust/pixydust");
 const Dialog = require("../src/js/dialog");
+const editorDialogs = require("./editorDialogs");
 
 var _fswrite = util.promisify(fs.writeFile);
 
@@ -394,6 +395,8 @@ function openFileBrowser(id) {
 }
 
 function goInFolder(folderName) {
+    folderName = folderName.replace(/\\+/gi, '/');
+    folderName = folderName.replace(/\/+/gi, '/');
     if (openedFileBrowser == 0) bp_relativepath += folderName;
     if (openedFileBrowser == 1) rp_relativepath += folderName;
     refreshFileBrowser();
@@ -546,13 +549,13 @@ function refreshFileBrowser() {
 
             var el = filebrowser.generateFileBrowserItemElm(
                 "..",               // Title
-                "",  // Path
+                path.dirname(browsePath),  // Path
                 "",                   // Icon
                 `goUpOneFolder();`,
                 "",                     // Type
                 true);    // isDirectory
             cont.appendChild(el);
-            initFileBrowserItem(el);
+            initFileBrowserItem(el, browsePath + path.sep + files[i]);
         }
 
         for (var i in files) {
@@ -570,7 +573,7 @@ function refreshFileBrowser() {
                 "",                     // Type
                 stat.isDirectory());    // isDirectory
             cont.appendChild(el);
-            initFileBrowserItem(el);
+            initFileBrowserItem(el, browsePath + path.sep + files[i]);
         }
     }
 }
@@ -600,15 +603,15 @@ async function init() {
  * Initialize a filebrowser item with context menu functionalities
  * @param {Node} el The element
  */
-function initFileBrowserItem(el) {
+function initFileBrowserItem(el, filepath) {
     el.addEventListener("auxclick", e => {
-        if (e.which == 3) {
-            showFileBrowserContextMenu(e);
+        if (e.which == 3 && e.target == el) {
+            showFileBrowserContextMenu(e, filepath);
         }
     });
 }
 
-function showFileBrowserContextMenu(e) {
+function showFileBrowserContextMenu(e, filepath = "") {
 
     // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
     /**
@@ -625,28 +628,8 @@ function showFileBrowserContextMenu(e) {
     // -------------Create-------------
     // Create sub menus
     var createSubMenuEl = document.createElement("div");
-    var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>',
-        function (e) {
-            // Create a new file
-            var dlgContent = document.createElement("div");
-            var label = document.createElement("a");
-            label.innerText = "File name";
-            var input = document.createElement("input");
-            input.type = "text";
-
-            dlgContent.appendChild(label);
-            dlgContent.appendChild(input);
-
-            Dialog.createDialog(
-                "Create a new file",   // Dialog title
-                dlgContent,            // Content element
-                ["Create", "Cancel"],  // Dialog buttons
-                function (dialogelm, id) { // Onclick handler
-                    // When clicked a button
-                    console.log(`Dialog clicked [${id}]`);
-                });
-        });
-    var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>');
+    var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>', () => editorDialogs.showCreateNewFileDialog());
+    var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>', () => editorDialogs.showCreateNewFolderDialog());
     createSubMenuEl.appendChild(menuFile);
     createSubMenuEl.appendChild(menuFolder);
 
@@ -667,12 +650,17 @@ function showFileBrowserContextMenu(e) {
     contentElm.appendChild(createMenu);
     // -------------Create End-------------
 
-    // Rename
-    contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", null, (x, y) => createSubMenuUnhover()));
+    if (filepath != "") {
+        // Rename
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", (dialogelm, id) =>{
+            editorDialogs.showRenameDialog(filepath, path.basename(filepath));
+        }, (x, y) => createSubMenuUnhover()));
 
-    // Delete
-    contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", null, (x, y) => createSubMenuUnhover()));
-
+        // Delete
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", (dialogelm, id) => {
+            editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
+        }, (x, y) => createSubMenuUnhover()));
+    }
     // Show the context menu
     createContextMenu(e.clientX, e.clientY, contentElm);
 }
@@ -687,7 +675,7 @@ function initFileBrowserContextMenu() {
     });
 
     $("filebrowsercontent").addEventListener("auxclick", ev => {
-        if (ev.which == 3) {
+        if (ev.which == 3 && ev.target == $("filebrowsercontent")) {
             showFileBrowserContextMenu(ev);
         }
     });

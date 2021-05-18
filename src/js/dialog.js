@@ -35,6 +35,7 @@ function createDialog(title, contentElm, buttonLabels, onclickbutton = function 
     // Create the base container
     var elm = document.createElement("div");
     elm.classList.add("ccdlg");
+    elm.onclickbutton = onclickbutton;
 
     // Create the black background
     var shadow = document.createElement("div");
@@ -81,6 +82,7 @@ function createDialog(title, contentElm, buttonLabels, onclickbutton = function 
 
     // Show the element in the window
     document.body.appendChild(elm);
+    return elm;
 }
 
 module.exports = {

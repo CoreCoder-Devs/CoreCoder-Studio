@@ -444,7 +444,7 @@ function createEditorElm(instance, elm, imgPath = "") {
 
     function onmousescroll(ev) {
         // zooming functionality
-        instance.zoom -= (ev.deltaY / 100.0) / 2.0;
+        instance.zoom -= (ev.deltaY / 100.0) / 1.0;
         instance.zoom = Math.min(Math.max(instance.zoom, 1), 40);
         instance.drawCanvas(instance, rendererCanvas, ctx);
     }

@@ -518,7 +518,9 @@ async function onMonacoSave() {
         // Set the saved state in editor
         openedTabs[escape(filepath)]["isSaved"] = true;
     } catch (err) {
-        alert(err);
+        var elm = document.createElement("a");
+        elm.innerText = String(err);
+        Dialog.createDialog("Error", elm);
     }
 }
 

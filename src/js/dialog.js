@@ -31,7 +31,7 @@ function createWindowElm(title) {
  * @param {Array} buttonLabels The buttons of the dialogs
  * @param {function(dialogelm : Node, id : Number)} onclickbutton callback when user pressed a button
  */
-function createDialog(title, contentElm, buttonLabels, onclickbutton = function (dialogelm, id) { }) {
+function createDialog(title, contentElm, buttonLabels = [], onclickbutton = function (dialogelm, id) { }) {
     // Create the base container
     var elm = document.createElement("div");
     elm.classList.add("ccdlg");

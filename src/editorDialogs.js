@@ -177,6 +177,7 @@ function showRenameDialog(filepath, filename) {
     label.innerText = "New name";
     var input = document.createElement("input");
     input.type = "text";
+    input.value = filename;
     var alertIndicator = document.createElement("a");
     alertIndicator.innerText = "";
     alertIndicator.style.color = "red";

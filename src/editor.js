@@ -303,7 +303,13 @@ async function initTabs() {
             });
             if (result == 0) {
                 // YES
-                await onMonacoSave();
+                if (tab.isEditor == 'monaco')
+                    await onMonacoSave();
+                else if (tab.isEditor == 'pixy')
+                    await onPixyDustSave();
+                else
+                    console.log(tab.isEditor);
+
                 delete openedTabs[path];
                 models.delete(elm);
                 chromeTabs.removeTab(elm);
@@ -456,6 +462,11 @@ function openFile(p) {
             path: escape(filepath)
         });
         models.set(tab, pixy);
+        pixy.addEventListener("edit", (arg) => {
+            // When content changed
+            chromeTabs.setUnsaved(tab);
+            openedTabs[escape(filepath)].isSaved = false;
+        });
 
     } else {
         // Open the text editor
@@ -537,14 +548,18 @@ async function onPixyDustSave() {
     var props = chromeTabs.getTabProperties(tab);
     var filepath = unescape(props.path);
     var model = models.get(tab);
-    var content = model.getImageContent();
+    var content = await model.getImageContent();
     try {
         await _fswrite(filepath, content);
-        // chromeTabs.setSaved(tab);
+        var buffer = Buffer.from(await content.arrayBuffer());
+        await _fswrite(filepath, buffer, () => console.log('image saved!'));
 
         // Set the saved state in editor
         openedTabs[escape(filepath)]["isSaved"] = true;
+        chromeTabs.setSaved(tab);
+        refreshFileBrowser();
     } catch (err) {
+        console.log(err);
         var elm = document.createElement("a");
         elm.innerText = String(err);
         Dialog.createDialog("Error", elm);
@@ -644,7 +659,6 @@ function initFileBrowserItem(el, filepath) {
 }
 
 function showFileBrowserContextMenu(e, filepath = "") {
-
     // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
     /**
      * The context menu code is supposed to be dynamic. As we are going to implement many types
@@ -704,6 +718,19 @@ function showFileBrowserContextMenu(e, filepath = "") {
         // Delete
         contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", (clickev) => {
             editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
+        }, (x, y) => createSubMenuUnhover()));
+    } else {
+
+        // Show in explorer
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", "", (clickev) => {
+            var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
+            if (browsePath == null || browsePath == path.sep) {
+                // cont.innerHTML = "Cannot detect pack of this type"; return;
+                return;
+            } // TODO::makes warn user that either BP or RP is not found
+            browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
+
+            open(browsePath);
         }, (x, y) => createSubMenuUnhover()));
     }
     // Show the context menu

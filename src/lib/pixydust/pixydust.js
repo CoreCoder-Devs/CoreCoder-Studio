@@ -211,7 +211,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
+var imgVersion = 1; // random number so that pixydust always load fresh image
 /**
  * Icons for toolbar
  */
@@ -254,9 +254,6 @@ class Pixy {
      * @param {String} imgPath path to the image
      */
     constructor(elm, imgPath) {
-        // Used for drawing
-        this.primaryColor = '#000000';
-        this.secondaryColor = '#ffffff';
 
         // Appearance
         this.backgroundColor = "#292929";
@@ -291,6 +288,18 @@ class Pixy {
         this.elm = createEditorElm(this, elm, imgPath);
         this.toolbarElm = this.elm.firstElementChild;
         this.setBrushColor(0, 0, 0, 255);
+
+        // Events
+        this.onedit = [];
+    }
+    /**
+     * Add event listener to pixy editor
+     * @param {String} eventName "edit" | "..."
+     * @param {function(args)} callback the function callback
+     */
+    addEventListener(eventName, callback = (arg)=>{}){
+        if(eventName == "edit")
+            this.onedit.push(callback)
     }
     /**
      * Set the brush color of it
@@ -329,6 +338,11 @@ class Pixy {
 
         // Update the screen
         this.drawCanvas(this, this.rendererCanvas, this.rendererCanvas.getContext("2d"));
+
+        // Trigger the event
+        for(var callback of this.onedit){
+            callback();
+        }
     }
     /**
      * Set a pixel on the currently editing image
@@ -409,7 +423,6 @@ class Pixy {
             type: "image/png",
             quality: 1
           });
-          console.log(data);
         return data;
     }
 }
@@ -441,10 +454,8 @@ function _generateToolbar(instance, elm, toolbar) {
     colorSelector.classList.add("pixytoolbtn");
     colorSelector.classList.add("colorpicker");
     colorSelector.title = "Primary Color";
-    colorSelector.style.setProperty("--var-pixydust-primarycolor", 'red');
-    colorSelector.setAttribute("data-toolid", Tools.Bucket);
-    var palleteElm = document.createElement("div");
-    colorSelector.appendChild(palleteElm);
+    colorSelector.style.setProperty("--var-pixydust-primarycolor", 'black');
+    // colorSelector.setAttribute("data-toolid", Tools.Bucket);
 
     // Simple example, see optional options for more configuration.
     instance.pickr = Pickr.create({
@@ -615,7 +626,7 @@ function createEditorElm(instance, elm, imgPath = "") {
             instance.imageData = instance.imageCanvas.getContext("2d").getImageData(0, 0, image.width, image.height);
             instance.drawCanvas(instance, rendererCanvas, ctx);
         }
-        image.src = imgPath;
+        image.src = imgPath + '?' + (imgVersion+=1025);
     }
 
 

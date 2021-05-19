@@ -7,6 +7,7 @@ const fs = require("fs");
 const mv = require("mv"); // to move file
 const Dialog = require("./dialog")
 const path = require("path")
+var IMAGE_RANDOMNESS_ID = 0;
 module.exports = {
     generateFileBrowserItem: function (name, path, icon, onclick, type, isDirectory) {
         /** generateFileBrowserItem
@@ -38,7 +39,9 @@ module.exports = {
         else if (icon == "") {
             // Add the file icon
             if (name.endsWith(".json") || name.endsWith(".js")) title += `<i class="fas fa-file-alt"></i>&nbsp;`
-            else if (name.endsWith(".png")) title += `<i class="fas fa-image"></i>&nbsp;`
+            else if (name.endsWith(".png")) {
+                title += `<i class="fas fa-image"></i>&nbsp;`
+            }
             else title += `<i class="fas fa-file"></i>&nbsp;`
         } else {
             // Add a space
@@ -52,7 +55,7 @@ module.exports = {
                 data-path="${path}" 
                 
                 onclick="${onclick}" class="filebrowseritem" ${style}>
-                    `+ ((icon !== "") ? `<img class="filebrowseritem-icon" src="${icon}">` : ``) + `${title}
+                    `+ ((icon !== "") ? `<img class="filebrowseritem-icon" src="${icon+"?"+(IMAGE_RANDOMNESS_ID+=2504)}">` : ``) + `${title}
                 </div>`;
     },
 

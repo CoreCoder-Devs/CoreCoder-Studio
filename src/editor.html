@@ -69,9 +69,15 @@
                     <div class="chrome-tabs-content"></div>
                 </div>
                 <div id="toolbar" class="toolbar">
-                    <div id="toolbar-editor" class="toolbar-group">
+                    <div id="toolbar-monaco" class="toolbar-group">
                         <!-- toolbar for code editor -->
-                        <div class="toolbtn" onclick="onMonacoSave()">
+                        <div class="toolbtn" onclick="onMonacoSave()" title="Save code (Ctrl+S)">
+                            <i class="fas fa-save"></i>
+                        </div>
+                    </div>
+                    <div id="toolbar-pixy" class="toolbar-group">
+                        <!-- toolbar for code editor -->
+                        <div class="toolbtn" onclick="onPixyDustSave()" title="Save image">
                             <i class="fas fa-save"></i>
                         </div>
                     </div>

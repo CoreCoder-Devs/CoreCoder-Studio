@@ -400,6 +400,18 @@ class Pixy {
 
         this.selectedTool = toolId;
     }
+
+    /**
+     * Get image 
+     */
+    async getImageContent(elm) {
+        var data = await this.imageCanvas.convertToBlob({
+            type: "image/png",
+            quality: 1
+          });
+          console.log(data);
+        return data;
+    }
 }
 /**
  * Create the toolbar

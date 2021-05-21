@@ -5,7 +5,8 @@
   "main": "launch.js",
   "scripts": {
     "start": "electron launch.js",
-    "editor": "electron launch2.js"
+    "editor": "electron launch2.js",
+	"build-all": "electron-packager . CoreCoderStudio --all"
   },
   "author": "Hanprogramer",
   "license": "ISC",

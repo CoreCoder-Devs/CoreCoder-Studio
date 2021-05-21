@@ -16,12 +16,13 @@
 }
 
 .pixytoolbar {
-    background-color: rgb(34, 34, 34);
+    background-color: var(--var-color-bgdarker-alt);
     width: 48px;
     height: 100%;
 }
 .pixytoolbtn{
     width: 32px;
+    height: 32px;
     padding: 4px;
     margin: 4px;
     user-select: none;
@@ -29,9 +30,33 @@
     margin-bottom: 0;
     margin-top: 0;
 }
+/* Color picker */
+.pixytoolbtn.colorpicker::after{
+    width: 32px;
+    height: 32px;
+    position:absolute;
+    /* Change this variable on the specific element */
+    background-color: var(--var-pixydust-primarycolor);
+    content: ' ';
+}
 .pixytoolbtn:hover{
     background-color: rgba(82, 82, 82, 0.342);
 }
 .pixytoolbtn.selected{
     background-color: rgba(102, 102, 102, 0.342);
+}
+
+
+/* Override pickr color theme */
+.pcr-app{
+    background-color: var(--var-color-bg);
+}
+.pcr-app .pcr-interaction input{
+    background-color: var(--var-color-bglighter);
+}
+.pcr-app .pcr-interaction .pcr-result{
+    background: var(--var-color-bgdarker);
+}
+.pcr-app[data-theme=nano] .pcr-selection .pcr-color-palette .pcr-palette{
+    border-radius: 0;
 }

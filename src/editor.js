@@ -9,6 +9,7 @@ const packutil = require("./js/packutil");
 const ChromeTabs = require("../src/lib/chrome-tabs-custom");
 const chromeTabs = new ChromeTabs();
 const util = require("util");
+const open = require("open") // Cross platform open a file
 
 const Pixy = require("../src/lib/pixydust/pixydust");
 const Dialog = require("../src/js/dialog");
@@ -56,7 +57,7 @@ if (rp_path == null && bp_path != null) {
 var openedTabs = {};
 /**
  * key: tabElement
- * value: MonacoModel */
+ * value: MonacoModel or Pixy instance */
 var models = new WeakMap();
 
 const app = new Vue({
@@ -267,16 +268,19 @@ async function initTabs() {
         for (var elm of document.querySelectorAll(".toolbar-group")) {
             elm.style.display = "none";
         }
-
         // Activate the correct editor if data exists
-        if (data != undefined) {
+        if (data) {
             data.contentEl.style.display = "block";
-            if (data.isEditor != undefined) {
+            if (data.isEditor && data.isEditor == "monaco") {
                 // If it is an editor, set the editor model
                 monacoEditor.setModel(models.get(tabEl));
                 monacoEditor.layout();
                 // Enable the editor toolbar
-                $("toolbar-editor").style.display = "block";
+                $("toolbar-monaco").style.display = "block";
+            } else if (data.isEditor && data.isEditor == "pixy") {
+                // Pixydust editor
+                // Enable the Pixydust toolbar
+                $("toolbar-pixy").style.display = "block";
             }
         }
         // ipcRenderer.send('discord-activity-change', {
@@ -299,7 +303,13 @@ async function initTabs() {
             });
             if (result == 0) {
                 // YES
-                await onMonacoSave();
+                if (tab.isEditor == 'monaco')
+                    await onMonacoSave();
+                else if (tab.isEditor == 'pixy')
+                    await onPixyDustSave();
+                else
+                    console.log(tab.isEditor);
+
                 delete openedTabs[path];
                 models.delete(elm);
                 chromeTabs.removeTab(elm);
@@ -442,7 +452,7 @@ function openFile(p) {
         document.getElementById("editor-content").appendChild(elem);
 
         // Add to the opened file tabs
-        openedTabs[escape(filepath)] = { contentEl: elem };
+        openedTabs[escape(filepath)] = { contentEl: elem, isEditor: 'pixy' };
 
         // Open a tab
         // Favicon path needs to remove quotation marks in order to work properly on some folder
@@ -450,6 +460,12 @@ function openFile(p) {
             title: filename,
             favicon: filepath.replace(/[\"\']/gi, "\\\'"),
             path: escape(filepath)
+        });
+        models.set(tab, pixy);
+        pixy.addEventListener("edit", (arg) => {
+            // When content changed
+            chromeTabs.setUnsaved(tab);
+            openedTabs[escape(filepath)].isSaved = false;
         });
 
     } else {
@@ -471,7 +487,7 @@ function openFile(p) {
         var elem = document.getElementById("myeditor");
         openedTabs[escape(filepath)] = {
             contentEl: elem,
-            isEditor: true,
+            isEditor: 'monaco',
             isSaved: true
         };
 
@@ -514,8 +530,39 @@ async function onMonacoSave() {
     try {
         await _fswrite(filepath, content);
         chromeTabs.setSaved(tab);
+
+        // Set the saved state in editor
+        openedTabs[escape(filepath)]["isSaved"] = true;
     } catch (err) {
-        alert(err);
+        var elm = document.createElement("a");
+        elm.innerText = String(err);
+        Dialog.createDialog("Error", elm);
+    }
+}
+
+/**
+ * Event trigerred when user clicked save, on the Pixydust editor
+ */
+async function onPixyDustSave() {
+    var tab = chromeTabs.activeTabEl;
+    var props = chromeTabs.getTabProperties(tab);
+    var filepath = unescape(props.path);
+    var model = models.get(tab);
+    var content = await model.getImageContent();
+    try {
+        await _fswrite(filepath, content);
+        var buffer = Buffer.from(await content.arrayBuffer());
+        await _fswrite(filepath, buffer, () => console.log('image saved!'));
+
+        // Set the saved state in editor
+        openedTabs[escape(filepath)]["isSaved"] = true;
+        chromeTabs.setSaved(tab);
+        refreshFileBrowser();
+    } catch (err) {
+        console.log(err);
+        var elm = document.createElement("a");
+        elm.innerText = String(err);
+        Dialog.createDialog("Error", elm);
     }
 }
 
@@ -612,7 +659,6 @@ function initFileBrowserItem(el, filepath) {
 }
 
 function showFileBrowserContextMenu(e, filepath = "") {
-
     // NOTE IF YOU WANT TO CHANGE THE CONTEXT MENU CODE
     /**
      * The context menu code is supposed to be dynamic. As we are going to implement many types
@@ -651,14 +697,40 @@ function showFileBrowserContextMenu(e, filepath = "") {
     // -------------Create End-------------
 
     if (filepath != "") {
+        // Show in explorer
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", "", (clickev) => {
+            var stat = fs.statSync(filepath);
+            if (stat.isDirectory()) {
+                // Open the folder
+                open(filepath);
+            }
+            else {
+                // Open the folder containing the file
+                open(path.dirname(filepath));
+            }
+        }, (x, y) => createSubMenuUnhover()));
+
         // Rename
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", (dialogelm, id) =>{
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", (clickev) => {
             editorDialogs.showRenameDialog(filepath, path.basename(filepath));
         }, (x, y) => createSubMenuUnhover()));
 
         // Delete
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", (dialogelm, id) => {
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", (clickev) => {
             editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
+        }, (x, y) => createSubMenuUnhover()));
+    } else {
+
+        // Show in explorer
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", "", (clickev) => {
+            var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
+            if (browsePath == null || browsePath == path.sep) {
+                // cont.innerHTML = "Cannot detect pack of this type"; return;
+                return;
+            } // TODO::makes warn user that either BP or RP is not found
+            browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
+
+            open(browsePath);
         }, (x, y) => createSubMenuUnhover()));
     }
     // Show the context menu

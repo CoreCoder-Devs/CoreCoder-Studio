@@ -31,6 +31,7 @@ async function lookForDependencies(currentDir, packtype) {
             var data = await _read(currentDir + "/" + file);
             var json = JSON.parse(data.toString());
             var uuid = json["header"]["uuid"];
+            if(!json.dependencies) return
             var dependencyUUID = json["dependencies"][0]["uuid"];
             var result = await lookForPackWithUUID(dependencyUUID, packtype);
 

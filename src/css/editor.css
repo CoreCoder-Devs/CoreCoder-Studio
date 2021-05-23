@@ -50,6 +50,14 @@
 .editor-content {
     width: -webkit-fill-available;
     height: -webkit-fill-available;
+    /* width: 100%;
+    height: 50%; */
+    display: block;
+    /* position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--var-side-width) + 8px);
+    right: 0; */
 }
 
 #myeditor {
@@ -177,4 +185,8 @@
     position: absolute;
     right: 8px;
     opacity: 75%;
+}
+
+webview > #shadow-root > iframe {
+    height: 100%;
 }

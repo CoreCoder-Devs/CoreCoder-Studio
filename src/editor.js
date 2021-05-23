@@ -1,5 +1,5 @@
 const electron = require("electron").remote;
-const { dialog } = require('electron').remote;
+const { dialog,BrowserView } = require('electron').remote;
 const ipc = require("electron").ipcRenderer;
 const { settings } = require("./js/global_settings");
 const fs = require("fs");
@@ -281,6 +281,10 @@ async function initTabs() {
                 // Pixydust editor
                 // Enable the Pixydust toolbar
                 $("toolbar-pixy").style.display = "block";
+            } else if (data.isEditor && data.isEditor == "preview-html") {
+                // Pixydust editor
+                // Enable the Pixydust toolbar
+                $("toolbar-html").style.display = "block";
             }
         }
         // ipcRenderer.send('discord-activity-change', {
@@ -512,48 +516,57 @@ function openFile(p) {
  * @param {String} p path
  */
 function openPreviewer(p) {
-    var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
+    // var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
 
     // Convert the \ to / for OS compatibility
-    filepath = filepath.replace(/\\/gi, "/");
+    // filepath = filepath.replace(/\\/gi, "/");
 
     // Clean up multiple slashes
-    filepath = filepath.replace(/\/+/gi, "/");
+    // filepath = filepath.replace(/\/+/gi, "/");
+    var filepath = p;
 
     if (escape(filepath) in openedTabs) {
         // Change the active tab instead when the tab is already opened
         // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
         return;
     }
-    if (filepath.endsWith(".png")) {
+    if (filepath.endsWith(".html")) {
         // Open the image editor
         let filename = path.parse(filepath).base;
 
         var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
 
-        var pixy = Pixy.createEditor(elem, filepath);
+        var webview = document.createElement("webview");
+        webview.style.cssText = `
+        height:480px; 
+        width :640px; 
+        background-color: white;
+        display: inline-flex;`
+        // webview.setAttribute("src", `http://www.google.com`);
+        webview.src = `file:///${filepath}`;
+        // webview.setBounds({ x: 0, y: 0, width: 300, height: 300 })
+        // webview.webContents.loadURL('https://electronjs.org')
 
-        // console.log(img.zoom);
+        console.log(webview);
 
-        elem.appendChild(pixy.elm);
+        elem.appendChild(webview);
         document.getElementById("editor-content").appendChild(elem);
 
         // Add to the opened file tabs
-        openedTabs[escape(filepath)] = { contentEl: elem, isEditor: 'pixy' };
+        openedTabs[escape(filepath)] = { contentEl: elem, isEditor: 'preview-html' };
 
         // Open a tab
         // Favicon path needs to remove quotation marks in order to work properly on some folder
         let tab = chromeTabs.addTab({
-            title: filename,
-            favicon: filepath.replace(/[\"\']/gi, "\\\'"),
+            title: '<i class="fas fa-globe" style="font-size: 16px"></i>&nbsp;' + filename,
             path: escape(filepath)
         });
-        models.set(tab, pixy);
-        pixy.addEventListener("edit", (arg) => {
-            // When content changed
-            chromeTabs.setUnsaved(tab);
-            openedTabs[escape(filepath)].isSaved = false;
-        });
+        // models.set(tab, pixy);
+        // pixy.addEventListener("edit", (arg) => {
+        //     // When content changed
+        //     chromeTabs.setUnsaved(tab);
+        //     openedTabs[escape(filepath)].isSaved = false;
+        // });
 
     }
     app.$data.noFileOpen = false;
@@ -587,6 +600,26 @@ async function onMonacoSave() {
         // Set the saved state in editor
         openedTabs[escape(filepath)]["isSaved"] = true;
     } catch (err) {
+        var elm = document.createElement("a");
+        elm.innerText = String(err);
+        Dialog.createDialog("Error", elm);
+    }
+}
+
+/**
+ * Refresh the currently opened HTML Previewer
+ */
+function onHTMLPreviewRefresh(){
+    var tab = chromeTabs.activeTabEl;
+    var props = chromeTabs.getTabProperties(tab);
+    var filepath = unescape(props.path);
+    var tabData = openedTabs[escape(filepath)];
+
+    try {
+        var webview = tabData.contentEl.firstElementChild;
+        webview.reload();
+    } catch (err) {
+        console.log(err);
         var elm = document.createElement("a");
         elm.innerText = String(err);
         Dialog.createDialog("Error", elm);
@@ -751,7 +784,7 @@ function showFileBrowserContextMenu(e, filepath = "") {
 
     if (filepath != "") {
         // Show in explorer
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", "", (clickev) => {
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", '<i class="fas fa-folder-open"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
             var stat = fs.statSync(filepath);
             if (stat.isDirectory()) {
                 // Open the folder
@@ -764,10 +797,10 @@ function showFileBrowserContextMenu(e, filepath = "") {
         }, (x, y) => createSubMenuUnhover()));
 
         // Open HTML preview
-        if(filepath.endsWith(".html"))
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Open HTML preview", '<i class="fas fa-globe"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
-            // editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
-        }, (x, y) => createSubMenuUnhover()));
+        if (filepath.endsWith(".html"))
+            contentElm.appendChild(filebrowser.generateContextMenuElm("Open HTML preview", '<i class="fas fa-globe"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
+                openPreviewer(filepath);
+            }, (x, y) => createSubMenuUnhover()));
 
         // Rename
         contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", (clickev) => {
@@ -781,7 +814,7 @@ function showFileBrowserContextMenu(e, filepath = "") {
     } else {
 
         // Show in explorer
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", "", (clickev) => {
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Show in explorer", '<i class="fas fa-folder-open"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
             var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
             if (browsePath == null || browsePath == path.sep) {
                 // cont.innerHTML = "Cannot detect pack of this type"; return;

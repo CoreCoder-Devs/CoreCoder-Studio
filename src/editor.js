@@ -338,6 +338,7 @@ async function initTabs() {
                 elm.style.display = "none";
             }
 
+            app.$data.noFileOpen = true;
             //     ipcRenderer.send('discord-activity-change', {
             //         details: `${project_info.bp_name}`
             //     })
@@ -502,6 +503,58 @@ function openFile(p) {
 
         // ----- Enabling Monaco Integrations with CoreCoder ------ //
         initMonacoModel(model, tab, filepath);
+    }
+    app.$data.noFileOpen = false;
+}
+
+/**
+ * Like open file, but for previewer
+ * @param {String} p path
+ */
+function openPreviewer(p) {
+    var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
+
+    // Convert the \ to / for OS compatibility
+    filepath = filepath.replace(/\\/gi, "/");
+
+    // Clean up multiple slashes
+    filepath = filepath.replace(/\/+/gi, "/");
+
+    if (escape(filepath) in openedTabs) {
+        // Change the active tab instead when the tab is already opened
+        // chromeTabs.activeTabEl = openedTabs[escape(filePath)].tabEl;
+        return;
+    }
+    if (filepath.endsWith(".png")) {
+        // Open the image editor
+        let filename = path.parse(filepath).base;
+
+        var elem = htmlToElem(`<div style="height:100%" class="editor-content-content"></div>`);
+
+        var pixy = Pixy.createEditor(elem, filepath);
+
+        // console.log(img.zoom);
+
+        elem.appendChild(pixy.elm);
+        document.getElementById("editor-content").appendChild(elem);
+
+        // Add to the opened file tabs
+        openedTabs[escape(filepath)] = { contentEl: elem, isEditor: 'pixy' };
+
+        // Open a tab
+        // Favicon path needs to remove quotation marks in order to work properly on some folder
+        let tab = chromeTabs.addTab({
+            title: filename,
+            favicon: filepath.replace(/[\"\']/gi, "\\\'"),
+            path: escape(filepath)
+        });
+        models.set(tab, pixy);
+        pixy.addEventListener("edit", (arg) => {
+            // When content changed
+            chromeTabs.setUnsaved(tab);
+            openedTabs[escape(filepath)].isSaved = false;
+        });
+
     }
     app.$data.noFileOpen = false;
 }
@@ -674,8 +727,8 @@ function showFileBrowserContextMenu(e, filepath = "") {
     // -------------Create-------------
     // Create sub menus
     var createSubMenuEl = document.createElement("div");
-    var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 8px; margin-top: 4px"></i>', () => editorDialogs.showCreateNewFileDialog());
-    var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 8px; margin-top: 4px"></i>', () => editorDialogs.showCreateNewFolderDialog());
+    var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 7px; margin-top: 7px"></i>', () => editorDialogs.showCreateNewFileDialog());
+    var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
     createSubMenuEl.appendChild(menuFile);
     createSubMenuEl.appendChild(menuFolder);
 
@@ -710,13 +763,19 @@ function showFileBrowserContextMenu(e, filepath = "") {
             }
         }, (x, y) => createSubMenuUnhover()));
 
+        // Open HTML preview
+        if(filepath.endsWith(".html"))
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Open HTML preview", '<i class="fas fa-globe"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
+            // editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
+        }, (x, y) => createSubMenuUnhover()));
+
         // Rename
         contentElm.appendChild(filebrowser.generateContextMenuElm("Rename", "", (clickev) => {
             editorDialogs.showRenameDialog(filepath, path.basename(filepath));
         }, (x, y) => createSubMenuUnhover()));
 
         // Delete
-        contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", "", (clickev) => {
+        contentElm.appendChild(filebrowser.generateContextMenuElm("Delete", '<i class="fas fa-trash"  style="position: absolute; left: 7px; margin-top: 7px"></i>', (clickev) => {
             editorDialogs.showDeleteFileDialog(filepath, path.basename(filepath))
         }, (x, y) => createSubMenuUnhover()));
     } else {

@@ -429,8 +429,10 @@ function goUpOneFolder() {
     refreshFileBrowser();
 }
 
-function openFile(p) {
+function openFile(p, absolute=false) {
     var filepath = (openedFileBrowser == 0 ? bp_path + bp_relativepath : rp_path + rp_relativepath) + p;
+    if(absolute)
+        filepath = p;
 
     // Convert the \ to / for OS compatibility
     filepath = filepath.replace(/\\/gi, "/");
@@ -765,7 +767,7 @@ function showFileBrowserContextMenu(e, filepath = "") {
     var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
 
     // Minecraft content creator
-    var menuItem   = filebrowser.generateContextMenuElm("Item", '<img src="./resources/images/folder/item.png"     style="width: 16px; height: 16px; object-fit: scale-down; position: absolute; left: 7px; margin-top:7px"></img>', () => editorDialogs.showCreateNewFolderDialog());
+    var menuItem   = filebrowser.generateContextMenuElm("Item", '<img src="./resources/images/folder/item.png"     style="width: 16px; height: 16px; object-fit: scale-down; position: absolute; left: 7px; margin-top:7px"></img>', () => editorDialogs.showCreateNewItemDialog());
     var menuBlock  = filebrowser.generateContextMenuElm("Block", '<img src="./resources/images/folder/blocks.png"  style="width: 16px; height: 16px; object-fit: scale-down; position: absolute; left: 7px; margin-top:7px"></img>', () => editorDialogs.showCreateNewFolderDialog());
     var menuEntity = filebrowser.generateContextMenuElm("Entity", '<img src="./resources/images/folder/entity.png" style="width: 16px; height: 16px; object-fit: scale-down; position: absolute; left: 7px; margin-top:7px"></img>', () => editorDialogs.showCreateNewFolderDialog());
     createSubMenuEl.appendChild(menuFile);

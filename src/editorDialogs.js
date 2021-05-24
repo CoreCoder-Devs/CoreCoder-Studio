@@ -444,7 +444,7 @@ async function showCreateNewItemDialog() {
         async function (dialogelm, id) { // Onclick handler
             // When clicked a button
             if (id == 0) {
-                let id = idInput.value;
+                let id = idInput.value == "" ? idInput.placeholder : idInput.value;
                 let damage = damageInput.value == "" ? "100" : damageInput.value;
                 let durability = durabilityInput.value == "" ? "100" : durabilityInput.value;
                 let stackedByData = stackedInput.checked;

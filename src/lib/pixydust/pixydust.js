@@ -297,8 +297,8 @@ class Pixy {
      * @param {String} eventName "edit" | "..."
      * @param {function(args)} callback the function callback
      */
-    addEventListener(eventName, callback = (arg)=>{}){
-        if(eventName == "edit")
+    addEventListener(eventName, callback = (arg) => { }) {
+        if (eventName == "edit")
             this.onedit.push(callback)
     }
     /**
@@ -340,7 +340,7 @@ class Pixy {
         this.drawCanvas(this, this.rendererCanvas, this.rendererCanvas.getContext("2d"));
 
         // Trigger the event
-        for(var callback of this.onedit){
+        for (var callback of this.onedit) {
             callback();
         }
     }
@@ -422,7 +422,7 @@ class Pixy {
         var data = await this.imageCanvas.convertToBlob({
             type: "image/png",
             quality: 1
-          });
+        });
         return data;
     }
 }
@@ -626,7 +626,7 @@ function createEditorElm(instance, elm, imgPath = "") {
             instance.imageData = instance.imageCanvas.getContext("2d").getImageData(0, 0, image.width, image.height);
             instance.drawCanvas(instance, rendererCanvas, ctx);
         }
-        image.src = imgPath + '?' + (imgVersion+=1025);
+        image.src = imgPath + '?' + (imgVersion += 1025);
     }
 
 
@@ -644,6 +644,25 @@ function createEditor(elm, imgPath) {
     return new Pixy(elm, imgPath);
 }
 
+/**
+ * Create an empty image at the file location
+ * @param {String} path filepath
+ * @param {Number} width width of the image
+ * @param {Number} height height of the image
+ */
+async function createImage(path, width, height) {
+    var canvas = new OffscreenCanvas(width, height);
+    var context = canvas.getContext("2d");
+    var data = await canvas.convertToBlob({
+        type: "image/png",
+        quality: 1
+    });
+
+    var buffer = Buffer.from(await data.arrayBuffer());
+    await _fswrite(path, buffer, () => {});
+}
+
 module.exports = {
-    createEditor
+    createEditor,
+    createImage
 };

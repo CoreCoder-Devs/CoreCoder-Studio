@@ -187,6 +187,8 @@
     opacity: 75%;
 }
 
-webview > #shadow-root > iframe {
-    height: 100%;
+.contextdivider{
+    height: 1px;
+    width: 100%;
+    background-color: var(--var-color-outline);
 }

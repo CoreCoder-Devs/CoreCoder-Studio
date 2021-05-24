@@ -636,7 +636,7 @@ async function onPixyDustSave() {
     var model = models.get(tab);
     var content = await model.getImageContent();
     try {
-        await _fswrite(filepath, content);
+        // await _fswrite(filepath, content);
         var buffer = Buffer.from(await content.arrayBuffer());
         await _fswrite(filepath, buffer, () => console.log('image saved!'));
 
@@ -761,9 +761,25 @@ function showFileBrowserContextMenu(e, filepath = "") {
     // Create sub menus
     var createSubMenuEl = document.createElement("div");
     var menuFile = filebrowser.generateContextMenuElm("File", '<i class="fas fa-file-alt" style="position: absolute; left: 7px; margin-top: 7px"></i>', () => editorDialogs.showCreateNewFileDialog());
+    var menuImage = filebrowser.generateContextMenuElm("Image", '<i class="fas fa-image" style="position: absolute; left: 7px; margin-top: 7px"></i>', () => editorDialogs.showCreateNewImageDialog());
     var menuFolder = filebrowser.generateContextMenuElm("Folder", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
+
+    // Minecraft content creator
+    var menuItem   = filebrowser.generateContextMenuElm("Item", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
+    var menuBlock  = filebrowser.generateContextMenuElm("Block", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
+    var menuEntity = filebrowser.generateContextMenuElm("Entity", '<i class="fas fa-folder" style="position: absolute; left: 7px; margin-top:7px"></i>', () => editorDialogs.showCreateNewFolderDialog());
     createSubMenuEl.appendChild(menuFile);
     createSubMenuEl.appendChild(menuFolder);
+    createSubMenuEl.appendChild(menuImage);
+
+    let divider = document.createElement("div");
+    divider.classList.add("contextdivider");
+
+    createSubMenuEl.appendChild(divider);
+    createSubMenuEl.appendChild(menuItem);
+    createSubMenuEl.appendChild(menuBlock);
+    createSubMenuEl.appendChild(menuEntity);
+
 
     // Create sub menu unhover
     var createSubMenuUnhover = function () {

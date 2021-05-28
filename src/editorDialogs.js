@@ -331,7 +331,11 @@ async function showCreateNewImageDialog() {
 function createJSON(filepath, obj) {
     return fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t'));
 }
-
+function toTitleCase(str) {
+    return str.toLowerCase().split('_').map(function (word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }
 async function showCreateNewItemDialog() {
     // Create a new minecraft item
     var dlgContent = document.createElement("div");
@@ -455,6 +459,8 @@ async function showCreateNewItemDialog() {
                 if (itemname.length > 1) {
                     itemname = itemname[1];
                 }
+                
+                let displayname = toTitleCase(itemname);
                 filename = itemname + ".json";
                 var filepath = bp_path + path.sep + "items" + path.sep + filename;
 
@@ -492,16 +498,16 @@ async function showCreateNewItemDialog() {
 
                     var obj =
                     {
-                        "format_version": "1.16.0",
+                        "format_version": "1.16.100",
                         "minecraft:item": {
                             "description": {
                                 "identifier": id
                             },
                             "components": {
                                 "minecraft:stacked_by_data": stackedByData,
-                                "minecraft:glint": glint, // Still untested
+                                "minecraft:glint": { "value": glint }, // Still untested
                                 "minecraft:hand_equipped": handequipped,
-
+                                "minecraft:display_name" : {"value":displayname},
                                 "minecraft:icon": {
                                     "texture": itemname
                                 },
@@ -511,7 +517,7 @@ async function showCreateNewItemDialog() {
 
                     if (durabilityCheckbox.checked) {
                         // Add the durabiity component
-                        obj["minecraft:durability"] = {
+                        obj["minecraft:item"]["components"]["minecraft:durability"] = {
                             "max_durability": Number(durability),
                             "damage_chance": {
                                 "min": 5,
@@ -521,7 +527,11 @@ async function showCreateNewItemDialog() {
                     }
 
                     if (damageCheckbox.checked) {
-                        obj["minecraft:damage"] = Number(damage);
+                        obj["minecraft:item"]["components"]["minecraft:damage"] = Number(damage);
+                    }
+
+                    if (stackedByData) {
+                        obj["minecraft:item"]["components"]["minecraft:max_stack_size"] = 1;
                     }
                     createJSON(filepath, obj);
 
@@ -531,7 +541,7 @@ async function showCreateNewItemDialog() {
                     openFile(filepath, true);
                     dlg.remove();
                 }
-            }else if(id == 1){
+            } else if (id == 1) {
                 // Help button
                 var a = document.createElement("a");
                 a.innerText = `Generates item on the Behavior side only. Does not require pack to have resource pack. You have to specify the item ID as it will be used in the icon component`

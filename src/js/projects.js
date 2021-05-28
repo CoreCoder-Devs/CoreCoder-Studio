@@ -31,8 +31,6 @@ module.exports = new class Projects {
                 //validate data
                 if (fs.readdirSync(project.path)) { //check if it is still a thing
 
-                    console.log(project.path + "/manifest.json")
-
                     const manifest = require(project.path + "/manifest.json")
 
                     if (manifest.header.uuid !== project.uuid) { //update uuid

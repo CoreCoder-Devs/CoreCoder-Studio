@@ -34,14 +34,14 @@ function showCreateNewFileDialog() {
                 var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
                 browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
                 if (filename == "") {
-                    alertIndicator.innerText = "Filename can't be empty";
+                    alertIndicator.innerText = "File name can't be empty";
                 }
                 else if (filename.match(/([\\~#%&*{}/:<>?|\"-])/gi) != null) {
                     // Alert errror
-                    alertIndicator.innerText = "Filename contains illegal character";
+                    alertIndicator.innerText = "File name contains illegal character";
                 }
                 else if (fs.existsSync(browsePath + path.sep + filename)) {
-                    alertIndicator.innerText = "Filename already exists\n" + browsePath + path.sep + filename;
+                    alertIndicator.innerText = "File name already exists\n" + browsePath + path.sep + filename;
                 } else {
                     alertIndicator.innerText = "";
                     fs.writeFileSync(browsePath + path.sep + filename, "");
@@ -96,11 +96,15 @@ function showCreateNewFolderDialog() {
                 browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
                 if (filename.match(/([\\~#%&*{}/:<>?|\"-])/gi) != null) {
                     // Alert errror
-                    alertIndicator.innerText = "Filename contains illegal character";
+                    alertIndicator.innerText = "Folder name contains illegal character";
                 }
+                else if (filename === "") {
+                    alertIndicator.innerText = "Folder name is empty."
+                } 
                 else if (fs.existsSync(browsePath + path.sep + filename)) {
-                    alertIndicator.innerText = "Filename already exists";
-                } else {
+                    alertIndicator.innerText = "Folder name already exists";
+                }
+                else {
                     alertIndicator.innerText = "";
                     fs.mkdirSync(browsePath + path.sep + filename);
 
@@ -201,14 +205,14 @@ function showRenameDialog(filepath, filename) {
                 var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
                 browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
                 if (filename == "") {
-                    alertIndicator.innerText = "Filename can't be empty";
+                    alertIndicator.innerText = "File name can't be empty";
                 }
                 else if (filename.match(/([\\~#%&*{}/:<>?|\"-])/gi) != null) {
                     // Alert errror
-                    alertIndicator.innerText = "Filename contains illegal character";
+                    alertIndicator.innerText = "File name contains illegal character";
                 }
                 else if (fs.existsSync(browsePath + path.sep + input.value)) {
-                    alertIndicator.innerText = "Filename already exists";
+                    alertIndicator.innerText = "File name already exists";
                 } else {
                     alertIndicator.innerText = "";
                     fs.renameSync(browsePath + path.sep + filename, browsePath + path.sep + input.value);
@@ -285,7 +289,7 @@ async function showCreateNewImageDialog() {
                 var browsePath = openedFileBrowser == 0 ? bp_path : rp_path;
                 browsePath += openedFileBrowser == 0 ? bp_relativepath : rp_relativepath;
                 if (filename == "") {
-                    alertIndicator.innerText = "Filename can't be empty";
+                    alertIndicator.innerText = "File name can't be empty";
                 }
                 else if (inputW.value == "" || inputH.value == "") {
                     alertIndicator.innerText = "Size can't be empty";
@@ -295,10 +299,10 @@ async function showCreateNewImageDialog() {
                 }
                 else if (filename.match(/([\\~#%&*{}/:<>?|\"-])/gi) != null) {
                     // Alert errror
-                    alertIndicator.innerText = "Filename contains illegal character";
+                    alertIndicator.innerText = "File name contains illegal character";
                 }
                 else if (fs.existsSync(browsePath + path.sep + filename)) {
-                    alertIndicator.innerText = "Filename already exists\n" + browsePath + path.sep + filename;
+                    alertIndicator.innerText = "File name already exists\n" + browsePath + path.sep + filename;
                 } else {
                     alertIndicator.innerText = "";
                     // fs.writeFileSync(browsePath + path.sep + filename, "");
@@ -479,10 +483,10 @@ async function showCreateNewItemDialog() {
                 }
                 else if (id.match(/([\\~#%&*{}/<>?|\"-])/gi) != null) {
                     // Alert errror
-                    alertIndicator.innerText = "Filename contains illegal character";
+                    alertIndicator.innerText = "File name contains illegal character";
                 }
                 else if (fs.existsSync(filepath)) {
-                    alertIndicator.innerText = "Filename already exists\n" + filepath;
+                    alertIndicator.innerText = "File name already exists\n" + filepath;
                 } else {
                     alertIndicator.innerText = "";
 

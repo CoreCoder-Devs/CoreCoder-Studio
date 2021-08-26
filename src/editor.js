@@ -352,7 +352,7 @@ async function initTabs() {
 }
 
 function initResizableSidePanel() {
-    const Draggabilly = require("../src/lib/chrome-tabs-custom/node_modules/draggabilly");
+    const Draggabilly = require("draggabilly");
     var elem = document.querySelector('.resizer-editor');
     var draggie = new Draggabilly(elem, {
         // options...

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron launch.js",
     "editor": "electron launch2.js",
-	"build-all": "electron-packager . CoreCoderStudio --all"
+    "build-all": "electron-packager . CoreCoderStudio --all"
   },
   "author": "Hanprogramer",
   "license": "ISC",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@simonwep/pickr": "^1.8.1",
+    "draggabilly": "^2.3.0",
     "electron-devtools-installer": "^3.1.1",
     "get-size": "^2.0.3",
     "image-size": "^0.9.7",

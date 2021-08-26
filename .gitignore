@@ -40,9 +40,11 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+/node_modules/
 jspm_packages/
 
+# Allow chrome-tabs-custom's draggabilly
+!src/lib/chrome-tabs-custom/node_modules
 # TypeScript v1 declaration files
 typings/
 

@@ -24,8 +24,11 @@ module.exports = {
                     );
                     break
                 case 'linux':
-                    this.appFolder = path.join(os.homedir(), '.local/share/CoreCoders');
-                    this.comMojang = "";
+                    this.appFolder = path.join(os.homedir(), '/CoreCoderStudio');
+                    this.comMojang = path.join(
+                        process.env['HOME'],
+                        '/.var/app/io.mrarm.mcpelauncher/data/mcpelauncher/games/com.mojang/'
+                    );
                     break
                 case 'darwin':
                     this.appFolder = path.join(

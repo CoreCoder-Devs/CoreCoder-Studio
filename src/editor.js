@@ -301,29 +301,30 @@ async function initTabs() {
 
         if ("isSaved" in tab && tab.isSaved == false) {
             var result = dialog.showMessageBoxSync(electron.getCurrentWindow(), {
-                message: "File is not saved, would you like to save first?",
-                buttons: ["Yes", "No", "Cancel"],
+                message: "File is not saved. You will lose your progress if you quit without saving.",
+                buttons: ["Save and close", "Don't save and close", "Cancel"],
                 type: "warning"
             });
-            if (result == 0) {
-                // YES
-                if (tab.isEditor == 'monaco')
-                    await onMonacoSave();
-                else if (tab.isEditor == 'pixy')
-                    await onPixyDustSave();
-                else
-                    console.log(tab.isEditor);
-
-                delete openedTabs[path];
-                models.delete(elm);
-                chromeTabs.removeTab(elm);
-            } else if (result == 1) {
-                // NO
-                delete openedTabs[path];
-                models.delete(elm);
-                chromeTabs.removeTab(elm);
-            } else if (result == 2) {
-                // Cancel
+            switch(result) {
+                case 0:
+                    if (tab.isEditor == 'monaco')
+                        await onMonacoSave();
+                    else if (tab.isEditor == 'pixy')
+                        await onPixyDustSave();
+                    else
+                        console.log(tab.issEditor);
+        
+                    delete openedTabs[path];
+                    models.delete(elm);
+                    chromeTabs.removeTab(elm);
+                    break;
+                case 1:
+                    delete openedTabs[path];
+                    models.delete(elm);
+                    chromeTabs.removeTab(elm);
+                    break;
+                case 2:
+                    break;
             }
 
         } else {

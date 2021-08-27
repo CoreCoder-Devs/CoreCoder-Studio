@@ -1,5 +1,5 @@
 const electron = require("electron").remote;
-const { dialog,BrowserView } = require('electron').remote;
+const { dialog } = require('electron').remote;
 const ipc = require("electron").ipcRenderer;
 const { settings } = require("./js/global_settings");
 const fs = require("fs");
@@ -14,6 +14,8 @@ const open = require("open") // Cross platform open a file
 const Pixy = require("../src/lib/pixydust/pixydust");
 const Dialog = require("../src/js/dialog");
 const editorDialogs = require("./editorDialogs");
+
+const { SidePanel } = require('./components/SidePanel')
 
 var _fswrite = util.promisify(fs.writeFile);
 
@@ -38,16 +40,6 @@ var bp_path = window.localStorage.getItem("bp_path");
 var bp_relativepath = path.sep;
 var rp_path = window.localStorage.getItem("rp_path");
 var rp_relativepath = path.sep;
-
-if (bp_path == null && rp_path != null) {
-    openedFileBrowser = 1;
-    openFileBrowser(1);
-}
-
-if (rp_path == null && bp_path != null) {
-    openedFileBrowser = 0;
-    openFileBrowser(0);
-}
 
 /**
  * Opened tabs
@@ -79,6 +71,10 @@ const app = new Vue({
         ]
     },
 
+    components: {
+        SidePanel
+    },
+
     created() {
         settings.GlobalSettings.lang = "cn";
         settings.localizeInterface();
@@ -93,7 +89,29 @@ const app = new Vue({
     }
 });
 
+
 var monacoEditor = null;
+
+async function init() {
+    initMonaco();
+    initTabs();
+    initResizableSidePanel();
+    if (rp_path == null)
+        rp_path = await packutil.lookForDependencies(bp_path, "resources");
+    if (bp_path == null)
+        bp_path = await packutil.lookForDependencies(rp_path, "data");
+    initFileBrowserContextMenu();
+
+    if (bp_path == null && rp_path != null) {
+        openFileBrowser(1);
+    }
+    
+    if (rp_path == null && bp_path != null) {
+        openFileBrowser(0);
+    }
+    
+}
+
 
 function initMonaco() {
     // ----- Initializing Monaco ------ //
@@ -184,8 +202,7 @@ function openSidePanel(id, tabElem) {
     if (tabElem == null || tabElem.classList.contains("selected")) {
         // If the tab is active, deactivate all tabs
         var children = document.getElementById("sidebar").children;
-        for (var i = 0; i < children.length; i++) {
-            var dom = children[i];
+        for (const dom of children) {
             dom.classList.remove("selected");
         }
 
@@ -656,14 +673,6 @@ async function onPixyDustSave() {
 }
 
 function refreshFileBrowser() {
-    try {
-        if (typeof app === 'undefined') {
-            return;
-        }
-    } catch (ReferenceError) {
-        console.log(ReferenceError.message);
-        return;
-    }
     // Clear the filebrowser
     var cont = document.getElementById("filebrowsercontent");
     cont.innerHTML = "";
@@ -720,19 +729,6 @@ function htmlToElem(html) {
     html = html.trim(); // Never return a space text node as a result
     temp.innerHTML = html;
     return temp.content.firstChild;
-}
-
-async function init() {
-    initMonaco();
-    initTabs();
-    initResizableSidePanel();
-    if (rp_path == null)
-        rp_path = await packutil.lookForDependencies(bp_path, "resources");
-    if (bp_path == null)
-        bp_path = await packutil.lookForDependencies(rp_path, "data");
-
-
-    initFileBrowserContextMenu();
 }
 
 /**

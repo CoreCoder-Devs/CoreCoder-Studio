@@ -10,6 +10,7 @@ app.on("ready", ()=>{
         icon: "src/resources/icon.ico",
         nodeIntegration: true,
         webPreferences: {
+            contextIsolation: false,
             nodeIntegration: true,
             enableRemoteModule:true,
             webSecurity: false,

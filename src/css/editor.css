@@ -10,6 +10,8 @@
     --var-side-width: 32px;
 }
 
+
+
 .sidebar {
     width: var(--var-sidebar-width);
     background-color: var(--var-color-bglighter);

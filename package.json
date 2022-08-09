@@ -16,6 +16,7 @@
   "main": "background.js",
   "dependencies": {
     "@vue/cli-service": "^5.0.8",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "ts-loader": "~8.2.0",
     "vue": "^3.2.37",
     "vue-class-component": "^8.0.0-0",

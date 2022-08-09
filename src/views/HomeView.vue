@@ -1,9 +1,12 @@
-<script setup lang="ts">
-import TheWelcome from "@/components/TheWelcome.vue";
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+
+@Options({
+  props: {
+  }
+})
+export default class HomeView extends Vue{}
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
 </template>

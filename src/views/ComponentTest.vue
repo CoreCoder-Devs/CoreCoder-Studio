@@ -15,6 +15,6 @@ export default class ComponentTest extends Vue {}
 
 <template>
     <Label>Label</Label>
-    <Button>Hello</Button>
-    <Button>Hello</Button>
+    <Button>Test Button</Button>
+    <Button class="primary">Primary class</Button>
 </template>

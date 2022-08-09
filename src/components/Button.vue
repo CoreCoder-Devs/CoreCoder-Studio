@@ -25,16 +25,30 @@ export default class Button extends Vue {}
     border-radius: 4px;
     margin: 6px 6px 6px 6px;
     user-select: none;
+    transition: box-shadow .25s;
 }
 
 .button:hover {
-    box-shadow: 0 4px 4px black;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.669);
     cursor: pointer;
-    background-color: var(--color-accent);
+    background-color: var(--color-button-hover);
 }
 .button:active {
-    box-shadow: 0 2px 4px black;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.669);
     cursor: pointer;
-    background-color: var(--color-button);
+    background-color: var(--color-button-active);
+}
+
+
+
+.button.primary {
+    background: var(--gradient-accent);
+}
+
+.button.primary:hover {
+    background: var(--gradient-accent-lighter);
+}
+.button.primary:active {
+    background: var(--gradient-accent-darker);
 }
 </style>

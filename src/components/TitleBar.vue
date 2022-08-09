@@ -7,8 +7,8 @@ import TitleBarButton from "./TitleBarButton.vue";
 @Options({
     components: {
         Label,
-        TitleBarButton
-    }
+        TitleBarButton,
+    },
 })
 export default class TitleBar extends Vue {}
 </script>
@@ -28,18 +28,17 @@ export default class TitleBar extends Vue {}
     height: 24px;
     margin: 4px;
 }
-
 </style>
 
 <!-- Template -->
 <template>
     <div class="titlebar">
-        <img src="icon.ico"/>
+        <img src="icon.ico" />
         <Label style="line-height: 32px">CoreCoder:Studio</Label>
-        <div style="flex:1"></div>
+        <div style="flex: 1"></div>
         <TitleBarButton class="minimizebtn" action="minimize"></TitleBarButton>
         <TitleBarButton class="maximizebtn" action="maximize"></TitleBarButton>
-        <TitleBarButton class="closebtn"    action="close"></TitleBarButton>
+        <TitleBarButton class="closebtn" action="close"></TitleBarButton>
         <slot></slot>
     </div>
 </template>

@@ -29,3 +29,5 @@ coverage
 
 #Electron-builder output
 /dist_electron
+
+!.vscode/vue.code-snippets

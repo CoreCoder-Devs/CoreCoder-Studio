@@ -2,11 +2,9 @@
 import { Options, Vue } from "vue-class-component";
 
 @Options({
-  props: {
-  }
+    props: {},
 })
-export default class HomeView extends Vue{}
+export default class HomeView extends Vue {}
 </script>
 
-<template>
-</template>
+<template></template>

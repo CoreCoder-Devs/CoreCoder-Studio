@@ -1,4 +1,3 @@
-
 <template>
     <div class="button">
         <slot></slot>
@@ -8,19 +7,17 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 
-type ButtonStyles = 'default' | 'main' | 'warn' | 'error'
+type ButtonStyles = "default" | "main" | "warn" | "error";
 
 @Options({
-  props: {
-    style: { type: String as () => ButtonStyles }
-  }
+    props: {
+        style: { type: String as () => ButtonStyles },
+    },
 })
-
 export default class Button extends Vue {}
 </script>
 
 <style scoped>
-
 .button {
     background-color: var(--color-button);
     color: var(--color-textcolor);
@@ -40,5 +37,4 @@ export default class Button extends Vue {}
     cursor: pointer;
     background-color: var(--color-button);
 }
-
 </style>

@@ -9,4 +9,7 @@ module.exports = {
     "@vue/eslint-config-typescript/recommended",
     "@vue/eslint-config-prettier",
   ],
+  globals: {
+    __static: 'readonly',
+  },
 };

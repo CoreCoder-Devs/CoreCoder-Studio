@@ -1,4 +1,4 @@
-
+<!-- Script -->
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Label from "./Label.vue";
@@ -10,11 +10,10 @@ import TitleBarButton from "./TitleBarButton.vue";
         TitleBarButton
     }
 })
-export default class TitleBar extends Vue {
-
-}
+export default class TitleBar extends Vue {}
 </script>
 
+<!-- Style -->
 <style>
 .titlebar {
     min-height: 32px;
@@ -32,6 +31,7 @@ export default class TitleBar extends Vue {
 
 </style>
 
+<!-- Template -->
 <template>
     <div class="titlebar">
         <img src="icon.ico"/>

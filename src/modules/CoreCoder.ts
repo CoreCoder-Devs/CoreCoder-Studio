@@ -13,10 +13,17 @@ export default class CoreCoder{
         this.settings = new Settings();
     }
 
+    /**
+     * Get the project root folder for all projects
+     * @returns absolute path
+     */
     public static getComMojang():String|Error{
         return Error("Unimplemented");
     }
-
+    /**
+     * Get the settings object
+     * @returns The settings object
+     */
     public static getSettings():Settings{
         return CoreCoder.instance.settings;
     }

@@ -1,12 +1,12 @@
 <script lang="ts">
-import CCButton from "@/components/CCButton.vue";
+import BaseButton from "@/components/BaseButton.vue";
 import { Options, Vue } from "vue-class-component";
 import Label from "../components/Label.vue";
 
 @Options({
     props: {},
     components: {
-        CCButton,
+        BaseButton,
         Label,
     },
 })
@@ -15,12 +15,13 @@ export default class ComponentTest extends Vue {}
 
 <template>
     <Label>Label</Label>
-    <CCButton>CCButton</CCButton>
-    <CCButton :borderless="true">Borderless CCButton</CCButton>
-    <CCButton type="qerqew">Hollow CCButton</CCButton>
-    <CCButton type="hollow" :borderless="true">
+    <BaseButton>BaseButton</BaseButton>
+    <BaseButton type="primary">BaseButton Primary</BaseButton>
+    <BaseButton :borderless="true">Borderless BaseButton</BaseButton>
+    <BaseButton type="qerqew">Hollow BaseButton</BaseButton>
+    <BaseButton type="hollow" :borderless="true">
         Hollow and Borderless
-    </CCButton>
+    </BaseButton>
 
-    <CCButton type="confirm">Green CCButton</CCButton>
+    <BaseButton type="confirm">Green BaseButton</BaseButton>
 </template>

@@ -28,16 +28,18 @@ export default defineComponent({
 <style scoped>
 .button {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-tertiary);
-    color: var(--foreground-primary);
+    background-color: var(--color-button);
+    color: var(--color-text);
     box-shadow: none;
     padding: 7px;
     border-radius: 4px;
     border: 1px solid var(--foreground-border);
     outline: none;
     display: inline-block;
-    transition: filter 0.4s, border-color 0.4s, background-color 0.4s;
+    transition: box-shadow 0.15s, border-color 0.4s, background-color 0.4s;
     text-decoration: none;
+    user-select: none;
+    margin: 2px;
 }
 
 /* This will invert the button colours to highlight it. */
@@ -55,6 +57,8 @@ export default defineComponent({
 
 .button.primary {
     background-color: var(--blue);
+    background: var(--gradient-accent);
+    color: var(--color-textcolor);
 }
 
 .button.danger {
@@ -68,7 +72,6 @@ export default defineComponent({
 .button.confirm {
     background-color: var(--green);
 }
-
 .button.hollow {
     background: none;
     border: 1px solid var(--foreground-border);
@@ -81,6 +84,12 @@ export default defineComponent({
 .button:hover {
     filter: brightness(130%);
     cursor: pointer;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.669);
+}
+
+.button:active{
+    filter: brightness(75%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.669);
 }
 
 .button.hollow:hover {

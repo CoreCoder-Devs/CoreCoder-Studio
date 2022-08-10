@@ -14,14 +14,14 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     // Insert your code here
-    props:{},
-    methods:{}
+    props: {},
+    methods: {},
 });
 </script>
 
 <!-- Styles -->
 <style scoped>
-.scaffold{
+.scaffold {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;

@@ -33,9 +33,21 @@ export default class App extends Vue {}
     --color-button-active: rgb(40, 40, 40);
     --color-titlebar: rgb(15, 15, 15);
 
-    --gradient-accent:  linear-gradient(90deg, rgba(25,193,76,1) 0%, rgba(2,190,115,1) 100%);
-    --gradient-accent-lighter: linear-gradient(90deg, rgba(60,225,119,1) 0%, rgba(31,200,154,1) 100%);
-    --gradient-accent-darker: linear-gradient(90deg, rgba(17,161,60,1) 0%, rgba(3,116,71,1) 100%);
+    --gradient-accent: linear-gradient(
+        90deg,
+        rgba(25, 193, 76, 1) 0%,
+        rgba(2, 190, 115, 1) 100%
+    );
+    --gradient-accent-lighter: linear-gradient(
+        90deg,
+        rgba(60, 225, 119, 1) 0%,
+        rgba(31, 200, 154, 1) 100%
+    );
+    --gradient-accent-darker: linear-gradient(
+        90deg,
+        rgba(17, 161, 60, 1) 0%,
+        rgba(3, 116, 71, 1) 100%
+    );
 
     --background-primary: #111111;
     --background-secondary: #1a1a1a;
@@ -58,10 +70,10 @@ export default class App extends Vue {}
     text-align: center;
     /* overflow:hidden; */
 
-    position:absolute;
+    position: absolute;
     right: 0;
     left: 0;
     top: 0;
-    bottom:0;
+    bottom: 0;
 }
 </style>

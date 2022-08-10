@@ -11,10 +11,10 @@ import Scaffold from "@/components/Scaffold.vue";
         BaseButton,
         Label,
         ProjectButton,
-        Scaffold
+        Scaffold,
     },
 })
-export default class ComponentTest extends Vue { }
+export default class ComponentTest extends Vue {}
 </script>
 
 <template>
@@ -30,11 +30,29 @@ export default class ComponentTest extends Vue { }
 
         <BaseButton type="confirm">Green BaseButton</BaseButton>
 
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
-        <ProjectButton name="my project" imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
+        <ProjectButton
+            name="my project"
+            imageUrl="https://media.discordapp.net/attachments/1005310973348941935/1006536297730551838/Kingerious_javascript_e5e41011-9a53-4a5d-805e-101a296b2cfe.png"
+        ></ProjectButton>
     </Scaffold>
 </template>

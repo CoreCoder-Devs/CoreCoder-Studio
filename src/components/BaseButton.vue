@@ -22,7 +22,7 @@ export default defineComponent({
         type: { type: String as PropType<ButtonTypes> },
         borderless: { type: Boolean, default: false },
     },
-})
+});
 </script>
 
 <style scoped>
@@ -60,12 +60,12 @@ export default defineComponent({
     background: var(--gradient-accent);
     color: var(--color-textcolor);
 }
-.button.primary:hover{
+.button.primary:hover {
     /* Here we dont want the text to be lighter */
     filter: none;
     background: var(--gradient-accent-lighter);
 }
-.button.primary:active{
+.button.primary:active {
     /* Here we dont want the text to be lighter */
     filter: brightness(75%);
     background: var(--gradient-accent);
@@ -96,7 +96,7 @@ export default defineComponent({
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.669);
 }
 
-.button:active{
+.button:active {
     filter: brightness(75%);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.669);
 }
@@ -106,9 +106,10 @@ export default defineComponent({
 }
 
 .button.borderless:hover {
-    border: none
+    border: none;
 }
-.button[disabled], .button[disabled]:hover {
+.button[disabled],
+.button[disabled]:hover {
     filter: brightness(70%);
     border: none;
     cursor: default;

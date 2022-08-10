@@ -5,35 +5,37 @@
 
 declare type ProjectType = "behavior" | "resource" | "skin" | "world";
 
-class ProjectCreateOptions{
-    project !: ProjectData | ProjectData[];
-    comMojangPath !: String;
+class ProjectCreateOptions {
+    project!: ProjectData | ProjectData[];
+    comMojangPath!: String;
 }
 
-class ProjectData{
+class ProjectData {
     name!: String;
     description!: String;
     uuid!: String;
     isValid: boolean = false;
     dependencies: ProjectData | ProjectData[] | undefined;
-    type!: ProjectType; 
+    type!: ProjectType;
 }
 
-class ProjectCreateError extends Error{}
+class ProjectCreateError extends Error {}
 /**
  * Get all the project
  * @returns All the project
  */
-function getAllProjects() :Array<ProjectData>{
+function getAllProjects(): Array<ProjectData> {
     // TODO: implement function
     return [];
 }
 /**
- * Create a new project if error returns ProjectCreateError 
+ * Create a new project if error returns ProjectCreateError
  * if success, returns ProjectData
  * @param opts Options
  */
-function createProject(opts: ProjectCreateOptions):ProjectCreateError|ProjectData|void{
+function createProject(
+    opts: ProjectCreateOptions
+): ProjectCreateError | ProjectData | void {
     // TODO: implement function
 }
 
@@ -43,7 +45,10 @@ function createProject(opts: ProjectCreateOptions):ProjectCreateError|ProjectDat
  * @param deleteLinked whether or not to delet linked projects
  * @returns Success or not
  */
-function deleteProject(project: ProjectData|string, deleteLinked?:Boolean):Boolean{
+function deleteProject(
+    project: ProjectData | string,
+    deleteLinked?: Boolean
+): Boolean {
     return true;
 }
 
@@ -51,7 +56,7 @@ function deleteProject(project: ProjectData|string, deleteLinked?:Boolean):Boole
  * Parse a project to get ProjectData
  * @param path Project folder path
  */
-function parseProject(path:String):ProjectData|Error|void{
+function parseProject(path: String): ProjectData | Error | void {
     // TODO: implement function
 }
 
@@ -61,5 +66,5 @@ export default {
     getAllProjects,
     createProject,
     deleteProject,
-    parseProject
+    parseProject,
 };

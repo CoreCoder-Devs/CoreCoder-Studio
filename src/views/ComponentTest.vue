@@ -1,7 +1,7 @@
 <script lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
+import BaseButton from "@/components/Generic/BaseButton.vue";
 import { Options, Vue } from "vue-class-component";
-import Label from "../components/Label.vue";
+import Label from "../components/Generic/Label.vue";
 import ProjectButton from "@/components/ProjectButton.vue";
 import Scaffold from "@/components/Scaffold.vue";
 

@@ -1,7 +1,7 @@
 <!-- Script -->
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Label from "./Label.vue";
+import Label from "../Generic/Label.vue";
 import TitleBarButton from "./TitleBarButton.vue";
 
 @Options({

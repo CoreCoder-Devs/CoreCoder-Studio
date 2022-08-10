@@ -9,7 +9,7 @@
 <!-- Script -->
 <script lang="ts">
 import { defineComponent } from "vue";
-import Label from "./Label.vue";
+import Label from "./Generic/Label.vue";
 
 export default defineComponent({
     // Insert your code here

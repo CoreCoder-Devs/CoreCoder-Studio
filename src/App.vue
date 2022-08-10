@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import ComponentTest from "./views/ComponentTest.vue";
-import TitleBar from "./components/TitleBar.vue";
+import TitleBar from "./components/TitleBar/TitleBar.vue";
 
 @Options({
     components: {

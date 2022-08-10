@@ -60,7 +60,16 @@ export default defineComponent({
     background: var(--gradient-accent);
     color: var(--color-textcolor);
 }
-
+.button.primary:hover{
+    /* Here we dont want the text to be lighter */
+    filter: none;
+    background: var(--gradient-accent-lighter);
+}
+.button.primary:active{
+    /* Here we dont want the text to be lighter */
+    filter: brightness(75%);
+    background: var(--gradient-accent);
+}
 .button.danger {
     background-color: var(--red);
 }
@@ -84,7 +93,7 @@ export default defineComponent({
 .button:hover {
     filter: brightness(130%);
     cursor: pointer;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.669);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.669);
 }
 
 .button:active{

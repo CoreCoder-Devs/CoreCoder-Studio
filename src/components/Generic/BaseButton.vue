@@ -32,7 +32,7 @@ export default defineComponent({
     color: var(--color-text);
     box-shadow: none;
     padding: 7px;
-    border-radius: 4px;
+    border-radius: 2px;
     border: 1px solid var(--foreground-border);
     outline: none;
     display: inline-block;
@@ -92,7 +92,7 @@ export default defineComponent({
 
 .button:hover {
     filter: brightness(130%);
-    cursor: pointer;
+    /* cursor: pointer; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.669);
 }
 

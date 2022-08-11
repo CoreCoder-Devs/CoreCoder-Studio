@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-2" bx:pinned="true">
+      <stop offset="0" style="stop-color: rgb(126, 255, 139);"/>
+      <stop offset="1" style="stop-color: rgb(97, 219, 203);"/>
+    </linearGradient>
+    <linearGradient id="gradient-2-0" gradientUnits="userSpaceOnUse" x1="232.988" y1="96.302" x2="232.988" y2="296.302" gradientTransform="matrix(1, 0, 0, 1, 0, 0)" xlink:href="#gradient-2"/>
+    <bx:grid x="0" y="0" width="67.687" height="67.687"/>
+  </defs>
+  <rect style="fill: rgb(31, 31, 31);" width="424.956" height="424.956" rx="16" ry="16" x="37.522" y="37.522"/>
+  <g transform="matrix(0.819825, 0, 0, 0.819825, 43.080856, 43.081104)" style="">
+    <g style="" transform="matrix(1.338204, 0, 0, 1.338204, -59.391224, -10.298142)">
+      <path d="M 132.988 96.302 L 191.222 96.302 L 191.222 238.694 L 332.988 238.694 L 332.988 296.302 L 132.988 296.302 L 132.988 96.302 Z" style="fill: rgb(255, 255, 255);" transform="matrix(-0.707107, -0.707107, 0.707107, -0.707107, 258.928929, 499.855878)"/>
+      <path d="M 132.988 96.302 L 191.222 96.302 L 191.222 238.694 L 332.988 238.694 L 332.988 296.302 L 132.988 296.302 L 132.988 96.302 Z" style="fill: url(#gradient-2-0);" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 207.047084, -107.251874)"/>
+    </g>
+  </g>
+</svg>

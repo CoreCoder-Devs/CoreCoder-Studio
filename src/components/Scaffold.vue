@@ -14,8 +14,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     // Insert your code here
-    props: {},
-    methods: {},
+    name: "Scaffold"
 });
 </script>
 
@@ -31,6 +30,6 @@ export default defineComponent({
     bottom: 0;
     left: 0;
     right: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 </style>

@@ -33,7 +33,7 @@ export default class TitleBar extends Vue {}
 <!-- Template -->
 <template>
     <div class="titlebar">
-        <img src="icon.ico" />
+        <img src="icon-noBG.ico" />
         <Label style="line-height: 32px">CoreCoder:Studio</Label>
         <div style="flex: 1"></div>
         <TitleBarButton class="minimizebtn" action="minimize"></TitleBarButton>

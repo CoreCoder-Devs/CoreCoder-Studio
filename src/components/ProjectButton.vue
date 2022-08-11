@@ -2,7 +2,7 @@
 <template>
     <div class="project-button">
         <img :src="$props.imageUrl" />
-        <Label>{{ $props.name }}</Label>
+        <Label>{{ $props.projectName }}</Label>
     </div>
 </template>
 
@@ -14,7 +14,7 @@ import Label from "./Generic/Label.vue";
 export default defineComponent({
     // Insert your code here
     props: {
-        name: String,
+        projectName: String,
         imageUrl: String,
     },
     methods: {},
@@ -34,7 +34,7 @@ export default defineComponent({
     background-color: var(--color-button);
     outline: 2px solid var(--color-button-hover);
     transition: filter 0.4s, outline 0.1s, box-shadow 0.25s, transform 0.2s;
-    cursor: pointer;
+    /* cursor: pointer; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@ export default defineComponent({
 }
 .project-button:hover {
     filter: brightness(125%);
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
     background-color: var(--color-button);
     box-shadow: 0 2px 12px black;
     outline: 2px solid var(--color-accent);
@@ -52,7 +52,7 @@ export default defineComponent({
 .project-button:active {
     transition: transform 0.1s;
     filter: brightness(75%);
-    transform: scale(1.01);
+    transform: scale(0.98);
     background-color: var(--color-button);
     box-shadow: 0 2px 4px black;
     outline: 2px solid var(--color-accent);

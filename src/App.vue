@@ -1,18 +1,20 @@
 <template>
     <!-- <img alt="Vue logo" src="./assets/logo.svg" /> -->
     <TitleBar></TitleBar>
-    <ComponentTest></ComponentTest>
+    <ProjectManager></ProjectManager>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import ComponentTest from "./views/ComponentTest.vue";
 import TitleBar from "./components/TitleBar/TitleBar.vue";
+import ProjectManager from "@/views/ProjectManager.vue";
 
 @Options({
     components: {
         TitleBar,
         ComponentTest,
+        ProjectManager
     },
     props: {
         // ipc: remote.ipcMain

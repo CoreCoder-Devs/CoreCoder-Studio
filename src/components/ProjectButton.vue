@@ -1,21 +1,27 @@
 <!-- Template -->
 <template>
     <div class="project-button">
-        <img :src="$props.imageUrl" />
-        <Label>{{ $props.projectName }}</Label>
+        <img :src="imageUrl" />
+        <Label>{{ $props.project?.name ?? "Pack Name" }}</Label>
     </div>
 </template>
 
 <!-- Script -->
 <script lang="ts">
+import { ProjectData } from "@/modules/ProjectManager";
+import path from "path";
 import { defineComponent } from "vue";
 import Label from "./Generic/Label.vue";
 
 export default defineComponent({
     // Insert your code here
     props: {
-        projectName: String,
-        imageUrl: String,
+        project: ProjectData
+    },
+    computed:{
+        imageUrl():string{
+            return path.join((this.project as ProjectData).path as string, "pack_icon.png");
+        }
     },
     methods: {},
     components: { Label },

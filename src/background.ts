@@ -30,6 +30,8 @@ async function createWindow() {
             contextIsolation: false,
             preload: path.join(__dirname, "preload.js"),
 
+            // This is required to read and write on the LOCALAPPDATA folder
+            webSecurity: false
             // preload: 'preload.js'
         },
     });

@@ -64,7 +64,7 @@ export default class App extends Vue {}
 }
 
 #app {
-    color: var(--color-background);
+    color: var(--color-textcolor);
     font-size: 10pt;
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

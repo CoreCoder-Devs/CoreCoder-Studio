@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { Options, Vue } from "vue-class-component";
 
 import { CoreCoderWindow } from "@/CoreCoderWindow";
@@ -7,7 +7,7 @@ declare let window: CoreCoderWindow;
 declare type TitleBarAction = "close" | "maximize" | "minimize";
 export default defineComponent({
     props: {
-        action: String,
+        action: String as PropType<TitleBarAction>,
     },
     methods: {
         onClick(event: MouseEvent): void {

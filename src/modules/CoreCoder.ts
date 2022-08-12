@@ -3,6 +3,8 @@
  * Provides basic functionality
  */
 import Settings from "./Settings";
+import process from "process";
+import path from "path";
 const MINECRAFT_APP = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 const MINECRAFT_PREVIEW_APP = "Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe";
 export default class CoreCoder {
@@ -29,12 +31,15 @@ export default class CoreCoder {
                 return Error("Unimplemented");
 
             case "win32":
-                return (
-                    process.env["LOCALAPPDATA"] +
-                    "/packages/" +
-                    (isBeta ? MINECRAFT_PREVIEW_APP : MINECRAFT_APP) +
-                    "LocalState/games/com.mojang"
+                var localAppData = process.env["LOCALAPPDATA"];
+                if(localAppData != null)
+                return path.join(
+                    localAppData,
+                    "packages",
+                    (isBeta ? MINECRAFT_PREVIEW_APP : MINECRAFT_APP),
+                    "LocalState","games","com.mojang"
                 );
+                else return Error("Can't get LocalAppData folder");
 
             case "android":
                 return Error("Unimplemented");

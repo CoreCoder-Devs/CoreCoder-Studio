@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Options, Vue } from "vue-class-component";
 
 type ButtonTypes =
     | "primary"

@@ -1,9 +1,10 @@
+<!-- Template -->
 <template>
-    <!-- <img alt="Vue logo" src="./assets/logo.svg" /> -->
     <TitleBar></TitleBar>
     <ProjectManagerView></ProjectManagerView>
 </template>
 
+<!-- Script -->
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import ComponentTest from "./views/ComponentTest.vue";
@@ -23,6 +24,7 @@ import ProjectManagerView from "@/views/ProjectManagerView.vue";
 export default class App extends Vue {}
 </script>
 
+<!-- Style -->
 <style>
 :root {
     --color-background: rgb(30, 30, 30);

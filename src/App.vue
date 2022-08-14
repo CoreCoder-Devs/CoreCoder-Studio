@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
     <TitleBar></TitleBar>
-    <ProjectManagerView></ProjectManagerView>
+    <RouterView></RouterView>
 </template>
 
 <!-- Script -->

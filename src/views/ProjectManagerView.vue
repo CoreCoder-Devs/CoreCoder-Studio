@@ -9,6 +9,7 @@ import Label from "@/components/Generic/Label.vue";
 import ProjectButton from "@/components/ProjectButton.vue";
 import { ProjectData, getAllProjects, ProjectType } from "@/modules/ProjectManager";
 import path from "path";
+import Dialog from "@/components/Dialogs/Dialog.vue";
 export default defineComponent({
     // Insert your code here
     data() {
@@ -17,10 +18,14 @@ export default defineComponent({
         }
     },
     methods: {
-        refresh(){
-        // Load all the projects
-        // Optionally you can provide a boolean to load the non-dev files
-        this.projects = getAllProjects("behavior") as [];
+        refresh() {
+            // Load all the projects
+            // Optionally you can provide a boolean to load the non-dev files
+            this.projects = getAllProjects("behavior") as [];
+        },
+        showCreateDlg(){
+            var dlg : any = this.$refs.createdlg;
+            dlg.show = true;
         }
     },
     mounted() {
@@ -30,31 +35,36 @@ export default defineComponent({
         Scaffold,
         BaseButton,
         Label,
-        ProjectButton
+        ProjectButton,
+        Dialog
     }
 });
 </script>
 
-<script setup lang="ts">
-</script>
 
 <!-- Template -->
 <template>
     <Scaffold style="padding: 8px">
         <div class="topBar">
-            <BaseButton type="primary">Create New</BaseButton>
+            <BaseButton type="primary" @click="showCreateDlg">Create New</BaseButton>
             <BaseButton>Import</BaseButton>
             <BaseButton>Settings</BaseButton>
         </div>
         <h4>Projects</h4>
         <div class="project-container">
-            <ProjectButton 
-                v-for="item in $data.projects" 
-                :project="(item as ProjectData)"
-            ></ProjectButton>
+            <ProjectButton v-for="item in $data.projects" :project="(item as ProjectData)"></ProjectButton>
         </div>
     </Scaffold>
     <img src="icon-noBG.svg" class="backdrop" />
+
+    <Dialog ref="createdlg">
+        <h>What is a water?</h>
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+            <BaseButton type="primary">Yes</BaseButton>
+            <BaseButton>false</BaseButton>
+            <BaseButton>bruh</BaseButton>
+        </div>
+    </Dialog>
 </template>
 
 <!-- Styles -->

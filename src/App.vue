@@ -83,4 +83,9 @@ export default class App extends Vue {}
     top: 0;
     bottom: 0;
 }
+
+*{
+    user-select: none;
+    -webkit-user-drag: none;
+}
 </style>

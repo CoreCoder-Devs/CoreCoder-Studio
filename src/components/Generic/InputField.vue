@@ -48,6 +48,7 @@ export default defineComponent({
     outline: 1px solid var(--color-border);
     padding: 8px;
     /* border-radius: 4px; */
+    transition: outline .25s;
 }
 .inputfield > input:focus{
     outline: 1px solid var(--color-accent);

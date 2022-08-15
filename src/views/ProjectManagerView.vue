@@ -27,6 +27,10 @@ export default defineComponent({
         showCreateDlg() {
             var dlg: any = this.$refs.createdlg;
             dlg.show = true;
+        },
+        createDialogDismiss(){
+            var dlg: any = this.$refs.createdlg;
+            dlg.show = false;
         }
     },
     mounted() {
@@ -69,7 +73,7 @@ export default defineComponent({
                     default-value="Unknown" />
         <div class="row">
             <BaseButton type="primary">Create</BaseButton>
-            <BaseButton>Cancel</BaseButton>
+            <BaseButton @click="createDialogDismiss">Cancel</BaseButton>
         </div>
     </Dialog>
 </template>

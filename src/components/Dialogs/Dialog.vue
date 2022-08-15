@@ -1,6 +1,6 @@
 <!-- Template -->
 <template>
-    <div class="shade" v-if="show" @click="clickShade">
+    <div class="shade" v-if="show" @click="dismiss">
         <div class="modal" @click="(e)=>{e.stopPropagation();}">
             <slot></slot>
         </div>
@@ -14,7 +14,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
     // Insert your code here
     methods:{
-        clickShade(){
+        dismiss(){
             this.show = false;
         }
     },

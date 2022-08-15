@@ -1,6 +1,6 @@
 <!-- Template -->
 <template>
-    <div class="project-button">
+    <div class="project-button" @click="openProject">
         <img :src="imageUrl" />
         <Label>{{ $props.project?.name ?? "Pack Name" }}</Label>
     </div>
@@ -8,6 +8,7 @@
 
 <!-- Script -->
 <script lang="ts">
+import CoreCoder from "@/modules/CoreCoder";
 import { ProjectData } from "@/modules/ProjectManager";
 import path from "path";
 import { defineComponent } from "vue";
@@ -16,14 +17,19 @@ import Label from "./Generic/Label.vue";
 export default defineComponent({
     // Insert your code here
     props: {
-        project: ProjectData
+        project!: ProjectData
     },
     computed:{
         imageUrl():string{
             return path.join((this.project as ProjectData).path as string, "pack_icon.png");
         }
     },
-    methods: {},
+    methods: {
+        openProject(){
+            CoreCoder.currentProject = this.project as ProjectData;
+            this.$router.push("/editor");
+        }
+    },
     components: { Label },
 });
 </script>

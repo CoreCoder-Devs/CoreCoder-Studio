@@ -5,11 +5,13 @@
 import Settings from "./Settings";
 import process from "process";
 import path from "path";
+import { ProjectData } from "./ProjectManager";
 const MINECRAFT_APP = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 const MINECRAFT_PREVIEW_APP = "Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe";
 export default class CoreCoder {
     private settings!: Settings;
     static instance: CoreCoder;
+    public static currentProject: ProjectData;
 
     constructor() {
         CoreCoder.instance = this;

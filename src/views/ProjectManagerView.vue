@@ -11,6 +11,7 @@ import { ProjectData, getAllProjects, ProjectType } from "@/modules/ProjectManag
 import path from "path";
 import Dialog from "@/components/Dialogs/Dialog.vue";
 import InputField from "@/components/Generic/InputField.vue";
+import CoreCoder from "@/modules/CoreCoder";
 export default defineComponent({
     // Insert your code here
     data() {
@@ -28,12 +29,14 @@ export default defineComponent({
             var dlg: any = this.$refs.createdlg;
             dlg.show = true;
         },
-        createDialogDismiss(){
+        createDialogDismiss() {
             var dlg: any = this.$refs.createdlg;
             dlg.show = false;
         },
-        createProject(){
+        createProject() {
             console.log("Create");
+            var project = new ProjectData();
+            CoreCoder.currentProject = project;
             this.$router.push("/editor");
         }
     },
@@ -69,12 +72,9 @@ export default defineComponent({
 
     <Dialog ref="createdlg">
         <h3>Create a new project</h3>
-        <InputField label="Project Name" 
-                    default-value="My Project" />
-        <InputField label="Description" 
-                    default-value="Made with CoreCoder:Studio" />
-        <InputField label="Author" 
-                    default-value="Unknown" />
+        <InputField label="Project Name" default-value="My Project" />
+        <InputField label="Description" default-value="Made with CoreCoder:Studio" />
+        <InputField label="Author" default-value="Unknown" />
         <div class="row">
             <BaseButton @click="createProject" type="primary">Create</BaseButton>
             <BaseButton @click="createDialogDismiss">Cancel</BaseButton>

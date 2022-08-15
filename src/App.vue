@@ -11,6 +11,7 @@ import ComponentTest from "./views/ComponentTest.vue";
 import TitleBar from "./components/TitleBar/TitleBar.vue";
 import ProjectManagerView from "@/views/ProjectManagerView.vue";
 import { RouterView } from "vue-router";
+
 @Options({
     components: {
         TitleBar,

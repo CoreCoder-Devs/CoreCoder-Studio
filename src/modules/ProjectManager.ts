@@ -9,17 +9,18 @@ declare type ProjectType = "behavior" | "resource" | "skin" | "world";
 
 class ProjectCreateOptions {
     project!: ProjectData | ProjectData[];
-    comMojangPath!: String;
+    comMojangPath!: string;
 }
 
 class ProjectData {
-    name!: String;
-    description!: String;
-    uuid!: String;
+    name!: string;
+    description!: string;
+    uuid!: string;
     isValid: boolean = false;
     dependencies: ProjectData | ProjectData[] | undefined;
     type!: ProjectType;
-    path!: String;
+    path!: string;
+    version: number[] = [0,0,1];
 }
 
 class ProjectCreateError extends Error { }

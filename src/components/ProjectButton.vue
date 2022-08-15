@@ -70,5 +70,6 @@ export default defineComponent({
     margin-bottom: 8px;
     user-select: none;
     -webkit-user-drag: none;
+    object-fit: contain;
 }
 </style>

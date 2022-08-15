@@ -10,6 +10,7 @@ import ProjectButton from "@/components/ProjectButton.vue";
 import { ProjectData, getAllProjects, ProjectType } from "@/modules/ProjectManager";
 import path from "path";
 import Dialog from "@/components/Dialogs/Dialog.vue";
+import InputField from "@/components/Generic/InputField.vue";
 export default defineComponent({
     // Insert your code here
     data() {
@@ -23,8 +24,8 @@ export default defineComponent({
             // Optionally you can provide a boolean to load the non-dev files
             this.projects = getAllProjects("behavior") as [];
         },
-        showCreateDlg(){
-            var dlg : any = this.$refs.createdlg;
+        showCreateDlg() {
+            var dlg: any = this.$refs.createdlg;
             dlg.show = true;
         }
     },
@@ -36,7 +37,8 @@ export default defineComponent({
         BaseButton,
         Label,
         ProjectButton,
-        Dialog
+        Dialog,
+        InputField
     }
 });
 </script>
@@ -58,11 +60,16 @@ export default defineComponent({
     <img src="icon-noBG.svg" class="backdrop" />
 
     <Dialog ref="createdlg">
-        <h>What is a water?</h>
-        <div style="display: flex; flex-direction: row; justify-content: center;">
-            <BaseButton type="primary">Yes</BaseButton>
-            <BaseButton>false</BaseButton>
-            <BaseButton>bruh</BaseButton>
+        <h3>Create a new project</h3>
+        <InputField label="Project Name" 
+                    default-value="My Project" />
+        <InputField label="Description" 
+                    default-value="Made with CoreCoder:Studio" />
+        <InputField label="Author" 
+                    default-value="Unknown" />
+        <div class="row">
+            <BaseButton type="primary">Create</BaseButton>
+            <BaseButton>Cancel</BaseButton>
         </div>
     </Dialog>
 </template>
@@ -73,6 +80,12 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .backdrop {

@@ -28,14 +28,17 @@ export default class App extends Vue {}
 <style>
 :root {
     --color-background: rgb(30, 30, 30);
+    --color-border: rgb(69, 69, 69);
     --color-accent: rgb(25, 223, 78);
     --color-accent-lighter: rgb(87, 255, 132);
     --color-textcolor: rgb(255, 255, 255);
+    --color-textcolor-secondary: rgb(169, 169, 169);
 
     --color-button: rgb(52, 52, 52);
     --color-button-hover: rgb(65, 65, 65);
     --color-button-active: rgb(40, 40, 40);
     --color-titlebar: rgb(15, 15, 15);
+    --color-textfield: rgb(15, 15, 15);
 
     --gradient-accent: linear-gradient(
         90deg,

@@ -39,7 +39,7 @@ export default defineComponent({
 }
 .modal{
     background-color: var(--color-background);
-    padding: 32px;
+    padding: 16px;
     height: fit-content;
     margin: auto;
     border-radius: 4px;

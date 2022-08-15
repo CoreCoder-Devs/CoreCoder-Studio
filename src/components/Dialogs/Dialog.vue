@@ -21,7 +21,7 @@ export default defineComponent({
     expose:["show"],
     data(){
         return {
-            show: true
+            show: false
         };
     }
 });

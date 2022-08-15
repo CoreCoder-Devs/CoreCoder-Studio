@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
     <TitleBar></TitleBar>
-    <ProjectManagerView></ProjectManagerView>
+    <router-view></router-view>
 </template>
 
 <!-- Script -->
@@ -10,12 +10,13 @@ import { Options, Vue } from "vue-class-component";
 import ComponentTest from "./views/ComponentTest.vue";
 import TitleBar from "./components/TitleBar/TitleBar.vue";
 import ProjectManagerView from "@/views/ProjectManagerView.vue";
-
+import { RouterView } from "vue-router";
 @Options({
     components: {
         TitleBar,
         ComponentTest,
-        ProjectManagerView
+        ProjectManagerView,
+        RouterView
     },
     props: {
         // ipc: remote.ipcMain

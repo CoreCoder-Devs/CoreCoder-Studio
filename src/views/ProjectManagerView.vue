@@ -31,6 +31,10 @@ export default defineComponent({
         createDialogDismiss(){
             var dlg: any = this.$refs.createdlg;
             dlg.show = false;
+        },
+        createProject(){
+            console.log("Create");
+            this.$router.push("/editor");
         }
     },
     mounted() {
@@ -72,7 +76,7 @@ export default defineComponent({
         <InputField label="Author" 
                     default-value="Unknown" />
         <div class="row">
-            <BaseButton type="primary">Create</BaseButton>
+            <BaseButton @click="createProject" type="primary">Create</BaseButton>
             <BaseButton @click="createDialogDismiss">Cancel</BaseButton>
         </div>
     </Dialog>
